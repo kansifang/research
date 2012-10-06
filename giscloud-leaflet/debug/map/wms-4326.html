@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	<link rel="stylesheet" href="../css/screen.css" />
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+	<div id="map" style="width:660px; height:290px; border: 1px solid #ccc"></div>
+	<script type="text/javascript">
+		var cloudmadeUrl = 'http://tile0.tianditu.com/DataServer?T=A0512_EMap&X={x}&Y={y}&L={z}',
+			cloudmadeAttribution = '&copy; 2011 CloudMade',
+			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution}),
+			latlng = new L.LatLng(126, 107);
+		
+		var map = new L.Map('map', {crs: L.CRS.EPSG4326});
+		
+		map.addLayer(cloudmade).setView(latlng, 3);
+	</script>
+</body>
+</html>
