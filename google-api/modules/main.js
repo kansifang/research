@@ -239,6 +239,7 @@
     function Xc() {
         return function () {}
     }
+	// 返回一个“返回指定属性”的方法
     function Yc(a) {
         return function () {
             return this[a]
@@ -549,8 +550,8 @@
     H.equals = function (a) {
         return !a ? false : Kd(this.lat(), a.lat()) && Kd(this.lng(), a.lng())
     };
-    H.lat = Yc("Xa");
-    H.lng = Yc("Ya");
+    H.lat = Yc("Xa");// 获取维度
+    H.lng = Yc("Ya");// 获取经度
 
     function he(a, b) {
         var c = Math.pow(10, b);
@@ -1183,7 +1184,6 @@
     H.cb = $c(2);
     var wf = uf(-Infinity, -Infinity, Infinity, Infinity),
         xf = uf(0, 0, 0, 0);
-
 	var V,
 		MVCObject = V = function() {}
     H = MVCObject.prototype;
