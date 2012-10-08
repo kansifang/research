@@ -59,7 +59,9 @@
 				!a.length && is_void0(b) ? c[d] = b : c = c[d] ? c[d] : c[d] = {}
 			}
         },
+		// 空函数
         z = emptyFn(),
+		// 返回当前对象的DOM节点
         la = function (a) {
             a.wa = function () {
                 return a.an ? a.an : a.an = new a
@@ -2228,8 +2230,9 @@
         Li.Aa.apply(this, arguments)
     }
     B(Li, Ki);
-
+	// DOM 事件处理
     function Mi(a, b, c, d, e) {
+		// 初始化事件
         Mi.Aa.apply(this, arguments)
     }
     var Ni = new Da;
@@ -2936,8 +2939,8 @@
         return 4 == this.type || 6 == this.type || 5 == this.type
     };
     var Pk = function (a) {
-        return 2 == a.type || 3 == a.type
-    },
+			return 2 == a.type || 3 == a.type
+		},
         Qk = function (a) {
             return 1 == a.type && 7 > a.version
         },
@@ -2970,6 +2973,7 @@
             var b = P;
             return a.setCapture && !b.C() ? i : l
         },
+		// 系统平台
         Wk = {
             2: "windows",
             1: "macos",
@@ -2978,6 +2982,7 @@
             6: "iphone",
             "-1": "other"
         },
+		// 浏览器类型
         Xk = {
             1: "ie",
             4: "firefox",
@@ -2992,7 +2997,7 @@
             var a = P;
             try {
                 if (0 == a.type || 2 == a.type || 3 == a.type || 4 == a.type || 5 == a.type || 6 == a.type) {
-                    var b = navigator.mimeTypes["application/geplugin"];
+                    var b = navigator.mimeTypes["application/geplugin"];//google earch plugin
                     if (b && b.enabledPlugin) return i
                 } else if (1 == a.type) {
                     var c = document.createElement("div");
@@ -3012,11 +3017,16 @@
         },
         P = new Iga(navigator.userAgent, new Nk(window.gDeviceCapabilities || []));
     var Mga = !0;
-
+	
+	// 事件处理
     function al() {
         this.Ia = []
     }
-    la(al);
+	// 返回DOM
+	al.wa = function () {//la(al);
+		return al.an ? al.an : al.an = new al
+	}
+	// 注销事件
     al.prototype.removeListener = function (a) {
         var b = a.$a;
         if (!(0 > b)) {
@@ -3025,6 +3035,7 @@
             a.$a = -1
         }
     };
+	// 清空事件
     al.prototype.clear = function () {
         for (var a = 0; a < this.Ia.length; ++a) this.Ia[a].$a = -1;
         this.Ia = []
@@ -3083,24 +3094,43 @@
             } catch (b) {}
         })
     }
-
-    function il(a, b, c, d) {
-        if (a.addEventListener) {
-            var e = !1;
-            b == ub ? (b = Za, e = !0) : b == vb && (b = Va, e = !0);
-            var f = e ? 4 : 1;
-            a.addEventListener(b, c, e);
-            c = bl.wa().make(a, b, c, f, d)
-        } else a.attachEvent ? (c = bl.wa().make(a, b, c, 2, d), a.attachEvent("on" + b, c.D = A(function (a) {
-            a || (a = window.event);
-            if (a && !a.target) try {
-                a.target = a.srcElement
-            } catch (b) {}
-            var c = hl(this, [a]);
-            return a && G == a.type && (a = a.srcElement) && "A" == a.tagName && "javascript:void(0)" == a.href ? l : c
-        }, c))) : (a["on" + b] = c, c = bl.wa().make(a, b, c, 3, d));
-        if (a != window || b != laa) a = al.wa(), b = c, a.Ia.push(b), b.$a = a.Ia.length - 1;
-        return c
+	// 注册DOM事件
+    function il(/*dom*/a, /*type*/b, /*callback*/c, d) {
+		if (a.addEventListener) {
+			// 事件名称预处理
+			var e = false;
+			if(b == "focusin"){
+				b = "focus"; e = true
+			}else{
+				b == "focusout" && (b = "blur", e = true)
+			}
+			var f = e ? 4 : 1;
+			a.addEventListener(b, c, e);// 注册DOM事件
+			c = bl.wa().make(a, b, c, f, d)
+		} else {
+			if (a.attachEvent) {
+				c = bl.wa().make(a, b, c, 2, d);
+				c.D = A(function (a) {
+					a || (a = window.event);// 事件对象
+					if(a && !a.target){
+						try {
+							a.target = a.srcElement
+						} catch (b) {
+							
+						}
+					}
+					var c = hl(this, [a]);
+					return a && G == a.type && (a = a.srcElement) && "A" == a.tagName && "javascript:void(0)" == a.href ? l : c
+				}, c);
+				a.attachEvent("on" + b, c.D)
+			} else {
+				a["on" + b] = c;
+				c = bl.wa().make(a, b, c, 3, d)
+			}
+		}
+		if (a != window || b != laa) a = al.wa(), b = c, a.Ia.push(b), b.$a = a.Ia.length - 1;
+	
+		return c
     }
 
     function S(a, b, c, d) {
@@ -3112,7 +3142,7 @@
     function jl(a, b, c) {
         var d = [];
         d.push(S(a, G, b, c));
-        1 == P.type && d.push(S(a, Ya, b, c))
+        1 == P.type && d.push(S(a, "dblclick", b, c))
     }
 
     function O(a, b, c, d) {
@@ -3153,42 +3183,55 @@
         this.C = null
     }
     la(bl);
-    bl.prototype.make = function (a, b, c, d, e) {
+    bl.prototype.make = function (/*dom*/a, /*type*/b, /*callback*/c, d, e) {
         return this.C ? new this.C(a, b, c, d, e) : k
     };
-    Mi.Aa = function (a, b, c, d, e) {
-        this.an = a;
-        this.C = b;
-        this.Rf = c;
+	
+	// DOM事件处理初始化函数
+    Mi.Aa = function (/*dom*/a, /*event type*/b, /*callback*/c, /*处理方式*/d, e) {
+        this.an = a;// dom节点
+        this.C = b;// 事件名称
+        this.Rf = c;// 回调函数
         this.D = null;
         this.F = d;
-        this.$i = e || k;
+        this.$i = e || null;
         this.$a = -1;
-        gl(a, b, i).push(this)
+        gl(a, b, true).push(this)
     };
+	// 注销DOM事件
     Mi.prototype.remove = function () {
         if (this.an) {
             switch (this.F) {
-            case 1:
-                this.an.removeEventListener(this.C, this.Rf, l);
-                break;
-            case 4:
-                this.an.removeEventListener(this.C, this.Rf, i);
-                break;
-            case 2:
-                this.an.detachEvent("on" + this.C, this.D);
-                break;
-            case 3:
-                this.an["on" + this.C] = null
+				case 1:// for webkit etc 
+					this.an.removeEventListener(this.C, this.Rf, false);// 冒泡节点调用事件处理程序
+					break;
+				case 4:
+					this.an.removeEventListener(this.C, this.Rf, true);// 捕获节点调用事件处理程序
+					break;
+				case 2:// for IE
+					this.an.detachEvent("on" + this.C, this.D);
+					break;
+				case 3:// for other
+					this.an["on" + this.C] = null
             }
             Eh(gl(this.an, this.C), this);
+			// 销毁变量
             this.D = this.Rf = this.an = null
         }
     };
+	// 获取事件DOM对象
+	Mi.prototype.wa = function() {
+		return this["an"]
+	}
+	
+	
+	
     var hl = function (a, b) {
-        if (a.an) return a.Rf.apply(a.an, b)
+        if (a.an){// 如果DOM存在
+			return a.Rf.apply(a.an, b);//执行回调函数
+		}
     };
-    Mi.prototype.wa = _get("an");
+    
     bl.wa().C = Mi;
     var pl = function () {
         this.D = []
@@ -3220,8 +3263,12 @@
         a == this.C ? ql(this) : (Qg(this.D, a), this.F--);
         return i
     };
-    v.ej = w(239);
-
+    //v.ej = w(239);
+	v.ej = function () {
+		return aaa[239].apply(this, arguments)
+	}
+	
+	
     function Nga() {
         this.C = {}
     }
@@ -4552,7 +4599,6 @@
         eval(a)
     }, h);
     var pha = A(dj.wa().ska, dj.wa());
-	console.log(dj);
 	
     ka("__gjsload_maps2__", pha, h);
 
@@ -4761,7 +4807,7 @@
         this.ak && Pn(this.qg, this.ak);
         xha(this, a);
         this.L = null;
-        a && (this.ca || Ul(a), this.qn(is_number(this.Ta) ? this.Ta : a.offsetLeft, is_number(this.Va) ? this.Va : a.offsetTop), this.L = Zk(a) ? a : window, c.push(Rn(this, a, fb, A(this.MG, this))), c.push(Rn(this, a, nb, A(this.ee, this))), c.push(Rn(this, a, G, A(this.Td, this))), c.push(Rn(this, a, Ya, A(this.Rb, this))), Tk() && Ma("touch", 2, A(function (b) {
+        a && (this.ca || Ul(a), this.qn(is_number(this.Ta) ? this.Ta : a.offsetLeft, is_number(this.Va) ? this.Va : a.offsetTop), this.L = Zk(a) ? a : window, c.push(Rn(this, a, fb, A(this.MG, this))), c.push(Rn(this, a, nb, A(this.ee, this))), c.push(Rn(this, a, "click", A(this.Td, this))), c.push(Rn(this, a, "dblclick", A(this.Rb, this))), Tk() && Ma("touch", 2, A(function (b) {
             new b(a)
         }, this)), this.ak = a.style.cursor, this.Lo());
         this.M = new N(0, 0)
@@ -4801,10 +4847,10 @@
     };
     Ki.prototype.Rb = function (a) {
         Wm(a);
-        F(this, Ya, a)
+        F(this, "dblclick", a)
     };
     Ki.prototype.Td = function (a) {
-        this.disabled && !a.cancelDrag && F(this, G, a)
+        this.disabled && !a.cancelDrag && F(this, "click", a)
     };
     Ki.prototype.ee = function (a) {
         this.disabled && F(this, nb, a)
@@ -5212,16 +5258,16 @@
     v = qj.prototype;
     v.M5 = function (a, b) {
         this.tb = new Ki(a, b);
-        R(a, $a, A(this.tS, this, $a));
-        R(a, ab, A(this.tS, this, ab));
-        R(a, bb, A(this.tS, this, bb));
+        R(a, "gesturestart", A(this.tS, this, "gesturestart"));
+        R(a, "gesturechange", A(this.tS, this, "gesturechange"));
+        R(a, "gestureend", A(this.tS, this, "gestureend"));
         var c = [];
-        this.V ? (this.tb.disable(), c = [O(this.tb, "moveby", this, this.moveBy)]) : c = [O(this.tb, "dragstart", this, this.Nga), O(this.tb, fb, this, this.Pga), O(this.tb, nb, this, this.Rga), ml(this.tb, "dragstart", this), O(this.tb, "drag", this, this.Oga), O(this.tb, "dragend", this, this.Mga), O(this.tb, "moveby", this, this.moveBy), O(this.tb, Cb, this, this.Sga), O(this.tb, G, this, this.Kga), O(this.tb, Ya, this, this.Lga), S(this.J.Xa(), jb, this, this.lA), S(this.J.Xa(), lb, this, this.Qga), S(this.J.Xa(), mb, this, this.iY), S(this.J.Xa(), Xa, this, this.Tga)];
+        this.V ? (this.tb.disable(), c = [O(this.tb, "moveby", this, this.moveBy)]) : c = [O(this.tb, "dragstart", this, this.Nga), O(this.tb, fb, this, this.Pga), O(this.tb, nb, this, this.Rga), ml(this.tb, "dragstart", this), O(this.tb, "drag", this, this.Oga), O(this.tb, "dragend", this, this.Mga), O(this.tb, "moveby", this, this.moveBy), O(this.tb, Cb, this, this.Sga), O(this.tb, G, this, this.Kga), O(this.tb, "dblclick", this, this.Lga), S(this.J.Xa(), jb, this, this.lA), S(this.J.Xa(), lb, this, this.Qga), S(this.J.Xa(), mb, this, this.iY), S(this.J.Xa(), Xa, this, this.Tga)];
         Qh(this.Ia, c);
         return this.tb
     };
     v.tS = function (a, b, c) {
-        a == $a && (this.Q = an(this.J.tl));
+        a == "gesturestart" && (this.Q = an(this.J.tl));
         this.K.set(c);
         si(this.K, this.Q);
         F(this, a, b, this.K)
@@ -5275,11 +5321,11 @@
         this.N = !1
     };
     v.Lga = function (a) {
-        1 < a.button || this.J.V && go(this, a, Ya)
+        1 < a.button || this.J.V && go(this, a, "dblclick")
     };
     v.Kga = function (a) {
         var b = getUTC();
-        (!this.M || 100 < b - this.M) && go(this, a, G);
+        (!this.M || 100 < b - this.M) && go(this, a, "click");
         this.M = b
     };
     var go = function (a, b, c, d) {
@@ -5288,7 +5334,7 @@
         e = a.J.Oc() ? a.J.Yb(d) : new LATLNG(0, 0);
         a.P = e;
         if (a.J.up(b, c, d, e)) return i;
-        c == G || c == Ya ? F(a.J, c, k, e) : c == Xa ? F(a.J, c, b) : F(a.J, c, e);
+        c == "click" || c == "dblclick" ? F(a.J, c, k, e) : c == Xa ? F(a.J, c, b) : F(a.J, c, e);
         return l
     };
     v = qj.prototype;
@@ -5625,17 +5671,17 @@
         var e = window;
         H(this.Ia, cl);
         $h(this.Ia);
-        d = [O(this, Xa, this, this.TU), O(this, Ab, this, this.kf), O(this, Ya, this, this.t6), O(this, Lb, this, this.oj)];
+        d = [O(this, Xa, this, this.TU), O(this, Ab, this, this.kf), O(this, "dblclick", this, this.t6), O(this, Lb, this, this.oj)];
         Qh(this.Ia, d);
-        this.Ia.push(S(document, G, this, this.s6));
+        this.Ia.push(S(document, "click", this, this.s6));
         this.nf || this.Ia.push(S(e, Eb, this, function () {
             this.uh()
         }));
         H(this.Lh, function (a) {
             a.control.bh(e)
         });
-        O(this, G, this, this.u6);
-        O(this, Ya, this, this.SU);
+        O(this, "click", this, this.u6);
+        O(this, "dblclick", this, this.SU);
         O(this, Ob, this, this.SU);
         kl(this, Kb, A(function () {
             this.MU = !0
@@ -5666,8 +5712,8 @@
                 a(new b(this))
             }, this))
         }, this)), this.Va(A(function (a) {
-            ml(a, ab, this.tl);
-            ml(a, bb, this.tl)
+            ml(a, "gesturechange", this.tl);
+            ml(a, "gestureend", this.tl)
         }, this)));
         ln(b.stats, "mctr1")
     };
@@ -5863,8 +5909,8 @@
         }), this.oc.C && this.oc.C.Pa(a, b), F(this, "addoverlay", a))
     };
     var Vo = function (a, b) {
-        var c = R(b, G, A(function (a) {
-            F(this, G, b, h, a)
+        var c = R(b, "click", A(function (a) {
+            F(this, "click", b, h, a)
         }, a));
         Uo(0, c, b);
         c = R(b, Xa, A(function (a) {
@@ -11092,7 +11138,7 @@
     var lt = "__marker__",
         ot = [
             [G, i, i, l],
-            [Ya, i, i, l],
+            ["dblclick", i, i, l],
             [fb, i, i, l],
             [nb, l, i, l],
             [lb, l, l, l],
@@ -12353,7 +12399,7 @@
         },
         Lu = function (a) {
             var b;
-            a: if (Rk(P) && a.type == qb || "SELECT" == a.target.tagName) b = !0;
+            a: if (Rk(P) && a.type == "touchstart" || "SELECT" == a.target.tagName) b = !0;
             else {
                 for (b = a.target; b && b != document; b = b.parentNode) {
                     var c = b.__allowtouchdefault;
@@ -12374,10 +12420,10 @@
         this.F = new L(0, 0);
         this.G = null;
         this.I = !1;
-        document.addEventListener && (document.addEventListener(qb, A(this.M, this), i), document.addEventListener(jaa, A(this.K, this), i), document.addEventListener(kaa, A(this.L, this), i), document.addEventListener(iaa, A(this.N, this), i))
+        document.addEventListener && (document.addEventListener("touchstart", A(this.M, this), i), document.addEventListener("touchend", A(this.K, this), i), document.addEventListener("touchmove", A(this.L, this), i), document.addEventListener("touchcancel", A(this.N, this), i))
     }
     Mu.prototype.M = function (a) {
-        this.I || (document.addEventListener(fb, Ku, i), document.addEventListener(nb, Ku, i), document.addEventListener(jb, Ku, i), document.addEventListener(G, Ku, i), document.addEventListener(Ya, Ku, i), document.addEventListener(lb, Ku, i), document.addEventListener(mb, Ku, i), this.I = !0);
+        this.I || (document.addEventListener(fb, Ku, i), document.addEventListener(nb, Ku, i), document.addEventListener(jb, Ku, i), document.addEventListener(G, Ku, i), document.addEventListener("dblclick", Ku, i), document.addEventListener(lb, Ku, i), document.addEventListener(mb, Ku, i), this.I = !0);
         if (1 < a.touches.length) this.D = !0, this.C.reset();
         else {
             this.D = !1;
@@ -12404,7 +12450,7 @@
         !Rk(P) || ul(a.changedTouches[0].target, function (a) {
             zl(a, "active")
         });
-        this.D || 1 < a.touches.length || (Lu(a), Ju(Iu(nb, a)), this.C.F(a.changedTouches[0].target), 2 == this.C.G.W && (Ju(Iu(G, a)), 3 == this.C.C.W && Ju(Iu(Ya, a))))
+        this.D || 1 < a.touches.length || (Lu(a), Ju(Iu(nb, a)), this.C.F(a.changedTouches[0].target), 2 == this.C.G.W && (Ju(Iu(G, a)), 3 == this.C.C.W && Ju(Iu("dblclick", a))))
     };
     Mu.prototype.L = function (a) {
         if (this.D || 1 < a.touches.length) this.D = !0;
@@ -14296,7 +14342,7 @@
                     W(V("clear-query"))
                 }
             });
-            Oa.nc(db);
+            Oa.nc("keyup");
             Oa.nc(maa);
             ha.Jf.ya(function (a) {
                 a.oo[7] = z
@@ -15449,7 +15495,7 @@
     };
 
     function Bv(a, b) {
-        (b || window).clipboardData ? (il(a, ob, qna), il(a, haa, rna)) : 4 == P.type && 0 == P.os && (this.D = a, this.F = this.D.value, this.C = Dh(this, this.I, 50), O(a, $b, this, this.G))
+        (b || window).clipboardData ? (il(a, ob, qna), il(a, "drop", rna)) : 4 == P.type && 0 == P.os && (this.D = a, this.F = this.D.value, this.C = Dh(this, this.I, 50), O(a, $b, this, this.G))
     }
 
     function qna(a, b, c) {
@@ -15654,7 +15700,7 @@
         Vv(this.G, b);
         this.G.F = "unselectable";
         this.G.show(b, a);
-        this.D = S(document, cb, this, this.Y8);
+        this.D = S(document, "keydown", this, this.Y8);
         ll(this.G, Sa, this, this.Yv);
         F(this.J, xc);
         this.C = []
@@ -16365,7 +16411,7 @@
             this.F = e = 0 < b ? ip(b, this.C.hD, this.C.vH) : ip(b, -this.C.vH, -this.C.hD);
             this.K && this.K.clear();
             this.G && clearInterval(this.G);
-            (f = c.P) || F(c.Wa(), $a);
+            (f = c.P) || F(c.Wa(), "gesturestart");
             d = c.da();
             is_void0(this.D) || (this.D = d);
             e /= this.C.uH;
@@ -16406,7 +16452,7 @@
         0 < b && f < a || 0 > b && f > a ? Zn(this.J, f - e, d) : (clearInterval(this.G), this.G = 0, b = new Ag("zoom"), b.Mb("zua", "tp"), Kna(this, this.D, a, b), this.D = void 0, Qo(this.J, a, l, c, l, l, b), b.done())
     };
     var Kna = function (a, b, c, d) {
-        F(a.J.Wa(), bb);
+        F(a.J.Wa(), "gestureend");
         c > b ? (F(a.J, Sb, d), ew(a, "tp_zi")) : (F(a.J, Tb, d), ew(a, "tp_zo"))
     },
         ew = function (a, b) {
