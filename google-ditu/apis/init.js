@@ -2359,9 +2359,10 @@
         this.copyrightOptions = new Tfa
     };
 	// GMap2
-    function nj(a, b) {
-        nj.Aa.apply(this, arguments)
-    }
+	var nj,
+		GMap2 = function nj(a, b) {
+			GMap2.Aa.apply(this, arguments)
+		}
     var oj = new Da;
 
     function pj() {};
@@ -5638,7 +5639,7 @@
         return c
     };
     var xo = "__mal_";
-    nj.Aa = function (a, b) {
+    GMap2.Aa = function (a, b) {
         b = b || new mj;
         ln(b.stats, "mctr0");
         this.Zj = b.D || new yo;
@@ -5714,7 +5715,7 @@
         this.L = null;
         this.av = 0;
         this.Ly = null;
-        b.on || (F(nj, zb, this), Co(this, ["Marker", "TrafficIncident"], new Do), Co(this, ["TileLayerOverlay", "CityblockLayerOverlay"], new Eo));
+        b.on || (F(GMap2, zb, this), Co(this, ["Marker", "TrafficIncident"], new Do), Co(this, ["TileLayerOverlay", "CityblockLayerOverlay"], new Eo));
         this.oc = new to(this, b, this.Zj);
         this.oc.init(b.stats);
         Tk() && !this.Va && (this.Va = ki(A(function (a) {
@@ -5727,7 +5728,7 @@
         }, this)));
         ln(b.stats, "mctr1")
     };
-    nj.prototype.ot = function (a) {
+    GMap2.prototype.ot = function (a) {
         this.se.ot(a);
         for (var b = 0; b < this.ba.length; ++b) this.ba[b].ot(a);
         $h(this.ba)
@@ -5735,10 +5736,10 @@
     var Fo = function (a, b) {
         a.se.D ? b.ot(a.se.D) : a.ba.push(b)
     };
-    nj.prototype.Wa = function () {
+    GMap2.prototype.Wa = function () {
         return this.oc.Wa()
     };
-    nj.prototype.vh = function (a) {
+    GMap2.prototype.vh = function (a) {
         Go(this) && (a != Ho && a != Io) && (Ma("ert", ed, z), this.Bb = V("tileContainer").innerHTML, cl(this.Jg))
     };
     var Oha = function (a, b) {
@@ -5749,8 +5750,8 @@
         e && (d = new Vi(3, new N(e.offsetWidth, 0)));
         a.kg(c, d)
     };
-    nj.prototype.Fa = _get("K");
-    nj.prototype.Ac = function (a, b, c, d, e) {
+    GMap2.prototype.Fa = _get("K");
+    GMap2.prototype.Ac = function (a, b, c, d, e) {
         if (b) {
             var f = c || this.C || this.El[0],
                 g = Bh(b, 0, Math.max(30, 30));
@@ -5759,7 +5760,7 @@
         d && (this.Wa().To(), F(this, Rb));
         Lo(this, a, b, c, e)
     };
-    nj.prototype.tc = function (a, b) {
+    GMap2.prototype.tc = function (a, b) {
         var c = this.oc.C;
         c && (a ? c.show(b) : c.hide(b))
     };
@@ -5790,7 +5791,7 @@
         j && (bo(a), a.U = true, a.oc.Oc() ? f.push([a, eb]) : (b = eb, kl(a.oc, b, nl(b, a))), f.push([a, Eb, e]), a.oc.C && a.oc.C.Se(e));
         for (a = 0; a < E(f); ++a) F.apply(k, f[a])
     };
-    nj.prototype.If = function (a, b, c, d) {
+    GMap2.prototype.If = function (a, b, c, d) {
         if (this.oc.C) {
             var e = this.Gb(this.Fa()),
                 f = this.Gb(a),
@@ -5800,7 +5801,7 @@
             0 == Math.abs(g) && 0 == Math.abs(e) ? (this.Wa().To(), this.K = a) : Math.abs(g) <= f.width && Math.abs(e) < f.height ? d ? this.Wa().moveBy(new N(g, e), c) : (Jha(this.Wa(), new N(g, e), b, c), on("panned-to")) : this.Ac(a, h, h, b, c)
         } else this.Ac(a, h, h, b, c)
     };
-    nj.prototype.da = function () {
+    GMap2.prototype.da = function () {
         return Math.round(this.ym || 0)
     };
     var Oo = function (a) {
@@ -5814,10 +5815,10 @@
         }
         return a.ym
     };
-    nj.prototype.Wg = function (a, b) {
+    GMap2.prototype.Wg = function (a, b) {
         Lo(this, h, a, h, b)
     };
-    nj.prototype.po = function (a, b, c, d) {
+    GMap2.prototype.po = function (a, b, c, d) {
         var e = d || new Ag("zoom");
         d || mn(e, "zua", "unk");
         mn(e, "zio", "i");
@@ -5825,7 +5826,7 @@
         a = Mo(this, a).latLng;
         !this.ub && this.da() == Po(this) ? (!this.Ly || Kk(this.va())) && F(this, "zoompastmaxbyuser", e, a) : (F(this, Sb, e), Qo(this, 1, i, a, b, c, e))
     };
-    nj.prototype.Ap = function (a, b, c) {
+    GMap2.prototype.Ap = function (a, b, c) {
         var d = c || new Ag("zoom");
         c || mn(d, "zua", "unk");
         mn(d, "zio", "o");
@@ -5834,7 +5835,7 @@
         a = Mo(this, a).latLng;
         Qo(this, -1, i, a, l, b, d)
     };
-    nj.prototype.KA = w(68);
+    GMap2.prototype.KA = w(68);
     var Zn = function (a, b, c, d) {
         a.P = true;
         a.Y = a.da() + b;
@@ -5847,7 +5848,7 @@
         Qo = function (a, b, c, d, e, f, g) {
             Pha(a, b, c) == Oo(a) && !a.P ? d && e && a.If(d) : (a.P = false, a.xa = true, a.oc.C && a.oc.C.zoom(b, !f, !! c, d, !! e, g))
         };
-    nj.prototype.hb = function () {
+    GMap2.prototype.hb = function () {
         return this.va().lc().kF(So(this), this.da())
     };
     var So = function (a) {
@@ -5855,7 +5856,7 @@
             a = a.getSize();
         return new wi([new L(Math.floor(b.x - a.width / 2), Math.floor(b.y - a.height / 2)), new L(Math.floor(b.x + a.width / 2), Math.floor(b.y + a.height / 2))])
     };
-    v = nj.prototype;
+    v = GMap2.prototype;
     v.getSize = _get("M");
     v.va = _get("C");
     v.Ri = _get("El");
@@ -5879,7 +5880,7 @@
         }
         return i
     };
-    nj.prototype.XB = function (a, b) {
+    GMap2.prototype.XB = function (a, b) {
         this.zl = new Ti({
             Pj: "rot",
             symbol: 1,
@@ -5898,10 +5899,10 @@
         c.initialize(a);
         F(a, "addoverlaymanager", c, b)
     };
-    nj.prototype.te = function (a) {
+    GMap2.prototype.te = function (a) {
         return this.$q[a]
     };
-    nj.prototype.Lf = function (a, b, c) {
+    GMap2.prototype.Lf = function (a, b, c) {
         var d = this.$q.CompositedLayer;
         if (d && (is_string(a) ? a : a.getId()) in d.Cc) return d.Pp(a, this.J);
         d = this.$q.Layer;
@@ -5911,7 +5912,7 @@
         for (var c = 0; c < a.Cc.length; ++c) if (a.Cc[c].Qr === b) return c;
         return k
     };
-    nj.prototype.Pa = function (a, b) {
+    GMap2.prototype.Pa = function (a, b) {
         var c = To(this, a);
         c != null ? this.Cc[c].dK++ : (this.Cc.push({
             Qr: a,
@@ -5935,7 +5936,7 @@
             cl(a)
         }), a[xo] = null)
     }
-    nj.prototype.nb = function (a, b) {
+    GMap2.prototype.nb = function (a, b) {
         var c = To(this, a);
         c != null && (this.Cc[c].dK--, 0 < this.Cc[c].dK || (this.Cc.splice(c, 1), this.oc.C && this.oc.C.nb(a, b) ? F(this, "removeoverlay", a) : (Wo(a), F(this, "removeoverlay", a), a.remove())))
     };
@@ -5944,7 +5945,7 @@
             b(a.Qr)
         })
     };
-    v = nj.prototype;
+    v = GMap2.prototype;
     v.Ei = function (a) {
         var b = a && a.$i,
             c = [];
@@ -5997,7 +5998,7 @@
         for (var c = a.Lh, d = 0; d < E(c); ++d) if (c[d].control == b) return c[d];
         return k
     };
-    nj.prototype.uh = function (a) {
+    GMap2.prototype.uh = function (a) {
         var b = bm(this.ka);
         Nha(b);
         if (!b.equals(this.getSize())) {
@@ -6023,15 +6024,15 @@
             a.Ja || (a.Ja = new Fa(new LATLNG(-85, -180), new LATLNG(85, 180)));
             return a.Ja
         };
-    nj.prototype.Or = function (a) {
+    GMap2.prototype.Or = function (a) {
         return (this.C || this.El[0]).Or(a, this.M)
     };
     var bo = function (a) {
         a.fb = a.Fa();
         a.Ti = a.da()
     };
-    nj.prototype.qa = w(29);
-    nj.prototype.Oc = function () {
+    GMap2.prototype.qa = w(29);
+    GMap2.prototype.Oc = function () {
         return this.U && this.oc.Oc()
     };
     var fo = function (a, b, c) {
@@ -6060,7 +6061,7 @@
             var c = (b || a.C || a.El[0]).II();
             return Math.max(c, a.Q)
         };
-    nj.prototype.l4 = w(49);
+    GMap2.prototype.l4 = w(49);
     var Po = function (a, b, c) {
         if (a.oc.C && "vector" == a.oc.C.getId() && a.ub) {
             var d = 0,
@@ -6092,9 +6093,9 @@
         }
         return Math.min(Math.max(c, e), a.N)
     };
-    nj.prototype.Xa = _get("ka");
+    GMap2.prototype.Xa = _get("ka");
     var Tha = ["Marker", "Polygon"];
-    v = nj.prototype;
+    v = GMap2.prototype;
     v.TU = function (a, b) {
         if (!a.cancelContextMenu) {
             var c = cn(a, this.ka),
@@ -6178,7 +6179,7 @@
             });
             return c
         };
-    v = nj.prototype;
+    v = GMap2.prototype;
     v.s6 = function (a) {
         for (a = Um(a); a; a = a.parentNode) if (a == this.ka) {
             this.ka.focus();
@@ -6204,7 +6205,7 @@
     var Uo = function (a, b, c) {
         c[xo] ? c[xo].push(b) : c[xo] = [b]
     };
-    nj.prototype.jf = _get("Td");
+    GMap2.prototype.jf = _get("Td");
     var ep = function (a, b, c) {
         var d = V("grayOverlay"),
             e = V("spinnerOverlay");
@@ -6223,7 +6224,7 @@
             }
         } else c || ((a = V("inlineTileContainer")) && Fl(a), W(d), W(e), (d = V("tileCopy")) && Fl(d))
     };
-    nj.prototype.kf = function (a, b) {
+    GMap2.prototype.kf = function (a, b) {
         this.C == Ho || this.C == Io ? ($k() && ep(this, i, b), this.pf || Vha(this, a)) : ep(this, l, b)
     };
     var Vha = function (a, b) {
@@ -6236,7 +6237,7 @@
             }, this))) : (window.gErrorLogger && window.gErrorLogger.showReloadMessage && window.gErrorLogger.showReloadMessage(), mn(b, "eal", "0"))
         }, a), b)
     };
-    v = nj.prototype;
+    v = GMap2.prototype;
     v.xJ = function (a) {
         this.pf ? this.pf.iy(a) : this.RB.push(a);
         this.pf || Vha(this)
@@ -6278,17 +6279,17 @@
         a = a.va();
         return a == Ho || a == Io
     };
-    nj.prototype.GG = function () {
+    GMap2.prototype.GG = function () {
         return 1 == P.os && 2 == P.type && Go(this) || Kk(this.va()) && this.oc.C.Fn()
     };
     var fp = function (a) {
         return a.ub
     };
-    nj.prototype.I = w(20);
+    GMap2.prototype.I = w(20);
     var gp = function (a) {
         return a.L
     };
-    nj.prototype.Ae = function (a) {
+    GMap2.prototype.Ae = function (a) {
         if (Kk(this.va())) switch (a.type) {
         case "marker":
             if (a.point) {
@@ -6311,10 +6312,10 @@
         }
         return l
     };
-    nj.prototype.ee = function () {
+    GMap2.prototype.ee = function () {
         return Kk(this.va()) ? this.oc.C.da() : 0
     };
-    nj.prototype.Rb = function (a) {
+    GMap2.prototype.Rb = function (a) {
         if (Kk(this.va())) {
             var b = this.oc.C;
             switch (a.type) {
@@ -6351,7 +6352,7 @@
         a.width = Math.max(a.width, 1);
         a.height = Math.max(a.height, 1)
     };
-    nj.prototype.oj = function () {
+    GMap2.prototype.oj = function () {
         this.da() == Po(this) && (this.Ly = setTimeout(A(function () {
             this.Ly = null
         }, this), 1E3))
@@ -10800,7 +10801,7 @@
             }, this))
         }
     }
-    v.ds = w(118);v.PY = gt(2);v.VA = gt(3);v.pG = gt(4);v.Yia = gt(15);v.ki = w(177);v.Ww = w(61);v.Vn = w(3);v.jJ = _set("Ji");v.kG = gt(6);v.tk = gt(7);v = zj.prototype;v.VA = gt(8);v.tk = gt(9);v.VF = gt(18);v.kG = gt(10);v.ki = w(176);v.pG = gt(11);v.Ww = gt(12);v.ds = gt(13);v.PY = gt(14);xj.prototype.oj = gt(19);xj.prototype.vh = gt(20);xj.prototype.Bb = gt(21);xj.prototype.Nf = gt(22);R(nj, zb, function (a) {
+    v.ds = w(118);v.PY = gt(2);v.VA = gt(3);v.pG = gt(4);v.Yia = gt(15);v.ki = w(177);v.Ww = w(61);v.Vn = w(3);v.jJ = _set("Ji");v.kG = gt(6);v.tk = gt(7);v = zj.prototype;v.VA = gt(8);v.tk = gt(9);v.VF = gt(18);v.kG = gt(10);v.ki = w(176);v.pG = gt(11);v.Ww = gt(12);v.ds = gt(13);v.PY = gt(14);xj.prototype.oj = gt(19);xj.prototype.vh = gt(20);xj.prototype.Bb = gt(21);xj.prototype.Nf = gt(22);R(GMap2, zb, function (a) {
         Co(a, ["Polyline", "Polygon"], new ht)
     });
 
@@ -13540,7 +13541,7 @@
         d.copyrightOptions.C = d.L || c.TB;
         e = new du;
         d.X = e;
-        var g = new nj(b, d);
+        var g = new GMap2(b, d);
         this.Wi.Vp(g);
         for (var b = [Qb, Pb, "infowindowupdate", Nb, Ob], f = 0, j = E(b); f < j; ++f) ml(e, b[f], g);
         if (d.G) {
@@ -15120,14 +15121,14 @@
             yc: "sv_exit",
             $d: "vp"
         }], i)
-    };nj.prototype.I4 = function (a) {
+    };GMap2.prototype.I4 = function (a) {
         var b = new Ag("zoom");
         b.Mb("zua", "cmi");
         this.po(a, h, i, b);
         F(this, Ac, "cm_zi", h, "ctxmenu");
         b.done()
     };
-    nj.prototype.J4 = function (a) {
+    GMap2.prototype.J4 = function (a) {
         var b = new Ag("zoom");
         b.Mb("zua", "cmo");
         this.Ap(a, i, b);
@@ -15138,13 +15139,13 @@
         a.G || (a.G = new hna(a));
         return a.G
     };
-    nj.prototype.Ns = function (a, b) {
+    GMap2.prototype.Ns = function (a, b) {
         ina(this).Ns({
             items: a,
             priority: b || 0
         })
     };
-    nj.prototype.$s = function (a, b) {
+    GMap2.prototype.$s = function (a, b) {
         return R(ina(this), Xa, A(function (c, d, e) {
             var f = a.apply(k, arguments);
             f && this.Ns(f, b)
@@ -15998,7 +15999,7 @@
     function Ena(a, b, c) {
         if ("object" != typeof zo) {
             var d = rj.prototype,
-                e = nj.prototype,
+                e = GMap2.prototype,
                 f = xj.prototype;
             Fga([
                 ["gapp", Qma],
@@ -16016,7 +16017,7 @@
                     ]
                 ],
                 ["GDownloadUrl", xs],
-                ["GMap2", nj, [
+                ["GMap2", GMap2, [
                     ["getCenter", e.Fa],
                     ["getBounds", e.hb],
                     ["panTo", e.If],
@@ -16049,7 +16050,7 @@
                 ["zippyToggle", rma],
                 ["vpTick", ena]
             ]);
-            R(nj, zb, function (a) {
+            R(GMap2, zb, function (a) {
                 zka.push(a)
             });
             var g = rk = new bk(a);
@@ -16251,11 +16252,11 @@
             lg = Vg != null ? Vg : "";
             var id = th.H[1],
                 Nh = id != null ? id : "";
-            R(nj, zb, function (a) {
+            R(GMap2, zb, function (a) {
                 var b = new Hj(pf, Nh, fc, lg);
                 Co(a, ["Layer"], b)
             });
-            R(nj, zb, function (a) {
+            R(GMap2, zb, function (a) {
                 var b = new Ej(fc);
                 Co(a, ["CompositedLayer"], b)
             });
@@ -16725,7 +16726,7 @@
                     q.K = true;
                     if (p = m.Fa()) q.C =
                     new kj(n, p, m.da());
-                    g = new nj(g, q);
+                    g = new GMap2(g, q);
                     Fo(m, g);
                     m = m.mj;
                     is_void0(m) && (n = g, n.mj = m, F(n, Oc));
