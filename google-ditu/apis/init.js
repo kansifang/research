@@ -5,9 +5,9 @@
         throw a;
     }
     var h = void 0,// ok
-        i = !0, // ok
+        i = true, // ok
         k = null, // ok
-        l = !1;// ok
+        l = false;// ok
 
     function da() {
         return function (a) {
@@ -215,7 +215,7 @@
                 g = c.F;
             g[a] || (g[a] = {});
             if (!("ob" == a && 10 > b)) {
-                for (var j = !1, m = e.bounds, n = 0; n < E(m); ++n) {
+                for (var j = false, m = e.bounds, n = 0; n < E(m); ++n) {
                     var p = m[n],
                         q = p.ix;
                     if (-1 == q || -2 == q) {
@@ -226,8 +226,8 @@
                             bound: p,
                             precision: s
                         }));
-                        j = !0
-                    } else g[a][q] || (g[a][q] = !0, f[a] || (f[a] = []), f[a].push(Ja(p, i)), j = !0)
+                        j = true
+                    } else g[a][q] || (g[a][q] = true, f[a] || (f[a] = []), f[a].push(Ja(p, i)), j = true)
                 }
                 j && F(c, Ka, a)
             }
@@ -1709,6 +1709,7 @@
                 for (var f = 0; f < lfa.length; f++) c = lfa[f], Object.prototype.hasOwnProperty.call(d, c) && (a[c] = d[c])
             }
         };
+	// have replace ok
     var ih = Math.PI,
         jh = Math.abs,
         mfa = Math.asin,
@@ -1735,8 +1736,8 @@
     }
 
     function Bh(a, b, c) {
-        b != null && (a = oh(a, b));
-        c != null && (a = ph(a, c));
+        b != null && (a = Math.max(a, b));
+        c != null && (a = Math.min(a, c));
         return a
     }
 
@@ -1833,16 +1834,17 @@
         Uh = emptyFn();
 
     function Vh(a) {
-        return a * (ih / 180)
+        return a * (Math.PI / 180)
     }
 
     function Wh(a) {
-        return a / (ih / 180)
+        return a / (Math.PI / 180)
     }
 
     function Xh(a, b, c) {
-        return jh(a - b) <= (c || 1E-9)
+        return Math.abs(a - b) <= (c || 1E-9)
     }
+	// have replace ok
     var rfa = "&amp;",
         sfa = "&lt;",
         tfa = "&gt;",
@@ -1854,7 +1856,7 @@
         zfa = />/g;
 
     function Yh(a) {
-        -1 != a.indexOf(ufa) && (a = a.replace(xfa, rfa)); - 1 != a.indexOf(vfa) && (a = a.replace(yfa, sfa)); - 1 != a.indexOf(wfa) && (a = a.replace(zfa, tfa));
+        -1 != a.indexOf("&") && (a = a.replace(/&/g, "&amp;")); - 1 != a.indexOf("<") && (a = a.replace(/</g, "&lt;")); - 1 != a.indexOf(">") && (a = a.replace(/>/g, "&gt;"));
         return a
     }
 
@@ -1880,7 +1882,7 @@
         var b;
         a.hasOwnProperty("__recursion") ? b = a.__recursion : (na(a) ? (b = a.__recursion = [], H(a, function (a, d) {
             b[d] = a && bi(a)
-        })) : typeof a == ofa ? (b = a.__recursion = {}, Ia(a, function (a, d) {
+        })) : typeof a == "object" ? (b = a.__recursion = {}, Ia(a, function (a, d) {
             "__recursion" != a && (b[a] = d && bi(d))
         }, i)) : b = a, delete a.__recursion);
         return b
@@ -1895,21 +1897,21 @@
 
     function ci(a) {
         switch (typeof a) {
-        case pfa:
-            return '"' + a.replace(Bfa, Cfa) + '"';
-        case nfa:
-        case zh:
-            return a.toString();
-        case ofa:
-            if (a === null) return "null";
-            if (na(a)) return "[" + Mh(a, ci).join(", ") + "]";
-            var b = [];
-            Ia(a, function (a, d) {
-                b.push(ci(a) + ": " + ci(d))
-            });
-            return "{" + b.join(", ") + "}";
-        default:
-            return typeof a
+			case "string":
+				return '"' + a.replace(Bfa, Cfa) + '"';
+			case "number":
+			case "boolean":
+				return a.toString();
+			case "object":
+				if (a === null) return "null";
+				if (na(a)) return "[" + Mh(a, ci).join(", ") + "]";
+				var b = [];
+				Ia(a, function (a, d) {
+					b.push(ci(a) + ": " + ci(d))
+				});
+				return "{" + b.join(", ") + "}";
+			default:
+				return typeof a
         }
     }
 
@@ -1935,9 +1937,17 @@
 
     function hi() {
         if (ii) return ii;
-        for (var a = {}, b = window.location.search.substr(1).split("&"), c = 0; c < b.length; c++) {
+		var a = {}, b = window.location.search.substr(1).split("&");
+        for (var c = 0; c < b.length; c++) {
             var d, e;
-            e = b[c].indexOf("="); - 1 == e ? (d = b[c], e = "") : (d = b[c].substring(0, e), e = b[c].substring(e + 1));
+            e = b[c].indexOf("=");
+			if(e == -1){
+				 d = b[c]; 
+				 e = "";
+			}else{
+				d = b[c].substring(0, e);
+				e = b[c].substring(e + 1);
+			}
             d = d.replace(/\+/g, " ");
             var f = e = e.replace(/\+/g, " ");
             try {
@@ -2027,8 +2037,8 @@
         return new L(this.x, this.y)
     };
     var ti = function (a) {
-        return a.x * a.x + a.y * a.y
-    },
+			return a.x * a.x + a.y * a.y
+		},
         Dfa = function (a, b) {
             var c = b.x - a.x,
                 d = b.y - a.y;
@@ -2100,7 +2110,7 @@
         return this.minX <= a.x && this.maxX >= a.x && this.minY <= a.y && this.maxY >= a.y
     };
     v.extend = function (a) {
-        this.dc() ? (this.minX = this.maxX = a.x, this.minY = this.maxY = a.y) : (this.minX = ph(this.minX, a.x), this.maxX = oh(this.maxX, a.x), this.minY = ph(this.minY, a.y), this.maxY = oh(this.maxY, a.y))
+        this.dc() ? (this.minX = this.maxX = a.x, this.minY = this.maxY = a.y) : (this.minX = Math.min(this.minX, a.x), this.maxX = Math.max(this.maxX, a.x), this.minY = Math.min(this.minY, a.y), this.maxY = Math.max(this.maxY, a.y))
     };
     v.equals = function (a) {
         return this.minX == a.minX && this.minY == a.minY && this.maxX == a.maxX && this.maxY == a.maxY
@@ -2120,7 +2130,7 @@
         Jh(this, a || {});
         b && (this.image = b);
         c && (this.label = c);
-        this.Fv = !1
+        this.Fv = false
     }
 
     function Hfa(a) {
@@ -2348,7 +2358,7 @@
     function mj() {
         this.copyrightOptions = new Tfa
     };
-
+	// GMap2
     function nj(a, b) {
         nj.Aa.apply(this, arguments)
     }
@@ -2425,23 +2435,23 @@
 
     function Jj() {};
     v = Jj.prototype;
-    v.wC = !0;
-    v.CP = !0;
-    v.uj = !0;
+    v.wC = true;
+    v.CP = true;
+    v.uj = true;
     v.m4 = w(72);
-    v.Wm = !1;
+    v.Wm = false;
     v.refreshInterval = 0;
-    v.interactive = !0;
-    v.pn = !1;
+    v.interactive = true;
+    v.pn = false;
     v.j4 = w(186);
     v.cz = 128;
     v.i4 = w(11);
     v.as = null;
-    v.um = !1;
-    v.Nn = !1;
+    v.um = false;
+    v.Nn = false;
     v.aA = null;
     v.Rk = [];
-    v.QN = !1;
+    v.QN = false;
 
     function Kj(a, b, c, d) {
         Kj.Aa.apply(this, arguments)
@@ -2820,7 +2830,7 @@
     v.IJ = w(103);
     v.we = _get("D");
     var Fk = function (a, b, c, d) {
-        for (var e = a.Po, f = a.Mr(b), a = a.M, g = vh(d.width / 2), j = vh(d.height / 2); f >= a; --f) {
+        for (var e = a.Po, f = a.Mr(b), a = a.M, g = Math.round(d.width / 2), j = Math.round(d.height / 2); f >= a; --f) {
             var m = e.qd(b, f),
                 m = new L(m.x - g - 3, m.y + j + 3),
                 m = e.kF(new wi([m, new L(m.x + d.width + 3, m.y - d.height - 3)]), f).zf();
@@ -2833,7 +2843,7 @@
         for (; d >= e; --d) {
             var j = c.qd(f, d),
                 m = c.qd(g, d);
-            if (jh(m.x - j.x) <= b.width && jh(m.y - j.y) <= b.height) return d
+            if (Math.abs(m.x - j.x) <= b.width && Math.abs(m.y - j.y) <= b.height) return d
         }
         return 0
     };
@@ -2842,7 +2852,7 @@
     };
     var Ek = function (a, b) {
         for (var c = a.C, d = [0, l], e = 0; e < E(c); e++) c[e].MY(b, d);
-        return d[1] ? d[0] : oh(a.L, oh(a.F, d[0]))
+        return d[1] ? d[0] : Math.max(a.L, Math.max(a.F, d[0]))
     };
     gj.prototype.bc = _get("G");
     var Gk = function (a) {
@@ -3016,7 +3026,7 @@
             return 2 == a.type && 11 <= a.version ? l : 0 == a.os || 2 == a.os || 1 == a.os ? i : l
         },
         P = new Iga(navigator.userAgent, new Nk(window.gDeviceCapabilities || []));
-    var Mga = !0;
+    var Mga = true;
 	
 	// 事件处理
     function al() {
@@ -3314,10 +3324,10 @@
     Rga.prototype.run = function (a) {
         for (this.C = [a]; E(this.C);) {
             a = this.C.shift();
-            if (this.Oe(a) === !1) a = !1;
+            if (this.Oe(a) === false) a = false;
             else {
                 for (a = a.firstChild; a; a = a.nextSibling) 1 == a.nodeType && this.C.push(a);
-                a = !0
+                a = true
             }
             if (!a) break
         }
@@ -3348,8 +3358,8 @@
     function T(a, b) {
         var c = yl(a);
         if (c) {
-            for (var c = c.split(/\s+/), d = !1, e = 0; e < E(c); ++e) if (c[e] == b) {
-                d = !0;
+            for (var c = c.split(/\s+/), d = false, e = 0; e < E(c); ++e) if (c[e] == b) {
+                d = true;
                 break
             }
             d || c.push(b);
@@ -3407,7 +3417,7 @@
 
     function Jl(a) {
         this.D = a;
-        this.C = !1;
+        this.C = false;
         this.Oe = z
     }
     Jl.prototype.run = function (a) {
@@ -3483,7 +3493,7 @@
     }
 
     function Tl(a) {
-        return vh(a) + "px"
+        return Math.round(a) + "px"
     }
 
     function Pl(a, b, c) {
@@ -3599,15 +3609,15 @@
     function Sga(a, b) {
         if (3 == a.nodeType) {
             var c = a.nodeValue;
-            c && (b.newline && (b.empty || (c = " " + c), b.newline = !1), b.empty = !1);
+            c && (b.newline && (b.empty || (c = " " + c), b.newline = false), b.empty = false);
             return c
         }
         var d = a.tagName;
-        if ("BR" == d) return b.newline = !0, "";
+        if ("BR" == d) return b.newline = true, "";
         c = [];
-        if (d = "P" == d || "DIV" == d || "TD" == d) b.newline = !0;
+        if (d = "P" == d || "DIV" == d || "TD" == d) b.newline = true;
         for (var e = a.firstChild; e;) c.push(Sga(e, b)), e = e.nextSibling;
-        d && (b.newline = !0);
+        d && (b.newline = true);
         return c.join("")
     }
 
@@ -3831,11 +3841,11 @@
 
     function Wm(a) {
         a.type == G && F(document, oc, a);
-        a.stopPropagation ? a.stopPropagation() : a.cancelBubble = !0
+        a.stopPropagation ? a.stopPropagation() : a.cancelBubble = true
     }
 
     function Xm(a) {
-        a.preventDefault ? a.preventDefault() : a.returnValue = !1
+        a.preventDefault ? a.preventDefault() : a.returnValue = false
     }
 
     function Ym(a, b) {
@@ -3886,8 +3896,8 @@
             d = wm(a),
             e = Vk(),
             f = a,
-            g = !0;
-        if (Pk(P) || 0 == P.type && 9 <= P.version) bn(c, d), g = !1;
+            g = true;
+        if (Pk(P) || 0 == P.type && 9 <= P.version) bn(c, d), g = false;
         for (; f && f != b;) {
             c.x += f.offsetLeft;
             c.y += f.offsetTop;
@@ -3897,7 +3907,7 @@
                     m = f,
                     n = d,
                     p = m.parentNode,
-                    q = !1;
+                    q = false;
                 if (P.C()) {
                     var s = wm(p),
                         q = "visible" != n.overflow && "visible" != s.overflow,
@@ -3918,7 +3928,7 @@
                 c.x -= j.scrollLeft;
                 c.y -= j.scrollTop;
                 if (n = 1 != P.type) f.offsetParent.nodeName == $m && "static" == m.position ? (d = d.position, n =
-                0 == P.type ? "static" != d : "absolute" == d) : n = !1;
+                0 == P.type ? "static" != d : "absolute" == d) : n = false;
                 if (n) {
                     if (P.C()) {
                         e = wm(j.parentNode);
@@ -3964,7 +3974,7 @@
         return li(b, $c, ad)
     };
     var en = /[~.,?&-]/g,
-        fn = !1,
+        fn = false,
         gn = null;
     Ag.Aa = function (a, b, c) {
         this.F = a.replace(en, "_");
@@ -3980,7 +3990,7 @@
         this.G = {};
         this.K = {};
         this.yG = "";
-        this.P = !1
+        this.P = false
     };
     var hn = {
         wl: i
@@ -3990,14 +4000,14 @@
         };
     v = Ag.prototype;
     v.eE = function () {
-        this.P = !0
+        this.P = true
     };
     v.getTick = function (a) {
         return "start" == a ? this.L : this.U[a]
     };
     v.gT = _get("Q");
     v.adopt = function (a, b) {
-        a && typeof a.start != Ah && (this.L = a.start, $ga(this, a), b && (this.I += b - 1))
+        a && typeof a.start != "undefined" && (this.L = a.start, $ga(this, a), b && (this.I += b - 1))
     };
     v.$n = function (a) {
         return this.F == a.replace(en, "_")
@@ -4020,7 +4030,7 @@
         this.I--;
         0 < this.Y && -1 == this.F.indexOf("_LATE") && (this.F = (this.F + "_LATE").replace(en, "_"));
         if (0 >= this.I) {
-            this.yG && (this.yG && (document.cookie = "TR=; path=/; domain=.google.com; expires=01/01/1970 00:00:00", F(Ag, "dapperreport", this.yG, this.L, getUTC(), this.F)), fn = !1);
+            this.yG && (this.yG && (document.cookie = "TR=; path=/; domain=.google.com; expires=01/01/1970 00:00:00", F(Ag, "dapperreport", this.yG, this.L, getUTC(), this.F)), fn = false);
             if (!this.P) {
                 F(this, Mc);
                 F(Ag, Mc, this);
@@ -4256,9 +4266,9 @@
     sn.prototype.L = function (a, b) {
         this.sE[b]++;
         this.Qw[b]--;
-        var c = !0,
+        var c = true,
             d = A(function () {
-                c && (c = !1, this.sE[b]--, this.Qw[b]++, gha(this))
+                c && (c = false, this.sE[b]--, this.Qw[b]++, gha(this))
             }, this),
             e = Om(this, function () {
                 d();
@@ -4291,7 +4301,7 @@
         yn = function (a, b, c, d, e) {
             if (a.C[b]) {
                 var f = a.C[b];
-                d && (f.$W = !0);
+                d && (f.$W = true);
                 c > f.priority && (f.priority = c, f.qE && setTimeout(ya(tn, f.qE, c), 0))
             } else a.C[b] = {
                 priority: c,
@@ -4321,7 +4331,7 @@
             for (var f = j[m], p = new Jl(f.uA), q = 0, s = f.LE.length; q < s; q++) {
                 var t = f.LE[q];
                 a.C[t].qE = p;
-                a.C[t].$W && (p.C = !0)
+                a.C[t].$W && (p.C = true)
             }
             tn(p, d);
             e++;
@@ -4411,10 +4421,10 @@
     function Bn() {
         this.C = [];
         this.F = null;
-        this.I = !1;
+        this.I = false;
         this.G = 0;
         this.K = 100;
-        this.D = !1
+        this.D = false
     }
     la(Bn);
     var Cn = function (a, b, c) {
@@ -4430,7 +4440,7 @@
     };
     var nha = function (a) {
         if (!a.I) {
-            a.I = !0;
+            a.I = true;
             try {
                 for (; E(a.C) && a.G < a.K;) {
                     var b = a.C.shift(),
@@ -4444,7 +4454,7 @@
                     Nl(b[1])
                 }
             } finally {
-                a.I = !1, (a.G || E(a.C)) && mha(a)
+                a.I = false, (a.G || E(a.C)) && mha(a)
             }
         }
     },
@@ -4510,8 +4520,8 @@
             var m = is_void0(e) ? e : 2;
             if (!(j && a.fD[b] >= m)) {
                 a.fD[b] = m;
-                var n = !1;
-                a.F[b] && (n = Qga(a.I, b, m), n || (rl(a.I, b, m), a.D ? Cn(Bn.wa(), a.M) : a.K++, n = !0));
+                var n = false;
+                a.F[b] && (n = Qga(a.I, b, m), n || (rl(a.I, b, m), a.D ? Cn(Bn.wa(), a.M) : a.K++, n = true));
                 a.KN.xh(A(function (a) {
                     En(this, "util", h, d, m);
                     H(a.moduleDependencies[b], A(function (a) {
@@ -4546,7 +4556,7 @@
         d[a] || (d[a] = {});
         if (is_void0(b)) d[a][b] = c;
         else {
-            this.N[a] = !0;
+            this.N[a] = true;
             var e = this.C[a];
             H(this.L[a], function (a) {
                 a(e)
@@ -4648,19 +4658,19 @@
 
     function rha(a, b) {
         Ia(a, function (d, e) {
-            if (typeof e == qfa) var f = a[d] = function () {
+            if (typeof e == "function") var f = a[d] = function () {
                 var g = arguments,
                     j;
                 b(A(function (b) {
                     (b = (b || a)[d]) && b != f ? j = b.apply(this, g) : throwError(Error("No implementation for ." + d))
-                }, this), e.defer === !0);
+                }, this), e.defer === true);
                 c || (j = e.apply(this, g));
                 return j
             }
         }, l);
-        var c = !1;
+        var c = false;
         b(function (b) {
-            c = !0;
+            c = true;
             b != a && Jh(a, b, i)
         }, i)
     }
@@ -4678,7 +4688,7 @@
             return a.apply(this, arguments)
         };
         B(b, a);
-        b.defer = !0;
+        b.defer = true;
         return b
     }
 
@@ -4732,19 +4742,19 @@
     });
 
     function uha(a) {
-        this.G = oh(a != void 0 ? a : 0.75, 0.01);
+        this.G = Math.max(a != void 0 ? a : 0.75, 0.01);
         this.I = new L(0, 0);
         this.F = new L(0, 0);
         this.mc = new L(0, 0);
         this.D = new L(0, 0);
         this.C = 0;
-        this.Jd = !1
+        this.Jd = false
     }
     uha.prototype.reset = function (a, b) {
         this.I.set(a);
         this.F.set(b);
         this.C = 0;
-        this.Jd = !0
+        this.Jd = true
     };
     var vha = function (a) {
         if (a.Jd) {
@@ -4755,7 +4765,7 @@
             a.mc.set(a.F);
             a.mc.scale(c);
             a.mc.add(a.I);
-            a.Jd = !1
+            a.Jd = false
         }
     };
     var Nn, On;
@@ -4788,12 +4798,12 @@
         this.Gv = null;
         b.enableThrow && (this.Bb = b.throwMaxSpeed, this.VU = b.throwStopSpeed * b.throwStopSpeed, this.Gv = new uha(b.throwDragCoefficient));
         this.top = this.left = 0;
-        this.disabled = !1;
+        this.disabled = false;
         this.G = new L(0, 0);
         this.F = new L(0, 0);
         this.ea = new L(0, 0);
         this.D = new L(0, 0);
-        this.isDragging = !1;
+        this.isDragging = false;
         this.C = new L(0, 0);
         this.ha = new L(0, 0);
         this.Ka = 0;
@@ -4823,8 +4833,8 @@
     v.YN = w(107);
     v.qn = function (a, b, c) {
         this.isDragging && this.P++;
-        a = vh(a);
-        b = vh(b);
+        a = Math.round(a);
+        b = Math.round(b);
         if (this.left != a || this.top != b) {
             var d = a - this.left,
                 e = b - this.top;
@@ -4877,9 +4887,9 @@
                     f = f + j;
                 a.xa += g;
                 a.Kq += j;
-                a.K && (clearTimeout(a.K), a.K = null, a.Ba = !0);
+                a.K && (clearTimeout(a.K), a.K = null, a.Ba = true);
                 g = 1;
-                a.Ba && (a.Ba = !1, g = 50);
+                a.Ba && (a.Ba = false, g = 50);
                 var m = b.clientX,
                     n = b.clientY;
                 50 > f - a.Kq ? a.K = setTimeout(A(function () {
@@ -4894,10 +4904,10 @@
                 e = a.D.y,
                 p = g = 0;
             if (j = a.ka) var p = a.qg,
-                q = oh(0, ph(d, j.offsetWidth - p.offsetWidth)),
+                q = Math.max(0, Math.min(d, j.offsetWidth - p.offsetWidth)),
                 g = q - d,
                 d = q,
-                j = oh(0, ph(e, j.offsetHeight - p.offsetHeight)),
+                j = Math.max(0, Math.min(e, j.offsetHeight - p.offsetHeight)),
                 p = j - e,
                 e = j;
             a.Ae && (d = a.left);
@@ -4937,7 +4947,7 @@
         Vn();
         Dha(this, a, b);
         var c = getUTC();
-        (0 == this.Q || c - this.Wb <= Cha && 2 >= jh(this.F.x - a.clientX) && 2 >= jh(this.F.y - a.clientY)) && F(this, G, a)
+        (0 == this.Q || c - this.Wb <= Cha && 2 >= Math.abs(this.F.x - a.clientX) && 2 >= Math.abs(this.F.y - a.clientY)) && F(this, G, a)
     };
     v.E6 = function (a) {
         if (!a.relatedTarget && this.isDragging) {
@@ -4951,11 +4961,11 @@
         }
     };
     v.disable = function () {
-        this.disabled = !0;
+        this.disabled = true;
         this.Lo()
     };
     v.enable = function () {
-        this.disabled = !1;
+        this.disabled = false;
         this.Lo()
     };
     v.enabled = function () {
@@ -4987,7 +4997,7 @@
         a.Y = getUTC();
         a.P = 0;
         a.Q = 0;
-        a.isDragging = !0;
+        a.isDragging = true;
         a.U = S(a.L, jb, a, function (a) {
             Un(this, a, c)
         });
@@ -5006,7 +5016,7 @@
         cl(a.U);
         cl(a.Pc);
         F(a, nb, b);
-        var d = !1;
+        var d = false;
         if (a.Gv) {
             a.ea.x = b.clientX;
             a.ea.y = b.clientY;
@@ -5023,8 +5033,8 @@
                 a.qa = Dh(a, function () {
                     var a = getUTC(),
                         b = this.Gv;
-                    b.C = oh(b.C + (a - this.oX) / 1E3, 0);
-                    b.Jd = !0;
+                    b.C = Math.max(b.C + (a - this.oX) / 1E3, 0);
+                    b.Jd = true;
                     this.oX = a;
                     a = this.Gv;
                     vha(a);
@@ -5037,7 +5047,7 @@
             }
         }
         e = a.isDragging;
-        a.isDragging = !1;
+        a.isDragging = false;
         F(a, "dragend", b);
         d || Eha(a, e, c);
         a.Lo()
@@ -5056,23 +5066,23 @@
     var Wn = function (a) {
         this.JA = getUTC();
         this.Ro = a;
-        this.C = !0;
+        this.C = true;
         this.D = 0
     };
     v = Wn.prototype;
     v.reset = function () {
         this.JA = getUTC();
-        this.C = !0
+        this.C = true
     };
     v.next = function () {
         this.D++;
         var a = getUTC() - this.JA;
-        return a >= this.Ro ? (this.C = !1, 1) : (Math.sin(Math.PI * (a / this.Ro - 0.5)) + 1) / 2
+        return a >= this.Ro ? (this.C = false, 1) : (Math.sin(Math.PI * (a / this.Ro - 0.5)) + 1) / 2
     };
     v.more = _get("C");
     v.extend = function () {
         var a = getUTC();
-        a - this.JA > this.Ro / 3 && (this.JA = a - vh(this.Ro / 3))
+        a - this.JA > this.Ro / 3 && (this.JA = a - Math.round(this.Ro / 3))
     };
     v.ticks = _get("D");
     var Xn = 1 / Math.log(2),
@@ -5129,8 +5139,8 @@
             a = -Math.log(a) * Xn,
             b = -Math.log(b) * Xn,
             c = -Math.log(c) * Xn,
-            c = jh(a - b) + jh(c - b);
-        return e = ph(e, d * c)
+            c = Math.abs(a - b) + Math.abs(c - b);
+        return e = Math.min(e, d * c)
     },
         Hha = function (a, b, c) {
             var d = hi(),
@@ -5138,9 +5148,9 @@
                 c = (a + b) / 4 + (d.altScale || 0.8) * c,
                 a = a * Math.pow(2, --e),
                 b = b * Math.pow(2, --e),
-                c = ph(Math.pow(2, -(d.zoomMin || 0)), c),
-                c = ph(a, c);
-            return c = ph(b, c)
+                c = Math.min(Math.pow(2, -(d.zoomMin || 0)), c),
+                c = Math.min(a, c);
+            return c = Math.min(b, c)
         },
         Iha = function (a, b, c, d, e) {
             180 < c || 180 < e ? (b = new LATLNG(b, c + 180), d = new LATLNG(d, e - 180)) : (b = new LATLNG(b, c), d = new LATLNG(d, e));
@@ -5206,17 +5216,17 @@
                 e = a.slowdown || 5,
                 f = a.slowdown || 45,
                 f = Vh(f),
-                g = -wh(f),
+                g = -Math.sin(f),
                 j = -g,
-                m = mh(f);
+                m = Math.cos(f);
             this.C = Dh(this, function () {
                 var a = this.Zk,
                     b = this.Xn,
                     q = f,
                     s = this.Iq.next(),
                     t = (1 - Math.exp(-e * s)) / (1 - Math.exp(-e)),
-                    s = -wh(q * (1 - 2 * t)),
-                    q = mh(q * (1 - 2 * t)),
+                    s = -Math.sin(q * (1 - 2 * t)),
+                    q = Math.cos(q * (1 - 2 * t)),
                     s = (s - g) / (j - g),
                     a = -Math.log((1 - s) * a + s * b + (d - (a + b) / 2) * ((q - m) / (1 - m))) * Xn,
                     b = new LATLNG((1 - s) * this.hA + s * this.Rw, (1 - s) * this.ls + s * this.Eq);
@@ -5244,13 +5254,13 @@
         this.V = c.K;
         this.tb = null;
         this.Ia = [];
-        this.N = this.Xc = this.dk = !1;
+        this.N = this.Xc = this.dk = false;
         this.P = this.M = null;
-        this.I = !1;
+        this.I = false;
         this.F = this.D = null;
         this.K = new L(0, 0);
         this.Q = null;
-        this.L = !1;
+        this.L = false;
         b = window.location.href;
         this.G = !Vca || -1 != b.indexOf("anim=1") ? new Yn(a) : -1 != b.indexOf("anim=2") ? new co(a) : new eo(a);
         fo(a, A(this.M5, this, a.tl, this.U))
@@ -5278,24 +5288,24 @@
     };
     v.Pga = function (a) {
         this.G.F();
-        go(this, a, fb) && (this.L = !0)
+        go(this, a, fb) && (this.L = true)
     };
     v.Rga = function (a) {
         go(this, a, nb);
-        this.L = !1
+        this.L = false
     };
     v.Nga = function () {
         this.To();
-        this.N = this.dk = !0;
+        this.N = this.dk = true;
         F(this.J, Db);
         F(this.J, Rb)
     };
     v.Oga = function () {
-        this.dk && (this.Xc = !0)
+        this.dk && (this.Xc = true)
     };
     v.Mga = function (a) {
         this.Xc ? this.F = document.createEvent ? a : document.createEventObject(a) : this.F = null;
-        this.dk = this.Xc = !1
+        this.dk = this.Xc = false
     };
     v.isDragging = function () {
         return this.dk || this.Xc
@@ -5318,7 +5328,7 @@
         }
         this.C.C.moveEnd();
         F(this.J, Cb, a);
-        this.N = !1
+        this.N = false
     };
     v.Lga = function (a) {
         1 < a.button || this.J.V && go(this, a, "dblclick")
@@ -5345,11 +5355,11 @@
         if (!this.Xc) {
             var b = cn(a, this.J.Xa()),
                 c = this.J.getSize();
-            2 <= b.x && 2 <= b.y && b.x < c.width - 2 && b.y < c.height - 2 || (this.I = !1, go(this, a, mb, b))
+            2 <= b.x && 2 <= b.y && b.x < c.width - 2 && b.y < c.height - 2 || (this.I = false, go(this, a, mb, b))
         }
     };
     v.Qga = function (a) {
-        !this.Xc && !this.I && (this.I = !0, go(this, a, lb))
+        !this.Xc && !this.I && (this.I = true, go(this, a, lb))
     };
     v.moveBy = function (a, b) {
         if (!this.L) {
@@ -5362,7 +5372,7 @@
     };
     v.cs = w(206);
     var Jha = function (a, b, c, d) {
-        var e = oh(5, vh(Math.sqrt(b.width * b.width + b.height * b.height) / 20));
+        var e = Math.max(5, Math.round(Math.sqrt(b.width * b.width + b.height * b.height) / 20));
         a.To();
         F(a.J, Db, d, !! c);
         c && F(a.J, Rb, d);
@@ -5378,8 +5388,8 @@
     v = qj.prototype;
     v.Fh = w(171);
     v.xfa = function (a, b, c, d) {
-        var e = vh(a.width * c),
-            a = vh(a.height * c);
+        var e = Math.round(a.width * c),
+            a = Math.round(a.height * c);
         this.moveBy(new N(e - b.width, a - b.height), d);
         b.width = e;
         b.height = a
@@ -5412,9 +5422,9 @@
         }
     };
     v.Ue = function (a, b) {
-        this.J.HM = !0;
+        this.J.HM = true;
         ll(this.J, Gb, this, function () {
-            this.J.HM = !1
+            this.J.HM = false
         });
         var c = io("StreetViewOpen"),
             d = this.C.C.Rm();
@@ -5437,10 +5447,10 @@
 
     function Kha(a, b) {
         b.push("[");
-        for (var c = !1, d = 0, e = a.length; d < e; ++d) {
-            d && (b.push(","), c = !0);
+        for (var c = false, d = 0, e = a.length; d < e; ++d) {
+            d && (b.push(","), c = true);
             var f = a[d];
-            f != null && (c = !1, na(f) ? Kha(f, b) : b.push(ci(f)))
+            f != null && (c = false, na(f) ? Kha(f, b) : b.push(ci(f)))
         }
         c && b.push("null");
         b.push("]")
@@ -5451,7 +5461,7 @@
         this.H.H[2] = "";
         this.qZ = b;
         this.pZ = jo(this.H.Ya());
-        this.C = !1;
+        this.C = false;
         this.XA = []
     }
     var lo = function (a) {
@@ -5486,7 +5496,7 @@
         }
     };
     ko.prototype.D = function () {
-        this.C = !1;
+        this.C = false;
         0 < this.XA.length && mo(this)
     };
     var oo = {
@@ -5505,7 +5515,7 @@
         O(this.Yj, gc, this, this.K);
         if (this.Yj.Yf() != null && -1 == document.cookie.indexOf("NID")) {
             var e = this.Ee;
-            e.C = !0;
+            e.C = true;
             H(this.J.Ri(), function (a) {
                 ll(a, "newcopyright", e, e.D)
             })
@@ -5520,7 +5530,7 @@
             b = ro();
             c = Te(Ue(this.Ee.Kg()));
             if (c.H[0] == null || a != Jda(c)) c.H[0] = a;
-            if ((!a || b) && c.H[1] != null) c.H[1] = !1
+            if ((!a || b) && c.H[1] != null) c.H[1] = false
         }
     }
     var ro = function () {
@@ -5539,15 +5549,15 @@
     var Lha = function (a, b) {
         var c = lo(b),
             d = oo[a];
-        d != void 0 ? c = d : c.H[1] != null ? (c = c.H[1], c = c != null ? c : i) : c = !0;
+        d != void 0 ? c = d : c.H[1] != null ? (c = c.H[1], c = c != null ? c : i) : c = true;
         return c
     };
     po.prototype.I = function (a) {
-        a && (Te(Ue(this.Ee.Kg())).H[0] = !1)
+        a && (Te(Ue(this.Ee.Kg())).H[0] = false)
     };
     po.prototype.G = function () {
         var a = Te(Ue(this.Ee.Kg()));
-        if (a.H[0] == null || !Jda(a)) a.H[0] = !0
+        if (a.H[0] == null || !Jda(a)) a.H[0] = true
     };
     po.prototype.F = function (a, b) {
         var c = Te(Ue(this.Ee.Kg(h, b)));
@@ -5562,10 +5572,10 @@
         this.Yi = new qj(a, this, b);
         this.Zu = b;
         this.Zj = c;
-        this.fi = !1
+        this.fi = false
     }
     to.prototype.init = function (a) {
-        var b = !this.Zu || this.Zu.visible !== !1;
+        var b = !this.Zu || this.Zu.visible !== false;
         Mha(this, this.J.va(), b, a)
     };
     to.prototype.Wa = _get("Yi");
@@ -5643,7 +5653,7 @@
         1 == P.type && (!tk(rk) && "rtl" == c) && d.setAttribute("dir", "ltr");
         this.tl = wo(a, "viewContainer");
         this.Q = 0;
-        this.N = oh(30, 30);
+        this.N = Math.max(30, 30);
         this.El = [];
         Qh(this.El, b.mapTypes || zo);
         this.ba = [];
@@ -5652,7 +5662,7 @@
         d = b.C ? b.C.mapType : this.El[0];
         Ao(this, d) || (d = d.oy);
         this.C = d;
-        this.jU = !1;
+        this.jU = false;
         H(this.El, A(this.RU, this));
         this.ym = 0;
         b.C && (this.ym = b.C.zoom);
@@ -5664,7 +5674,7 @@
         this.Si = b.V;
         this.F = null;
         this.Ba = b.U;
-        this.V = !0;
+        this.V = true;
         this.Cc = [];
         this.Lh = [];
         this.Ia = [];
@@ -5684,23 +5694,23 @@
         O(this, "dblclick", this, this.SU);
         O(this, Ob, this, this.SU);
         kl(this, Kb, A(function () {
-            this.MU = !0
+            this.MU = true
         }, this));
         this.ea = null;
         this.se = new Bo(this, b.I);
         this.Td = b.L || l;
         b.cv || (Ma("ctrapp", ed, emptyFn(), b.stats), Oha(this, b));
-        this.U = !1;
+        this.U = false;
         this.Bb = "";
         this.Jg = O(this, "beforemaptypechange", this, this.vh);
-        this.P = this.xa = !1;
+        this.P = this.xa = false;
         this.zl = null;
-        this.ca = !0;
+        this.ca = true;
         this.Qy = null;
         this.RB = [];
         this.$q = {};
         this.ma = [];
-        this.HM = this.ub = this.MU = !1;
+        this.HM = this.ub = this.MU = false;
         this.L = null;
         this.av = 0;
         this.Ly = null;
@@ -5743,7 +5753,7 @@
     nj.prototype.Ac = function (a, b, c, d, e) {
         if (b) {
             var f = c || this.C || this.El[0],
-                g = Bh(b, 0, oh(30, 30));
+                g = Bh(b, 0, Math.max(30, 30));
             f.F = g
         }
         d && (this.Wa().To(), F(this, Rb));
@@ -5755,7 +5765,7 @@
     };
     var Lo = function (a, b, c, d, e) {
         var f, g;
-        a.P = !1;
+        a.P = false;
         var j = !a.Oc();
         a.Wa().To();
         var m = a.ym,
@@ -5767,7 +5777,7 @@
         var d = a.C,
             p = 0;
         is_void0(c) && is_number(c) ? p = c : a.ym && (p = a.ym);
-        a.xa = !1;
+        a.xa = false;
         a.ym = No(a, p, d, f);
         b ? a.K = b : g ? a.K = g : a.K = a.Yb($n(a));
         f = [];
@@ -5777,7 +5787,7 @@
         d = (n = m.J.va()) && Kk(n) ? "vector" : "raster";
         !m.C || m.C.getId() != d ? Mha(m, n, i, e) : m.C.configure(e);
         if (b || c != null || j) f.push([a, Zb, e]), f.push([a, Cb, e]);
-        j && (bo(a), a.U = !0, a.oc.Oc() ? f.push([a, eb]) : (b = eb, kl(a.oc, b, nl(b, a))), f.push([a, Eb, e]), a.oc.C && a.oc.C.Se(e));
+        j && (bo(a), a.U = true, a.oc.Oc() ? f.push([a, eb]) : (b = eb, kl(a.oc, b, nl(b, a))), f.push([a, Eb, e]), a.oc.C && a.oc.C.Se(e));
         for (a = 0; a < E(f); ++a) F.apply(k, f[a])
     };
     nj.prototype.If = function (a, b, c, d) {
@@ -5787,11 +5797,11 @@
                 g = e.x - f.x,
                 e = e.y - f.y,
                 f = this.getSize();
-            0 == jh(g) && 0 == jh(e) ? (this.Wa().To(), this.K = a) : jh(g) <= f.width && jh(e) < f.height ? d ? this.Wa().moveBy(new N(g, e), c) : (Jha(this.Wa(), new N(g, e), b, c), on("panned-to")) : this.Ac(a, h, h, b, c)
+            0 == Math.abs(g) && 0 == Math.abs(e) ? (this.Wa().To(), this.K = a) : Math.abs(g) <= f.width && Math.abs(e) < f.height ? d ? this.Wa().moveBy(new N(g, e), c) : (Jha(this.Wa(), new N(g, e), b, c), on("panned-to")) : this.Ac(a, h, h, b, c)
         } else this.Ac(a, h, h, b, c)
     };
     nj.prototype.da = function () {
-        return vh(this.ym || 0)
+        return Math.round(this.ym || 0)
     };
     var Oo = function (a) {
         if (a.oc.C && "vector" == a.oc.C.getId() && a.ub) {
@@ -5826,7 +5836,7 @@
     };
     nj.prototype.KA = w(68);
     var Zn = function (a, b, c, d) {
-        a.P = !0;
+        a.P = true;
         a.Y = a.da() + b;
         a.oc.C && a.oc.C.IZ(a.Y, c, d || pi)
     },
@@ -5835,7 +5845,7 @@
             return b = Bh(b, Ro(a), Po(a))
         },
         Qo = function (a, b, c, d, e, f, g) {
-            Pha(a, b, c) == Oo(a) && !a.P ? d && e && a.If(d) : (a.P = !1, a.xa = !0, a.oc.C && a.oc.C.zoom(b, !f, !! c, d, !! e, g))
+            Pha(a, b, c) == Oo(a) && !a.P ? d && e && a.If(d) : (a.P = false, a.xa = true, a.oc.C && a.oc.C.zoom(b, !f, !! c, d, !! e, g))
         };
     nj.prototype.hb = function () {
         return this.va().lc().kF(So(this), this.da())
@@ -5991,7 +6001,7 @@
         var b = bm(this.ka);
         Nha(b);
         if (!b.equals(this.getSize())) {
-            var c = new L(vh(b.width / 2), vh(b.height / 2)),
+            var c = new L(Math.round(b.width / 2), Math.round(b.height / 2)),
                 c = this.Yb(c);
             this.M = b;
             this.Zq.maxX = b.width;
@@ -6007,7 +6017,7 @@
     };
     var Qha = function (a) {
         for (var b = a.Or(Sha(a)), c = 0, d = a.M.width / 256, a = a.M.height / 256; 1.25 < d && 0.5 < a;) c++, d /= 2, a /= 2;
-        return oh(b, c)
+        return Math.max(b, c)
     },
         Sha = function (a) {
             a.Ja || (a.Ja = new Fa(new LATLNG(-85, -180), new LATLNG(85, 180)));
@@ -6038,7 +6048,7 @@
             return Bh(b, Ro(a, c), Po(a, c, d))
         },
         Rha = function (a, b) {
-            var c = Bh(b, 0, oh(30, 30));
+            var c = Bh(b, 0, Math.max(30, 30));
             if (c != a.Q && !(c > Po(a))) {
                 var d = Ro(a);
                 a.Q = c;
@@ -6048,7 +6058,7 @@
         Ro = function (a, b) {
             if (a.oc.C && "vector" == a.oc.C.getId() && a.ub) return -1;
             var c = (b || a.C || a.El[0]).II();
-            return oh(c, a.Q)
+            return Math.max(c, a.Q)
         };
     nj.prototype.l4 = w(49);
     var Po = function (a, b, c) {
@@ -6080,7 +6090,7 @@
                 e = q ? q.Mr(b) : 0
             } else e = 0
         }
-        return ph(oh(c, e), a.N)
+        return Math.min(Math.max(c, e), a.N)
     };
     nj.prototype.Xa = _get("ka");
     var Tha = ["Marker", "Polygon"];
@@ -6096,17 +6106,17 @@
                 e = f
             }
             if (this.Ba) F(this, Fb, c, Um(a), e);
-            else if (this.VS) f = new Ag("zoom"), f.Mb("zua", "rdc"), this.VS = !1, this.Ap(d, i, f), clearTimeout(this.Nf), F(this, Ac, "drclk"), f.done();
+            else if (this.VS) f = new Ag("zoom"), f.Mb("zua", "rdc"), this.VS = false, this.Ap(d, i, f), clearTimeout(this.Nf), F(this, Ac, "drclk"), f.done();
             else {
-                this.VS = !0;
+                this.VS = true;
                 var j = Um(a);
                 this.Nf = Om(this, A(function () {
-                    this.VS = !1;
+                    this.VS = false;
                     F(this, Fb, c, j, e)
                 }, this), 250)
             }
             Xm(a);
-            4 == P.type && 0 == P.os && (a.cancelBubble = !0)
+            4 == P.type && 0 == P.os && (a.cancelBubble = true)
         }
     };
     v.t6 = function (a, b) {
@@ -6145,7 +6155,7 @@
     };
     var $n = function (a) {
         a = a.getSize();
-        return new L(vh(a.width / 2), vh(a.height / 2))
+        return new L(Math.round(a.width / 2), Math.round(a.height / 2))
     },
         Uha = function (a, b) {
             var c;
@@ -6172,17 +6182,17 @@
     v.s6 = function (a) {
         for (a = Um(a); a; a = a.parentNode) if (a == this.ka) {
             this.ka.focus();
-            this.ha = !0;
+            this.ha = true;
             return
         }
-        this.ha = !1
+        this.ha = false
     };
     v.JS = w(162);
     v.vA = w(88);
     v.Eh = w(10);
     v.RU = function (a) {
         var b = O(a, "newcopyright", this, function () {
-            this.jU = !0;
+            this.jU = true;
             a == (this.mapType || this.El[0]) && F(this, "zoomrangechange")
         }),
             c = a.Zh;
@@ -6338,8 +6348,8 @@
         F(b, nc, a)
     }
     var Nha = function (a) {
-        a.width = oh(a.width, 1);
-        a.height = oh(a.height, 1)
+        a.width = Math.max(a.width, 1);
+        a.height = Math.max(a.height, 1)
     };
     nj.prototype.oj = function () {
         this.da() == Po(this) && (this.Ly = setTimeout(A(function () {
@@ -6376,7 +6386,7 @@
             d = jp(b, 360);
             if (!a.I[d]) {
                 for (var e = a.G.concat(a.G[0] + 360), f = 0, g = E(e) - 1; f < g - 1;) {
-                    var j = vh((f + g) / 2);
+                    var j = Math.round((f + g) / 2);
                     d < a.G[j] ? g = j : f = j
                 }
                 f = e[f];
@@ -6554,7 +6564,7 @@
     v.Db = w(131);
 
     function up(a) {
-        return vh(-1E5 * a) << 5
+        return Math.round(-1E5 * a) << 5
     }
     v.show = function () {
         throwError("Required interface method not implemented: show")
@@ -6576,13 +6586,13 @@
     vp.copy = function () {
         return this
     };
-    vp.Xd = !1;
+    vp.Xd = false;
     vp.ye = ah;
     vp.show = function () {
-        this.Xd = !1
+        this.Xd = false
     };
     vp.hide = function () {
-        this.Xd = !0
+        this.Xd = true
     };
     vp.Cb = _get("Xd");
 
@@ -6629,7 +6639,7 @@
         this.yf = {}
     });
     v.Vu = emptyFn();
-    v.Vu.defer = !0;
+    v.Vu.defer = true;
     v.qW = z;
     v.qu = z;
     v.As = Kn(z);
@@ -6670,7 +6680,7 @@
 
     function Ap(a, b, c) {
         var d = 1 << b - 1,
-            b = ph(b, Rh(c, 31));
+            b = Math.min(b, Rh(c, 31));
         zp.length = b;
         for (c = 0; c < b; ++c) zp[c] = aia[(a.x & d ? 2 : 0) + (a.y & d ? 1 : 0)], d >>= 1;
         return zp.join(Qc)
@@ -6714,9 +6724,9 @@
             d.icon[yi] = new N(13, 13);
             d.icon[xi] = new L(6, 6);
             var e = new Jj;
-            e.uj = !1;
-            e.Wm = !0;
-            e.pn = !0;
+            e.uj = false;
+            e.Wm = true;
+            e.pn = true;
             e.cz = 256;
             e.as = function () {
                 return d
@@ -6727,8 +6737,8 @@
     };
 
     function Dp(a, b) {
-        a == -ih && b != ih && (a = ih);
-        b == -ih && a != ih && (b = ih);
+        a == -Math.PI && b != Math.PI && (a = Math.PI);
+        b == -Math.PI && a != Math.PI && (b = Math.PI);
         this.lo = a;
         this.hi = b
     }
@@ -6737,7 +6747,7 @@
     };
     v = Dp.prototype;
     v.dc = function () {
-        return this.lo - this.hi == 2 * ih
+        return this.lo - this.hi == 2 * Math.PI
     };
     v.intersects = function (a) {
         var b = this.lo,
@@ -6745,7 +6755,7 @@
         return this.dc() || a.dc() ? l : Ep(this) ? Ep(a) || a.lo <= this.hi || a.hi >= b : Ep(a) ? a.lo <= c || a.hi >= b : a.lo <= c && a.hi >= b
     };
     v.contains = function (a) {
-        a == -ih && (a = ih);
+        a == -Math.PI && (a = Math.PI);
         var b = this.lo,
             c = this.hi;
         return Ep(this) ? (a >= b || a <= c) && !this.dc() : a >= b && a <= c
@@ -6756,25 +6766,25 @@
     v.scale = function (a) {
         if (!this.dc()) {
             var b = this.center(),
-                a = Math.min(this.span() / 2 * a, ih);
-            this.lo = Ch(b - a, -ih, ih);
-            this.hi = Ch(b + a, -ih, ih);
-            this.hi == this.lo && a && (this.hi += 2 * ih)
+                a = Math.min(this.span() / 2 * a, Math.PI);
+            this.lo = Ch(b - a, -Math.PI, Math.PI);
+            this.hi = Ch(b + a, -Math.PI, Math.PI);
+            this.hi == this.lo && a && (this.hi += 2 * Math.PI)
         }
     };
     v.equals = function (a) {
-        return this.dc() ? a.dc() : 1E-9 >= jh(a.lo - this.lo) % 2 * ih + jh(a.hi - this.hi) % 2 * ih
+        return this.dc() ? a.dc() : 1E-9 >= Math.abs(a.lo - this.lo) % 2 * Math.PI + Math.abs(a.hi - this.hi) % 2 * Math.PI
     };
     v.distance = function (a, b) {
         var c = b - a;
-        return 0 <= c ? c : b + ih - (a - ih)
+        return 0 <= c ? c : b + Math.PI - (a - Math.PI)
     };
     v.span = function () {
-        return this.dc() ? 0 : Ep(this) ? 2 * ih - (this.lo - this.hi) : this.hi - this.lo
+        return this.dc() ? 0 : Ep(this) ? 2 * Math.PI - (this.lo - this.hi) : this.hi - this.lo
     };
     v.center = function () {
         var a = (this.lo + this.hi) / 2;
-        Ep(this) && (a += ih, a = Ch(a, -ih, ih));
+        Ep(this) && (a += Math.PI, a = Ch(a, -Math.PI, Math.PI));
         return a
     };
 
@@ -6804,7 +6814,7 @@
         this.hi = b + a
     };
     v.equals = function (a) {
-        return this.dc() ? a.dc() : 1E-9 >= jh(a.lo - this.lo) + jh(this.hi - a.hi)
+        return this.dc() ? a.dc() : 1E-9 >= Math.abs(a.lo - this.lo) + Math.abs(this.hi - a.hi)
     };
     v.span = function () {
         return this.dc() ? 0 : this.hi - this.lo
@@ -6864,13 +6874,13 @@
     Fa.Aa = function (a, b) {
         a && !b && (b = a);
         if (a) {
-            var c = Bh(a.Jn(), -ih / 2, ih / 2),
-                d = Bh(b.Jn(), -ih / 2, ih / 2);
+            var c = Bh(a.Jn(), -Math.PI / 2, Math.PI / 2),
+                d = Bh(b.Jn(), -Math.PI / 2, Math.PI / 2);
             this.C = new Fp(c, d);
             c = a.Eu();
             d = b.Eu();
-            d - c >= 2 * ih ? this.D = new Dp(-ih, ih) : (c = Ch(c, -ih, ih), d = Ch(d, -ih, ih), this.D = new Dp(c, d))
-        } else this.C = new Fp(1, -1), this.D = new Dp(ih, -ih)
+            d - c >= 2 * Math.PI ? this.D = new Dp(-Math.PI, Math.PI) : (c = Ch(c, -Math.PI, Math.PI), d = Ch(d, -Math.PI, Math.PI), this.D = new Dp(c, d))
+        } else this.C = new Fp(1, -1), this.D = new Dp(Math.PI, -Math.PI)
     };
     v = Fa.prototype;
     v.Fa = function () {
@@ -6980,15 +6990,15 @@
     function Jp(a, b) {
         var c = a.Jn(),
             d = a.Eu(),
-            e = mh(c);
-        b[0] = mh(d) * e;
-        b[1] = wh(d) * e;
-        b[2] = wh(c)
+            e = Math.cos(c);
+        b[0] = Math.cos(d) * e;
+        b[1] = Math.sin(d) * e;
+        b[2] = Math.sin(c)
     }
 
     function fia(a, b) {
-        var c = kh(a[2], xh(a[0] * a[0] + a[1] * a[1])),
-            d = kh(a[1], a[0]);
+        var c = Math.atan2(a[2], Math.sqrt(a[0] * a[0] + a[1] * a[1])),
+            d = Math.atan2(a[1], a[0]);
         b.Oj(Wh(c));
         b.nj(Wh(d))
     };
@@ -7002,7 +7012,7 @@
         for (var b = 256, c = 0; c < a; c++) {
             var d = b / 2;
             this.D.push(b / 360);
-            this.F.push(b / (2 * ih));
+            this.F.push(b / (2 * Math.PI));
             this.G.push(new L(d, d));
             this.C.push(b);
             b *= 2
@@ -7010,15 +7020,15 @@
     }
     B(Kp, $i);
     var Lp = function (a, b) {
-        return oh(0, ph(vh(b), a.I - 1))
+        return Math.max(0, Math.min(Math.round(b), a.I - 1))
     };
     v = Kp.prototype;
     v.qd = function (a, b) {
         var c = Lp(this, b),
             d = this.G[c],
-            e = vh(d.x + a.lng() * this.D[c]),
+            e = Math.round(d.x + a.lng() * this.D[c]),
             f = Bh(Math.sin(Vh(a.lat())), -0.9999, 0.9999),
-            c = vh(d.y + 0.5 * Math.log((1 + f) / (1 - f)) * -this.F[c]);
+            c = Math.round(d.y + 0.5 * Math.log((1 + f) / (1 - f)) * -this.F[c]);
         return new L(e, c)
     };
     v.NT = function (a, b) {
@@ -7030,7 +7040,7 @@
     v.gh = function (a, b, c) {
         var b = Lp(this, b),
             d = this.G[b];
-        return new LATLNG(Wh(2 * Math.atan(Math.exp((a.y - d.y) / -this.F[b])) - ih / 2), (a.x - d.x) / this.D[b], c)
+        return new LATLNG(Wh(2 * Math.atan(Math.exp((a.y - d.y) / -this.F[b])) - Math.PI / 2), (a.x - d.x) / this.D[b], c)
     };
     v.kF = function (a, b) {
         var c = new L(a.maxX, a.minY),
@@ -7042,14 +7052,14 @@
         b = Lp(this, b);
         b = this.C[b];
         if (0 > a.y || a.y * c >= b) return l;
-        if (0 > a.x || a.x * c >= b) c = nh(b / c), a.x = a.x % c, 0 > a.x && (a.x += c);
+        if (0 > a.x || a.x * c >= b) c = Math.floor(b / c), a.x = a.x % c, 0 > a.x && (a.x += c);
         return i
     };
     v.zj = function (a) {
         a = Lp(this, a);
         return this.C[a]
     };
-    var gia = xh(2);
+    var gia = Math.sqrt(2);
 
     function Mp(a, b, c) {
         this.C = c || new Kp(a + 1);
@@ -7137,10 +7147,10 @@
         b = this.zj(b);
         if (90 == this.G % 180) {
             if (0 > a.x || a.x * c >= b) return l;
-            if (0 > a.y || a.y * c >= b) c = nh(b / c), a.y = a.y % c, 0 > a.y && (a.y += c)
+            if (0 > a.y || a.y * c >= b) c = Math.floor(b / c), a.y = a.y % c, 0 > a.y && (a.y += c)
         } else {
             if (0 > a.y || a.y * c >= b) return l;
-            if (0 > a.x || a.x * c >= b) c = nh(b / c), a.x = a.x % c, 0 > a.x && (a.x += c)
+            if (0 > a.x || a.x * c >= b) c = Math.floor(b / c), a.x = a.x % c, 0 > a.x && (a.x += c)
         }
         return i
     };
@@ -7159,7 +7169,7 @@
         this.F = {};
         this.G = {};
         this.I = {};
-        this.Ug = !1;
+        this.Ug = false;
         this.Bk = new Ha(a, window.document, {
             neat: i,
             timeout: 2E3
@@ -7224,8 +7234,8 @@
             f = d.gh(e, c);
             f = new Fa(g, f);
             if (this.C && !(0 == E(this.C) || 0 > c || 22 < c || f.Oh().lat() >= f.Nh().lat() || f.Oh().lng() == f.Nh().lng())) e = [], g = [], j = Cp(f, c, d), Rp(this, j, c, d, e, g), 0 < c && (j = c - 1, n = Cp(f, j, d), Rp(this, n, j, d, e, g)), 22 > c && (j = c + 1, n = Cp(f, j, d), Rp(this, n, j, d, e, g)), 0 != e.length && (j = {}, j.lyrs = g.join(), j.las = f.Oh().lat() + ";" + f.Oh().lng() + ";" + f.Nh().lat() + ";" + f.Nh().lng(), j.z = c, j.ptv = 1, Np(d, j), c = A(this.K, this, e, d, c, b), d = A(function () {
-                this.Ug = !1
-            }, this), this.Ug = !0, this.Bk.send(j, c, d))
+                this.Ug = false
+            }, this), this.Ug = true, this.Bk.send(j, c, d))
         }
     };
     var Up = function (a, b, c, d) {
@@ -7249,9 +7259,9 @@
             }
         };
     Op.prototype.K = function (a, b, c, d, e) {
-        this.Ug = !1;
+        this.Ug = false;
         if (e) {
-            for (var e = e.area, f = E(e), g = !1, j = [], m = 0; m < f; ++m) for (var n = e[m], p = n.zrange[0]; p <= n.zrange[1]; ++p) {
+            for (var e = e.area, f = E(e), g = false, j = [], m = 0; m < f; ++m) for (var n = e[m], p = n.zrange[0]; p <= n.zrange[1]; ++p) {
                 for (var q = n.layer, s = null, t = 0, x = a.length; t < x; ++t) if (a[t].getId() == q) {
                     s = a[t];
                     break
@@ -7472,10 +7482,10 @@
         this.C = c || "";
         this.M = d || "";
         this.D = null;
-        this.L = this.Zm = !1;
+        this.L = this.Zm = false;
         this.J = b;
-        this.uj = !1;
-        this.Bw = !0;
+        this.uj = false;
+        this.Bw = true;
         this.init_()
     };
     v = Dj.prototype;
@@ -7499,12 +7509,12 @@
     };
     v.zK = w(60);
     v.show = function (a) {
-        this.Xd = !1;
+        this.Xd = false;
         this.layerManager && this.layerManager.As(this, i, i, a);
         gq(this, a)
     };
     v.hide = function () {
-        this.Xd = !0;
+        this.Xd = true;
         this.layerManager && this.layerManager.As(this, l, i, h);
         gq(this)
     };
@@ -7519,10 +7529,10 @@
     v.rE = w(65);
     v.OQ = _get("C");
     var gq = function (a, b) {
-        a.Zm || (a.Zm = !0, Ll(A(a.N, a, b), 0, b))
+        a.Zm || (a.Zm = true, Ll(A(a.N, a, b), 0, b))
     };
     Dj.prototype.N = function (a) {
-        this.Zm = !1;
+        this.Zm = false;
         this.D && (hq(this.D, a), F(this.D, Ta, this.D, this, a), this.CF())
     };
     v = Oi.prototype;
@@ -7684,12 +7694,12 @@
     v.minResolution = _get("M");
     v.maxResolution = _get("L");
     v.MY = function (a, b) {
-        var c = !1;
+        var c = false;
         if (this.C) for (var d = 0; d < this.C.length; ++d) {
             var e = this.C[d];
-            e[0].contains(a) && (b[0] = oh(b[0], e[1]), c = !0)
+            e[0].contains(a) && (b[0] = Math.max(b[0], e[1]), c = true)
         }
-        if (!c) if (d = this.G.pF(a), 0 < E(d)) for (e = 0; e < E(d); e++) d[e].maxZoom && (b[0] = oh(b[0], d[e].maxZoom));
+        if (!c) if (d = this.G.pF(a), 0 < E(d)) for (e = 0; e < E(d); e++) d[e].maxZoom && (b[0] = Math.max(b[0], d[e].maxZoom));
         else b[0] = this.L;
         b[1] = c
     };
@@ -7920,7 +7930,7 @@
         this.D = Rh(d.opacity, 1);
         this.K = Rh(d.isPng, l);
         this.X = d.kmlUrl;
-        this.N = !0
+        this.N = true
     };
     v = fj.prototype;
     v.isPng = _get("K");
@@ -8009,7 +8019,7 @@
         this.C = [];
         this.parentElement = c;
         this.G = null;
-        this.I = !1;
+        this.I = false;
         this.L = d;
         this.P = this.F = null
     }
@@ -8020,7 +8030,7 @@
     };
     var Ria = function (a) {
         a.G && (Qm(a.G), a.G = null);
-        a.I = !1
+        a.I = false
     },
         Kq = function (a) {
             return (a = Jq(a)) ? a.image : k
@@ -8076,7 +8086,7 @@
         this.N(this, a, b)
     };
     v.vB = function () {
-        for (var a = !0, b = 0, c; c = this.C[b]; ++b) a = a && !! c.image && !! c.image[Nq] && c.image[Nq] == c.image.src;
+        for (var a = true, b = 0, c; c = this.C[b]; ++b) a = a && !! c.image && !! c.image[Nq] && c.image[Nq] == c.image.src;
         return a
     };
     v.OO = w(13);
@@ -8089,7 +8099,7 @@
         this.tileLayer = b;
         this.mapType = c;
         this.url = null;
-        this.Da = !1;
+        this.Da = false;
         this.on = !! g;
         var j;
         f && (j = new N(f, f));
@@ -8097,7 +8107,7 @@
         b.alpha = this.tileLayer.isPng();
         b.onLoadCallback = d;
         b.onErrorCallback = e;
-        b.hideWhileLoading = !0;
+        b.hideWhileLoading = true;
         if (this.image = Pq("//maps.gstatic.com/mapfiles/transparent.png", a, pi, j, b)) Ul(this.image), T(this.image, "css-3d-layer")
     }
     v = Iq.prototype;
@@ -8145,13 +8155,13 @@
             var d = this.image,
                 e = 6;
             if (2 == P.type || 3 == P.type) e = 20;
-            var e = this.zoomLevel - oh(this.zoomLevel - this.C - e, 0),
-                f = uh(2, this.zoomLevel - e);
-            c = new L(nh(this.F.x / f), nh(this.F.y / f));
+            var e = this.zoomLevel - Math.max(this.zoomLevel - this.C - e, 0),
+                f = Math.pow(2, this.zoomLevel - e);
+            c = new L(Math.floor(this.F.x / f), Math.floor(this.F.y / f));
             if ("//maps.gstatic.com/mapfiles/transparent.png" == a) Rq(d, "//maps.gstatic.com/mapfiles/transparent.png");
             else {
-                var g = uh(2, e - this.C),
-                    j = new L(nh(c.x / g), nh(c.y / g)),
+                var g = Math.pow(2, e - this.C),
+                    j = new L(Math.floor(c.x / g), Math.floor(c.y / g)),
                     f = this.mapType.we();
                 this.mapType.lc().dE(j, this.C, f) ? (e = this.tileLayer.Hj(j, this.C, this.mapType, b), e != null && (c = ri(c, ui(j, -g)), j = ri(this.position, ui(c, -f)), Pl(d, j), g = this.mapType.we() * g, g = new N(g, g), Ql(d, g), this.G = g, this.zoomLevel != this.C && (f = Lq("rect(%1$spx,%2$spx,%3$spx,%4$spx)", c.y * f, c.x * f + f, c.y * f + f, c.x * f), d.style.clip = f), Rq(d, e, this.D))) : Rq(d, "//maps.gstatic.com/mapfiles/transparent.png")
             }
@@ -8318,7 +8328,7 @@
                     br(a, g.split(bd), e)
                 }
             }
-            a.__jsproperties_parsed = !0
+            a.__jsproperties_parsed = true
         }
     }
 
@@ -8343,7 +8353,7 @@
         ir = function () {
             return ja.navigator
         };
-    gr = fr = er = dr = !1;
+    gr = fr = er = dr = false;
     var jr;
     if (jr = Via()) {
         var Wia = ir();
@@ -8406,11 +8416,11 @@
     var dja = RegExp("^(?:([^:/?#.]+):)?(?://(?:([^/?#]*)@)?([\\w\\d\\-\\u0100-\\uffff.%]*)(?::([0-9]+))?)?([^?#]+)?(?:\\?([^#]*))?(?:#(.*))?$"),
         wr = function (a) {
             if (vr) {
-                vr = !1;
+                vr = false;
                 var b = ja.location;
                 if (b) {
                     var c = b.href;
-                    if (c && (c = (c = wr(c)[3] || k) && decodeURIComponent(c)) && c != b.hostname) vr = !0, throwError(Error())
+                    if (c && (c = (c = wr(c)[3] || k) && decodeURIComponent(c)) && c != b.hostname) vr = true, throwError(Error())
                 }
             }
             return a.match(dja)
@@ -8583,7 +8593,7 @@
                 for (j = Ir.length = 0; j < g.length; ++j) m = g[j], Tja.test(m) ? Ir.push(m.replace(Tja, "&&")) : Ir.push(m);
                 j = Ir.join("&");
                 g = c[j];
-                typeof g == Ah && (g = c[j] = b.length, b.push(f[0]), b.push(k), b.push(k));
+                typeof g == "undefined" && (g = c[j] = b.length, b.push(f[0]), b.push(k), b.push(k));
                 j = Gr(f[2]);
                 f[1] == $c ? b[g + 2] = j : f[1] == waa && (b[g + 1] = j)
             }
@@ -8856,8 +8866,8 @@
             }, this))) : mka(this, e, a, b)
         } else if (c = c.jsfor || c.jsselect) {
             var d = b.getAttribute(Tc),
-                f = !1;
-            d && (d.charAt(0) == Vc ? (e = ei(d.substr(1)), f = !0) : e = ei(d));
+                f = false;
+            d && (d.charAt(0) == Vc ? (e = ei(d.substr(1)), f = true) : e = ei(d));
             e ? (d = a.OP, f && (a.OP = null)) : (d = Ur(this), oka(a, b, c, 0, d), 0 === e && !f && (a.OP = d));
             c = E(d);
             if (0 == c) e ? Fl(b) : (b.setAttribute(Tc, "*0"), W(b));
@@ -8879,11 +8889,11 @@
     };
     Mr.prototype.D = function (a, b) {
         var c = nka(b),
-            d = !0,
+            d = true,
             e = c.jsdisplay;
-        e && (a.jsexec(e, b) || (d = !1));
+        e && (a.jsexec(e, b) || (d = false));
         var f = c.jsif;
-        f && (a.jsexec(f, b) || (d = !1));
+        f && (a.jsexec(f, b) || (d = false));
         if (e || f) {
             if (!d) {
                 W(b);
@@ -8913,7 +8923,7 @@
                 if (t && 1 == j.length && !(m in Tia)) this.C++, t(b, m, s, A(this.NI, this));
                 else if ("$" == m.charAt(0)) a.gb(m, s);
                 else if ("@" == m.charAt(0)) Xr(b, m.substr(1), q, s);
-                else if ("class" == m) 1 == j.length ? !n || q ? b.className = s : b.className = Qc : (typeof q == Ah && typeof s == zh && (q = s), j = j[1], q ? T(b, j) : zl(b, j));
+                else if ("class" == m) 1 == j.length ? !n || q ? b.className = s : b.className = Qc : (typeof q == "undefined" && typeof s == "boolean" && (q = s), j = j[1], q ? T(b, j) : zl(b, j));
                 else if ("style" == m && 1 < j.length) j[1] = j[1].replace(/-(\S)/g, pka), !n || q ? p && br(b, j, s) : br(b, j, Qc);
                 else if (m in Tia) 1 == j.length ? d[m] = [Qc + s, k] : (m in d || (d[m] = [b[m] || Qc, k]), d[m][1] || (t = d[m], p = t[1] = wr(t[0]), p[6] && (p[6] = Gm(p[6])), t[0] = null), q = !n || q ? Qc + s : k, n = d[j[0]][1], t = j[1], t in Zja && (s = Zja[t], "param" == t ? 3 == j.length && (j = j[2], t = n[s], q != null ? (t || (t = n[s] = {}), t[j] = q) : t && delete t[j]) : n[s] = q));
                 else if (m) if (1 == j.length && 2 == $q[m]) Xr(b, m, q, s);
@@ -8936,7 +8946,7 @@
                 }
             }
             for (m in d) e = d[m], e[1] ? (s = e[1], s[6] && (s[6] = Fm(s[6])), e = s[1], f = s[2], g = s[3], j = s[4], q = s[5], n = s[6], s = s[7], t = "", e && (t += e + ":"), g && (t += "//", f && (t += f + "@"), t += g, j && (t += ":" + j)), q && (t += q), n && (t += "?" + n), s && (t += "#" + s), e = t) : e = e[0], (t = kka(b.tagName, m)) ? (this.C++, t(b, m, e, A(this.NI, this))) : b[m] = e;
-            b.__jsproperties_parsed = !0
+            b.__jsproperties_parsed = true
         }
         if (m = c.jseval) {
             d = 0;
@@ -9007,7 +9017,7 @@
         return b.toUpperCase()
     }
     var Xr = function (a, b, c, d) {
-        typeof c == Ah ? typeof d == zh ? d ? a.setAttribute(b, b) : a.removeAttribute(b) : a.setAttribute(b, Qc + d) : c ? (typeof d == Ah && (d = b), a.setAttribute(b, Qc + d)) : a.removeAttribute(b)
+        typeof c == "undefined" ? typeof d == "boolean" ? d ? a.setAttribute(b, b) : a.removeAttribute(b) : a.setAttribute(b, Qc + d) : c ? (typeof d == "undefined" && (d = b), a.setAttribute(b, Qc + d)) : a.removeAttribute(b)
     },
         qka = /^(\/?)(b|em|i|span|wbr)(\s+dir=['"]?(ltr|rtl)["']?)?>(.*)$/i;
 
@@ -9299,7 +9309,7 @@
     }
 
     function Kka(a, b, c, d, e) {
-        var f = oh(30, 30),
+        var f = Math.max(30, 30),
             g = new Kp(f + 1),
             a = new gj([], g, a, {
                 maxResolution: f,
@@ -9376,13 +9386,13 @@
         for (var a = [], b = al.wa().Ia, c = 0; c < E(b); ++c) {
             var d = b[c],
                 e = d.wa();
-            e && !e.__tag__ && (e.__tag__ = !0, F(e, $b), a.push(e));
+            e && !e.__tag__ && (e.__tag__ = true, F(e, $b), a.push(e));
             d.remove()
         }
         for (c = 0; c < E(a); ++c) if (e = a[c], e.__tag__) try {
             delete e.__tag__, delete e.__e_
         } catch (f) {
-            e.__tag__ = !1, e.__e_ = null
+            e.__tag__ = false, e.__e_ = null
         }
         al.wa().clear();
         Xga(document.body)
@@ -9395,7 +9405,7 @@
         this.G = a.Pj;
         this.K = is_number(a.symbol) ? a.symbol : ed;
         this.H = a.data;
-        this.I = !1
+        this.I = false
     };
     Ti.prototype.set = function (a) {
         this.C = a;
@@ -9425,7 +9435,7 @@
         })
     };
     Ti.prototype.L = function (a, b) {
-        this.I || (this.I = !0, b && b(this.H, this, a), this.K == fd && !this.C && this.set(Nka))
+        this.I || (this.I = true, b && b(this.H, this, a), this.K == fd && !this.C && this.set(Nka))
     };
     var ds = function (a, b, c, d) {
         var e = [],
@@ -9469,19 +9479,19 @@
         delete c.C[a]
     }, h);Li.Aa = function (a, b) {
         Ki.call(this, a, b);
-        this.V = !1
+        this.V = false
     };
     v = Li.prototype;v.MG = function (a) {
         F(this, fb, a);
-        !a.cancelDrag && yha(this, a) && (this.fb = S(this.L, jb, this, this.iha), this.yb = S(this.L, nb, this, this.jha), zha(this, a.clientX, a.clientY), this.V = !0, this.Lo(), Vm(a))
+        !a.cancelDrag && yha(this, a) && (this.fb = S(this.L, jb, this, this.iha), this.yb = S(this.L, nb, this, this.jha), zha(this, a.clientX, a.clientY), this.V = true, this.Lo(), Vm(a))
     };
     v.iha = function (a) {
-        var b = jh(this.F.x - a.clientX),
-            c = jh(this.F.y - a.clientY);
-        2 <= b + c && (cl(this.fb), cl(this.yb), b = {}, b.clientX = this.F.x, b.clientY = this.F.y, this.V = !1, Aha(this, b), Un(this, a))
+        var b = Math.abs(this.F.x - a.clientX),
+            c = Math.abs(this.F.y - a.clientY);
+        2 <= b + c && (cl(this.fb), cl(this.yb), b = {}, b.clientX = this.F.x, b.clientY = this.F.y, this.V = false, Aha(this, b), Un(this, a))
     };
     v.jha = function (a) {
-        this.V = !1;
+        this.V = false;
         F(this, nb, a);
         cl(this.fb);
         cl(this.yb);
@@ -9679,7 +9689,7 @@
         O(a, Ab, k, function () {
             window.setTimeout(c, 0)
         });
-        this.K = !1;
+        this.K = false;
         O(a, Eb, this, this.M)
     }
     Bo.prototype.ot = _set("D");Bo.prototype.L = function () {
@@ -9694,8 +9704,8 @@
         } else {
             var b = a.Fa(),
                 c = a.hb().zf(),
-                a = vh((b.lat() - this.F.lat()) / c.lat()),
-                b = vh((b.lng() - this.F.lng()) / c.lng());
+                a = Math.round((b.lat() - this.F.lat()) / c.lat()),
+                b = Math.round((b.lng() - this.F.lng()) / c.lng());
             this.eg = "p";
             this.iA(a, b, i)
         }
@@ -9737,7 +9747,7 @@
         Rka = /^[^A-Za-z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02b8\u0300-\u0590\u0800-\u1fff\u2c00-\ufb1c\ufe00-\ufe6f\ufefd-\uffff]*[\u0591-\u07ff\ufb1d-\ufdff\ufe70-\ufefc]/,
         Ska = /^[\x00- !-@[-`{-\u00bf\u00d7\u00f7\u02b9-\u02ff\u2000-\u2bff]*$|^http:\/\//;
     var ms, ns, Tka, os, ps = ["d_d", "d_daddr"],
-        Uka, Vka = !1;
+        Uka, Vka = false;
 
     function qs(a, b) {
         var c;
@@ -9836,9 +9846,9 @@
     };
     var ys = "activity_show_mode";Hi.Aa = function (a, b) {
         this.W = this.zd = 0;
-        this.EN = !1;
-        this.M = !0;
-        this.iq = !1;
+        this.EN = false;
+        this.M = true;
+        this.iq = false;
         this.ng = ala++;
         this.Te = a;
         this.$c = "Default Title";
@@ -9846,16 +9856,16 @@
         this.L = null;
         this.Ua = "defaultid";
         this.C = null;
-        this.I = !0;
+        this.I = true;
         this.G = this.ZC = this.F = this.D = null;
-        this.Da = !0;
+        this.Da = true;
         this.Yg = void 0;
         a && (R(this, Ec, mi(a, a.activate)), this.N = O(this, "destroy", a, a.clear), Rh(b, i) && (R(this, Ec, mi(a, a.vV, 2)), R(this, Fc, mi(a, a.uV, 2)), R(this, Pa, mi(a, a.vV, h)), R(this, Qa, mi(a, a.uV, h))))
     };
     var bla = ["", Cc, Pa, Ec],
         cla = [Dc, Qa, Fc],
         ala = 0;v = Hi.prototype;v.pm = function () {
-        this.M = !1;
+        this.M = false;
         this.Te && cl(this.N)
     };
     v.Hb = _get("Te");v.bind = function (a) {
@@ -9872,12 +9882,12 @@
     var ela = function (a) {
         F(a, "destroy");
         fl(a);
-        a.iq = !0
+        a.iq = true
     },
         Bs = function (a, b, c) {
             var d = a.W;
             a.W = a.ic();
-            1 < b && (a.Da = !0);
+            1 < b && (a.Da = true);
             !a.iq && a.W < b && (As(a, 1, b, c), F(a, Gc));
             d > a.W && (a.W = d)
         },
@@ -10009,7 +10019,7 @@
 
     function Pq(a, b, c, d, e, f) {
         var e = e || {},
-            g = e.cache !== !1,
+            g = e.cache !== false,
             j = Ml(f),
             f = d && e.scale,
             g = {
@@ -10020,7 +10030,7 @@
                 priority: e.priority
             };
         e.alpha && Qk(P) ? (c = U("div", b, c, d, i), c.scaleMe = f, e.Ko && (c.crossOrigin = ""), om(c)) : (c = U("img", b, c, d, i), e.Ko && (c.crossOrigin = ""), c.src = "//maps.gstatic.com/mapfiles/transparent.png");
-        e.hideWhileLoading && (c[Qq] = !0);
+        e.hideWhileLoading && (c[Qq] = true);
         c.imageFetcherOpts = g;
         Ds(c, a, g);
         e.printOnly && rm(c);
@@ -10052,7 +10062,7 @@
     function Gs(a) {
         return Afa(a, "//maps.gstatic.com/mapfiles/transparent.png")
     }
-    var Hs = new vj;Hs.alpha = !0;Hs.cache = !0;
+    var Hs = new vj;Hs.alpha = true;Hs.cache = true;
     var Qq = "hideWhileLoading",
         Nq = "__src__",
         Oq = "isPending";
@@ -10061,7 +10071,7 @@
         this.eb = {};
         this.C = new Bn;
         this.C.K = 5;
-        this.C.D = !0;
+        this.C.D = true;
         this.hY = null;
         Bba && Ma("urir", bba, A(function (a) {
             this.hY = new a(Bba)
@@ -10108,7 +10118,7 @@
             e = Is.wa();
         a[Qq] && ("DIV" == a.tagName ? a.style.filter = "" : a.src = "//maps.gstatic.com/mapfiles/transparent.png");
         a[Nq] = b;
-        a[Oq] = !0;
+        a[Oq] = true;
         var f = io(a),
             c = function (b) {
                 e.fetch(b, function (c, e) {
@@ -10116,7 +10126,7 @@
                         if (f.Fb()) a: {
                             var g = d,
                                 g = g || {};
-                            a[Oq] = !1;
+                            a[Oq] = false;
                             a.preCached = e;
                             switch (c.Gf()) {
                             case 3:
@@ -10130,7 +10140,7 @@
                                 break a
                             }
                             var p = 1 == P.type && Gs(a.src);
-                            "DIV" == a.tagName && (Fs(a, b, g.scale), p = !0);
+                            "DIV" == a.tagName && (Fs(a, b, g.scale), p = true);
                             p && Ql(a, g.size || c.rv());
                             a.src = b;
                             if (g.onLoadCallback) g.onLoadCallback(b, a)
@@ -10301,10 +10311,10 @@
         var b;
         a: {
             for (b = 0; b < this.C.length; b++) if (Gl(this.C[b].cb, a)) {
-                b = !0;
+                b = true;
                 break a
             }
-            b = !1
+            b = false
         }
         if (b) return k;
         var c = new cj(a);H(this.G, function (a) {
@@ -10332,7 +10342,7 @@
                 var g;
                 (g = d[e]) ? (qia.H = g, g = qia) : g = null;
                 g = ria(g);
-                !Sp(g.getId()) && d[e].pertile_track_layer != !1 && Up(a, g, i);
+                !Sp(g.getId()) && d[e].pertile_track_layer != false && Up(a, g, i);
                 Sp(g.getId()) && g.hh() && g.sB(bq(g.hh()));
                 a.K([g], b, k, c, f)
             }
@@ -10447,21 +10457,21 @@
             Ss.wa().q2(a)
         };
     var sla = function () {
-        this.og = !0
+        this.og = true
     };
     sla.prototype.C = function () {
         this.og = !this.og;
         F(this, Wa)
     };
     var Ws = function (a, b) {
-        a.og || (a.og = !0, F(a, Wa, b))
+        a.og || (a.og = true, F(a, Wa, b))
     };
 
     function Xs(a) {
         this.G = a;
         this.F = this.C = this.Tl = this.to = null
     }
-    v = Xs.prototype;v.VO = !1;v.YJ = w(144);v.rv = _get("Tl");v.oQ = w(69);v.Gm = function (a, b) {
+    v = Xs.prototype;v.VO = false;v.YJ = w(144);v.rv = _get("Tl");v.oQ = w(69);v.Gm = function (a, b) {
         this.to = a;
         this.Tl = b
     };
@@ -10500,7 +10510,7 @@
             e = Vh(b.lng());
         b = Vh(b.lat());
         c.contains(e) && d.extend(b);
-        (c.contains(e + ih) || c.contains(e - ih)) && d.extend(-b);
+        (c.contains(e + Math.PI) || c.contains(e - Math.PI)) && d.extend(-b);
         return new Ip(new LATLNG(Wh(d.lo), a[0].lng(), i), new LATLNG(Wh(d.hi), a[1].lng(), i))
     }
 
@@ -10539,7 +10549,7 @@
             return d
         };
     var dt = $g;v = xj.prototype;v.MT = Ys;v.MQ = Th;v.ki = $g;v.Bu = Th;v.redraw = emptyFn();v.remove = function () {
-        this.zi = !0
+        this.zi = true
     };
     v.KI = Th;v.TG = z;wp(xj, "poly", 2);xj.Aa = function () {
         xj.prototype.Aa.apply(this, arguments)
@@ -10549,19 +10559,19 @@
         this.color = b || "#0000ff";
         this.weight = Rh(c, 5);
         this.opacity = Rh(d, 0.45);
-        this.Da = !0;
+        this.Da = true;
         this.fa = null;
-        this.Jd = !1;
+        this.Jd = false;
         b = e || {};
         this.Ja = !! b.mapsdt;
         this.Ba = !! b.geodesic;
         this.Jg = b.mouseOutTolerance || k;
-        this.N = !0;
+        this.N = true;
         e && e.clickable != null && (this.N = e.clickable);
         this.H = null;
         this.M = {};
         this.V = {};
-        this.Jh = !0;
+        this.Jh = true;
         this.C = null;
         this.D = 4;
         this.L = null;
@@ -10578,14 +10588,14 @@
             this.TG()
         }
         this.J = null;
-        this.zi = !0;
+        this.zi = true;
         this.ca = {}
     };
     v.zA = w(63);v.Db = w(127);v.getElement = _get("fa");v.DJ = w(235);v.initialize = function (a, b) {
         this.Zl && this.fa && this.iG();
         this.Zl = b;
         this.J = a;
-        this.zi = !1
+        this.zi = false
     };
     v.copy = function () {
         var a = new xj(k, this.color, this.weight, this.opacity);
@@ -10667,7 +10677,7 @@
     xj.prototype.ou = _get("D");xj.prototype.hj = w(99);xj.prototype.l1 = Th;
     var ula = 2,
         ft = "#0055ff";v = zj.prototype;v.LT = Ys;v.l_ = Th;v.RQ = Th;v.redraw = Ys;v.remove = function () {
-        this.zi = !0
+        this.zi = true
     };
     wp(zj, "poly", 3);zj.Aa = function (a, b, c, d, e, f, g) {
         g = g || {};
@@ -10681,23 +10691,23 @@
         this.color = e || ft;
         this.opacity = Rh(f, 0.25);
         this.outline = !(!a || !(c && 0 < c));
-        this.Da = !0;
+        this.Da = true;
         this.fa = null;
-        this.Jd = !1;
+        this.Jd = false;
         this.Ja = !! g.mapsdt;
-        this.N = !0;
+        this.N = true;
         g.clickable != null && (this.N = g.clickable);
         this.H = null;
         this.M = {};
         this.C = {};
         this.Hr = [];
-        this.zi = !0
+        this.zi = true
     };
     v = zj.prototype;v.Db = w(126);v.getElement = _get("fa");v.zA = w(62);v.initialize = function (a, b) {
         this.Zl && this.fa && this.iG();
         this.Zl = b;
         this.J = a;
-        this.zi = !1;
+        this.zi = false;
         for (var c = 0; c < E(this.qb); ++c) this.qb[c].initialize(a, b), O(this.qb[c], yb, this, this.fha)
     };
     v.fha = function () {
@@ -10800,11 +10810,11 @@
     B(ht, Oi);ht.Aa = Kn(z);ht.prototype.initialize = Kn(z);ht.prototype.Pa = emptyFn();ht.prototype.nb = emptyFn();ht.prototype.MR = z;Jn(ht, "poly", 4);Fj.Aa = function (a, b) {
         this.qh = a;
         this.J = null;
-        this.Da = !0;
+        this.Da = true;
         this.ra = null;
         b && (is_number(b.zPriority) && (this.zPriority = b.zPriority), b.statsFlowType && (this.qm = b.statsFlowType))
     };
-    v = Fj.prototype;v.constructor = Fj;v.Db = w(125);v.l2 = !0;v.zPriority = 10;v.qm = "";v.initialize = function (a, b, c) {
+    v = Fj.prototype;v.constructor = Fj;v.Db = w(125);v.l2 = true;v.zPriority = 10;v.qm = "";v.initialize = function (a, b, c) {
         this.J = a;
         this.ra && this.ra.remove();
         this.ra = b;
@@ -10826,11 +10836,11 @@
         return a
     };
     v.redraw = z;v.hide = function () {
-        this.Da = !1;
+        this.Da = false;
         this.ra && this.ra.hide()
     };
     v.show = function () {
-        this.Da = !0;
+        this.Da = true;
         this.ra && this.ra.show()
     };
     v.Cb = function () {
@@ -10852,7 +10862,7 @@
         this.hd = a;
         this.Kd = b;
         this.Pg = c;
-        this.U = this.Da = this.G = !0;
+        this.U = this.Da = this.G = true;
         this.D = 1;
         this.L = {
             border: "1px solid " + d,
@@ -10888,12 +10898,12 @@
         this.hd = a;
         this.M = null;
         this.Va = 0;
-        this.Pg = !1;
-        this.Da = !0;
+        this.Pg = false;
+        this.Da = true;
         this.xa = [];
         this.bd = Ai;
         this.ha = null;
-        this.U = !0;
+        this.U = true;
         this.J = null;
         b == null ? this.C = {
             icon: this.bd,
@@ -11046,7 +11056,7 @@
                     if (j.Fb()) {
                         var c = Ala(this, e);
                         c.maxWidth = 400;
-                        c.autoScroll = !0;
+                        c.autoScroll = true;
                         var d = f.H.lstm;
                         c.limitSizeToMap = d != null ? d : l;
                         c.suppressMapPan = b;
@@ -11287,9 +11297,9 @@
     Jt.Aa = z;B(Jt, Wi);Jt.prototype.MP = emptyFn();Jt.prototype.IN = emptyFn();Jt.prototype.jg = z;Jn(Jt, "ctrapp", 17);
 
     function Ela(a) {
-        this.C = this.Xd = !0;
+        this.C = this.Xd = true;
         this.Bp = a || k;
-        this.Rc = !0;
+        this.Rc = true;
         Ts(V("overview-toggle"))
     }
     v = Ela.prototype;v.Cb = _get("Xd");v.WT = function (a) {
@@ -11299,19 +11309,19 @@
         this.Rc && a != this.Xd && (a ? this.hide() : this.show(l, b))
     };
     v.show = function (a, b) {
-        this.Rc && (this.Xd = !1, F(this, Ta, a, b))
+        this.Rc && (this.Xd = false, F(this, Ta, a, b))
     };
     v.hide = function (a) {
-        this.Rc && (this.Xd = !0, F(this, Ta, a))
+        this.Rc && (this.Xd = true, F(this, Ta, a))
     };
     v.enable = function () {
-        this.Rc = !0;
+        this.Rc = true;
         this.C || this.show()
     };
     v.disable = function () {
         this.C = this.Xd;
         this.hide();
-        this.Rc = !1
+        this.Rc = false
     };
     v.isEnabled = _get("Rc");
 
@@ -11393,7 +11403,7 @@
                                 break a
                             }
                         }
-                        j = !1
+                        j = false
                     }
                     g(j ? Rg(f) : f, e)
                 } else e(f)
@@ -11519,11 +11529,11 @@
         a: for (var e in Mla) {
             b: {
                 for (d = 0; d < b - 1; d++) if (0 != c[d] - Mla[e][d]) {
-                    d = !1;
+                    d = false;
                     break b
                 }
                 a = Number(e);
-                d = !0
+                d = true
             }
             if (d) break a
         }
@@ -11547,7 +11557,7 @@
         this.mG = d || 7;
         this.Lh = [];
         this.wB = [];
-        this.jG = !1;
+        this.jG = false;
         this.J = this.ka = null;
         this.yS = 0
     }
@@ -11555,7 +11565,7 @@
         this.J = a;
         var b = U("div", a.Xa());
         this.ka = b;
-        this.jG = !0;
+        this.jG = true;
         for (var c = 0; c < E(this.wB); ++c) {
             var d = this.wB[c];
             this.kg(d.control, d.priority)
@@ -11586,7 +11596,7 @@
     };
     v.fy = function () {
         for (var a = 0; a < E(this.Lh); ++a) this.J.wm(this.Lh[a].control);
-        this.jG = !1;
+        this.jG = false;
         this.wB = this.Lh;
         this.Lh = []
     };
@@ -11681,7 +11691,7 @@
         this.Yv = O(this, Sa, this, this.r0)
     };
     v.Tf = w(32);v.wj = function () {
-        this.G = !1;
+        this.G = false;
         this.init_()
     };
     v.dragging = function () {
@@ -11698,12 +11708,12 @@
     };
     var au = function (a) {
         var b = a.V - a.getHeight();
-        a.I = lh(xh(2 * a.qa * b))
+        a.I = Math.ceil(Math.sqrt(2 * a.qa * b))
     },
         bu = function (a) {
             a.I -= a.qa;
             var b = a.getHeight() + a.I,
-                b = oh(0, ph(a.V, b));
+                b = Math.max(0, Math.min(a.V, b));
             if (a.Bb && a.dragging() && a.getHeight() != b) {
                 var c = a.J.Gb(a.Ha());
                 c.y += b - a.getHeight();
@@ -11735,8 +11745,8 @@
                 var e = this.J.getSize(),
                     f = 0,
                     g = 0,
-                    j = ph(0.04 * e.width, 20),
-                    m = ph(0.04 * e.height, 20);
+                    j = Math.min(0.04 * e.width, 20),
+                    m = Math.min(0.04 * e.height, 20);
                 20 > d.x ? f = j : 20 > e.width - d.x && (f = -j);
                 20 > d.y - this.getHeight() - $t.y ? g = m : 20 > e.height - d.y + $t.y && (g = -m);
                 if (f || g) b || F(this.J, Db), this.J.Wa().moveBy(new N(f, g)), this.Ru = setTimeout(A(function () {
@@ -11745,8 +11755,8 @@
                 }, this), 30)
             }
             b && !this.Ru && F(this.J, Cb);
-            c = 2 * oh(c.x, c.y);
-            c = ph(oh(c, this.getHeight()), this.V);
+            c = 2 * Math.max(c.x, c.y);
+            c = Math.min(Math.max(c, this.getHeight()), this.V);
             this.Dl(c);
             this.Bb && (d.y += c);
             this.je(this.J.Yb(d));
@@ -11758,23 +11768,23 @@
         F(this, "dragend", this.Ha());
         var a = io(this.Vt);
         this.I = 0;
-        this.Y = !0;
-        this.yb = !1;
+        this.Y = true;
+        this.yb = false;
         a = ya(this.YF, a, this.ega, this.fga);
         Om(this, a, 0)
     };
     v.fga = function () {
-        this.Y = !1
+        this.Y = false
     };
     v.ega = function () {
         bu(this);
-        return 0 != this.getHeight() ? i : this.Ae && !this.yb ? (this.yb = !0, this.I = lh(-0.5 * this.I) + 1, i) : this.Y = !1
+        return 0 != this.getHeight() ? i : this.Ae && !this.yb ? (this.yb = true, this.I = Math.ceil(-0.5 * this.I) + 1, i) : this.Y = false
     };
     v.yt = w(89);
     var Rla = new N(16, 16);v = Ei.prototype;v.yX = function (a) {
         this.Vt = mq("marker");
-        a && (this.fb = (this.Pg = !! a.draggable) && a.autoPan !== !1 ? i : !! a.autoPan);
-        this.Pg && (this.Ae = a.bouncy != null ? a.bouncy : i, this.qa = a.bounceGravity || 1, this.I = 0, this.ee = a.bounceTimeout || 30, this.G = !1, this.Re = a.dragCross != !1 ? i : l, this.Bb = !! a.dragCrossMove, this.V = 13, a = this.bd, is_number(a.maxHeight) && 0 <= a.maxHeight && (this.V = a.maxHeight))
+        a && (this.fb = (this.Pg = !! a.draggable) && a.autoPan !== false ? i : !! a.autoPan);
+        this.Pg && (this.Ae = a.bouncy != null ? a.bouncy : i, this.qa = a.bounceGravity || 1, this.I = 0, this.ee = a.bounceTimeout || 30, this.G = false, this.Re = a.dragCross != false ? i : l, this.Bb = !! a.dragCrossMove, this.V = 13, a = this.bd, is_number(a.maxHeight) && 0 <= a.maxHeight && (this.V = a.maxHeight))
     };
     v.r0 = function () {
         this.tb && (this.tb.DL(), fl(this.tb), this.tb = null);
@@ -11819,7 +11829,7 @@
         this.D = [];
         this.EP = {};
         this.qJ = this.uw = this.xs = this.bx = null;
-        this.Un = !1;
+        this.Un = false;
         this.C = new cu;
         this.F = mq("updateInfoWindow");
         this.AP = null;
@@ -11866,7 +11876,7 @@
         }, this);
         this.uw = a;
         F(this, Ob, a, d.point, e);
-        this.Un = !0;
+        this.Un = true;
         var f = this.xs.owner;
         f && ll(f, Sa, this, function () {
             this.xs && this.xs.owner == f && this.Ab()
@@ -11876,7 +11886,7 @@
         return k
     };
     du.prototype.Ab = function () {
-        this.Un && (F(this, Nb), this.Un = !1, this.qJ = this.uw = this.xs = null, this.C.clear(), Tla(this), F(this, Pb))
+        this.Un && (F(this, Nb), this.Un = false, this.qJ = this.uw = this.xs = null, this.C.clear(), Tla(this), F(this, Pb))
     };
     var Tla = function (a) {
         a.AP && cl(a.AP);
@@ -11912,7 +11922,7 @@
         this.D = c;
         this.action = d;
         this.options = e;
-        this.K = !1;
+        this.K = false;
         this.G = f || k;
         this.L = g || k;
         this.M = j || l
@@ -11985,7 +11995,7 @@
         },
         ku = function (a, b) {
             var c = [],
-                d = !0;
+                d = true;
             if (a.C) for (var e = 0; e < E(a.C); ++e) {
                 var f = a.C[e];
                 if ("" != f.Nb()) {
@@ -11997,7 +12007,7 @@
                     }
                     f.yI() && a.M && (g = "");
                     c.push(g);
-                    0 != E(g) && (d = !1)
+                    0 != E(g) && (d = false)
                 }
             }
             return d ? "" : c.join(";")
@@ -12012,9 +12022,9 @@
     lu.prototype.G = /^[A-Z]$/;lu.prototype.F = function (a, b, c) {
         b = mu(this.O, 4);
         if (this.O.nl || 3 == b.ic() || !Ld) return k;
-        var d = b = !0,
+        var d = b = true,
             e = null;
-        c instanceof Ei ? (e = c, b = !1, e.ae() && e.Fc("laddr") ? (a = e.Fc("laddr"), d = !1) : a = e.Ha().vb()) : a = this.O.$().Yb(a).vb();
+        c instanceof Ei ? (e = c, b = false, e.ae() && e.Fc("laddr") ? (a = e.Fc("laddr"), d = false) : a = e.Ha().vb()) : a = this.O.$().Yb(a).vb();
         c = {};
         c[Y(11271)] = A(this.D, this, a, 1, d, b, e);
         c[Y(11272)] = A(this.D, this, a, 2, d, b, e);
@@ -12025,7 +12035,7 @@
             g = null;
         1 == b && (f.push(new ju(a, e, c)), g = 0);
         2 == b && this.C && this.C.Wv(function (a) {
-            if (a = a.Jp().Ec()) d = !1, f.push(new ju(a.vb(), k, l, i))
+            if (a = a.Jp().Ec()) d = false, f.push(new ju(a.vb(), k, l, i))
         });
         if (d) {
             var j = this.O.Zd();
@@ -12151,14 +12161,14 @@
     };
 
     function zu() {}
-    la(zu);v = zu.prototype;v.O = null;v.J = null;v.$u = null;v.bp = null;v.GP = null;v.HP = null;v.WB = !1;v.init = function (a) {
+    la(zu);v = zu.prototype;v.O = null;v.J = null;v.$u = null;v.bp = null;v.GP = null;v.HP = null;v.WB = false;v.init = function (a) {
         this.O = a;
         this.J = a.$();
         this.J.Xa();
         this.$u = [];
         var b = this.J.bg;
         b && b.i_(A(this.Qea, this), A(this.Rea, this));
-        this.F = !1;
+        this.F = false;
         O(a, dc, this, this.G)
     };
     v.Qea = function (a) {
@@ -12200,7 +12210,7 @@
             em(a.HP, b);
             var b = !a.F && Ih(a.$u, 2),
                 c = V("mapmaker-link");
-            if (c && (em(c, b), lr && !tr("8") ? 0 : gda || hda)) a.xu ? a.xu.P$() : !im(V("mapmaker-link")) && !a.I && (a.I = !0, b = new Ag("mapmaker_promo"), Ma("mm_pm", 1, A(function (a) {
+            if (c && (em(c, b), lr && !tr("8") ? 0 : gda || hda)) a.xu ? a.xu.P$() : !im(V("mapmaker-link")) && !a.I && (a.I = true, b = new Ag("mapmaker_promo"), Ma("mm_pm", 1, A(function (a) {
                 this.xu || (this.xu = new a(this.O.Na(), this.O.of()), this.xu.O$())
             }, a), b))
         }
@@ -12300,9 +12310,9 @@
         }, this))
     };
     Du.prototype.satisfies = function (a) {
-        var b = !0;
+        var b = true;
         Ia(a, A(function (a, d) {
-            this.fZ[a] != d && (b = !1)
+            this.fZ[a] != d && (b = false)
         }, this));
         return b
     };
@@ -12315,10 +12325,10 @@
         var b = Hm(a),
             a = Gm(Am(a)),
             c = null; - 1 != b.indexOf("/maps/ms") || -1 != b.indexOf("/maps/fusion") ? c = nma : -1 != b.indexOf("/maps/place") && (c = oma);
-        var d = !1,
+        var d = false,
             e;
         for (e in a) if ("" == a[e] || e in mma || c && !(e in c)) delete a[e];
-        else if (!d) for (var f = "" + a[e], g = 0; g < f.length; ++g) 127 < f.charCodeAt(g) && (d = !0);
+        else if (!d) for (var f = "" + a[e], g = 0; g < f.length; ++g) 127 < f.charCodeAt(g) && (d = true);
         d || delete a.ie;
         c = [];
         for (g = 0; g < pma.length; ++g) e = pma[g], e in a && (c.push(encodeURIComponent(e) + "=" + Em(encodeURIComponent(a[e]))), delete a[e]);
@@ -12377,7 +12387,7 @@
         var c = document.createEvent("MouseEvents"),
             d = b.changedTouches[0];
         c.initMouseEvent(a, i, i, window, 1, d.screenX, d.screenY, d.clientX, d.clientY, l, l, l, l, 0, k);
-        c.translated = !0;
+        c.translated = true;
         return {
             event: c,
             target: d.target
@@ -12399,34 +12409,34 @@
         },
         Lu = function (a) {
             var b;
-            a: if (Rk(P) && a.type == "touchstart" || "SELECT" == a.target.tagName) b = !0;
+            a: if (Rk(P) && a.type == "touchstart" || "SELECT" == a.target.tagName) b = true;
             else {
                 for (b = a.target; b && b != document; b = b.parentNode) {
                     var c = b.__allowtouchdefault;
                     !is_void0(c) && b.getAttribute && (c = b.__allowtouchdefault = !! b.getAttribute("allowtouchdefault"));
                     if (c) {
-                        b = !0;
+                        b = true;
                         break a
                     }
                 }
-                b = !1
+                b = false
             }
             b || a.preventDefault();a.stopPropagation()
         };
 
     function Mu() {
         this.C = new Hu;
-        this.D = !1;
+        this.D = false;
         this.F = new L(0, 0);
         this.G = null;
-        this.I = !1;
+        this.I = false;
         document.addEventListener && (document.addEventListener("touchstart", A(this.M, this), i), document.addEventListener("touchend", A(this.K, this), i), document.addEventListener("touchmove", A(this.L, this), i), document.addEventListener("touchcancel", A(this.N, this), i))
     }
     Mu.prototype.M = function (a) {
-        this.I || (document.addEventListener(fb, Ku, i), document.addEventListener(nb, Ku, i), document.addEventListener(jb, Ku, i), document.addEventListener(G, Ku, i), document.addEventListener("dblclick", Ku, i), document.addEventListener(lb, Ku, i), document.addEventListener(mb, Ku, i), this.I = !0);
-        if (1 < a.touches.length) this.D = !0, this.C.reset();
+        this.I || (document.addEventListener(fb, Ku, i), document.addEventListener(nb, Ku, i), document.addEventListener(jb, Ku, i), document.addEventListener(G, Ku, i), document.addEventListener("dblclick", Ku, i), document.addEventListener(lb, Ku, i), document.addEventListener(mb, Ku, i), this.I = true);
+        if (1 < a.touches.length) this.D = true, this.C.reset();
         else {
-            this.D = !1;
+            this.D = false;
             Lu(a);
             Ju(Iu(fb, a));
             this.F.x = a.touches[0].pageX;
@@ -12453,7 +12463,7 @@
         this.D || 1 < a.touches.length || (Lu(a), Ju(Iu(nb, a)), this.C.F(a.changedTouches[0].target), 2 == this.C.G.W && (Ju(Iu(G, a)), 3 == this.C.C.W && Ju(Iu("dblclick", a))))
     };
     Mu.prototype.L = function (a) {
-        if (this.D || 1 < a.touches.length) this.D = !0;
+        if (this.D || 1 < a.touches.length) this.D = true;
         else {
             var b = this.C;
             b.G.reset();
@@ -12588,7 +12598,7 @@
         b = new LATLNG(b / 111120, b / (111120 * Math.cos(a.Jn())));
         b = new LATLNG(4 * b.lat(), 4 * b.lng());
         a = Fk(d, a, b, c);
-        return ph(a, 16)
+        return Math.min(a, 16)
     };
 
     function wma(a, b) {
@@ -12645,7 +12655,7 @@
         this.pb = b;
         this.G = c;
         this.OH = null;
-        this.F = !1
+        this.F = false
     }
     var Tu = function (a, b) {
         var c = {
@@ -12782,7 +12792,7 @@
         e || (e = document.title, f = window.location.protocol + "//maps.google.com/maps/api/staticmap", f = Uu(this, f), Tu(this, "maps_default"), e = new Vu(e, d, "", f));
         c = e;
         d = c.pd;
-        !d || -1 == d.indexOf("//maps.google.com/maps/api/staticmap") && -1 == d.indexOf("//maps.googleapis.com/maps/api/streetview") ? d = !1 : (d = Gm(d), d = !d.client && !d.signature);
+        !d || -1 == d.indexOf("//maps.google.com/maps/api/staticmap") && -1 == d.indexOf("//maps.googleapis.com/maps/api/streetview") ? d = false : (d = Gm(d), d = !d.client && !d.signature);
         a ? (d ? yma(this.G, c.pd, function (b) {
             c.Gm(b);
             a(Wu(c))
@@ -12832,7 +12842,7 @@
         this.G = 0;
         this.L = null;
         this.dv = 0;
-        this.at = !1;
+        this.at = false;
         this.F = {};
         this.pb = b.Nj || new Nu;
         this.AM = 0;
@@ -12991,7 +13001,7 @@
         Zu(a, b.__jsproto, c, l, d)
     },
         Zu = function (a, b, c, d, e) {
-            a.at = !0;
+            a.at = true;
             Cg(b.Ma());
             if (!(e = Ml(e))) if (e = a.X) delete a.X;
             else {
@@ -13019,9 +13029,9 @@
             }
             var m = e;
             kl(m, Mc, ya(Fma, m));
-            m.vpageLoad = !0;
+            m.vpageLoad = true;
             window.document.title = b.vc();
-            e = !1;
+            e = false;
             if (a.nl) g = V("panel");
             else {
                 e = P.D.H[0];
@@ -13111,7 +13121,7 @@
                 var s = new De(xd(p.H, "layers")[q]),
                     t;
                 if (t = s.H.composition_type != null) t = s.H.composition_type, t = !(2 != (t != null ? t : 1) || via(Ida(s).getId()));
-                t && (t = ria(s), t = j.te("CompositedLayer").Pp(t, j), t.pn = !0, t.interactive = !0, s.H.pertile_data != null && (t.um = !0), s = s.H.persistent, s != null && s ? j.Pa(t) : d.Pa(t))
+                t && (t = ria(s), t = j.te("CompositedLayer").Pp(t, j), t.pn = true, t.interactive = true, s.H.pertile_data != null && (t.um = true), s = s.H.persistent, s != null && s ? j.Pa(t) : d.Pa(t))
             }
             d = n;
             a.J.tc(Lia(b, a.Uh), c);
@@ -13203,7 +13213,7 @@
                     F(this, gc, b.Ma(), d, c);
                     !f && rg(b) && this.pb.Jf.ya(function (d) {
                         var e = rg(b);
-                        d.fV = !0;
+                        d.fV = true;
                         var f = a.Ib();
                         f ? (e = a.Hb().Ra(), 2 == f && e && 5 == qg(e) || 9 == f ? Kma(d, a, c) : d.W.execute(function () {
                             As(a, -1, 0, c);
@@ -13211,9 +13221,9 @@
                         })) : (f = d.oo[e], a.Of(e), f(a, c), Lma(d, a, c), Kma(d, a, c), c.Mb("actvp", "1"))
                     });
                     F(this, "infowindowautoopen", p);
-                    if (p) if (d) j = d.iwloc, d = d.urlViewport != !1, j && (this.Fu(this.ud(j), d, c), c.tick("iwao"));
+                    if (p) if (d) j = d.iwloc, d = d.urlViewport != false, j && (this.Fu(this.ud(j), d, c), c.tick("iwao"));
                     else {
-                        if (j = b.H.urlViewport != null) d = b.H.urlViewport, j = (d != null ? d : l) == !1;
+                        if (j = b.H.urlViewport != null) d = b.H.urlViewport, j = (d != null ? d : l) == false;
                         d = pg(b);
                         j = !j;
                         d && (this.Fu(this.ud(d), j, c), c.tick("iwao"))
@@ -13223,7 +13233,7 @@
                     if (c.$n("application") || c.$n("application_link") || c.$n("application_mymaps") || c.$n("embed") || c.$n("print")) if (rn() || this.Uh) d = "http://ditu.google.cn/maps/gen_204?imp=ael&jsv=" + kk(rk), (j = this.se.Wj()) && (d += "&ei=" + j), xs(d);
                     kl(this.SB, "unblock", nl(rc, this));
                     this.SB.unblock("app");
-                    this.at = !1
+                    this.at = false
                 } else c.tick("vppm")
             }, a);
             d = [];
@@ -13413,7 +13423,7 @@
         return c[b]
     };
     rj.prototype.jf = _get("zM");rj.prototype.of = _get("Ee");rj.prototype.Gd = function (a, b, c) {
-        this.at = !0;
+        this.at = true;
         b = b || {};
         pv(this.P, gc, this);
         a = qv(this, a, b, c);
@@ -13475,7 +13485,7 @@
                 var e = d.Fc("cid");
                 e && b.Mb("cid", e);
                 e = b.event().target;
-                if (!e || !e.nodeName || !("SELECT" == e.nodeName || "OPTION" == e.nodeName)) hv(a) == c ? (d.infoWindowClose = !0, a.Q()) : d.infoWindowClose = !1, a.Gc(c), d.infoWindowClose && (d.infoWindowClose = !1)
+                if (!e || !e.nodeName || !("SELECT" == e.nodeName || "OPTION" == e.nodeName)) hv(a) == c ? (d.infoWindowClose = true, a.Q()) : d.infoWindowClose = false, a.Gc(c), d.infoWindowClose && (d.infoWindowClose = false)
             }
         },
         Ema = function (a, b, c) {
@@ -13523,9 +13533,9 @@
     function rv(a, b, c, d, e, f) {
         this.Wi = new sv(zo);
         d.C = f ? Kia(f, this.Wi) : zq(e, bm(b), this.Wi);
-        d.ca = !0;
+        d.ca = true;
         d.D = a;
-        if (c.TB || d.G) d.F = !0;
+        if (c.TB || d.G) d.F = true;
         d.copyrightOptions.vU = !d.G;
         d.copyrightOptions.C = d.L || c.TB;
         e = new du;
@@ -13580,12 +13590,12 @@
                 var f = new Fla;
                 switch (a) {
                 case 4:
-                    f.Vs = !1;
-                    f.L = !0;
+                    f.Vs = false;
+                    f.L = true;
                     f.D = d;
                     f.K = null;
                     f.G = Rh(this.D, l);
-                    f.I = !0;
+                    f.I = true;
                     f.C = e.zl;
                     this.F && (f.F = this.F);
                     e = new vt(f);
@@ -13597,17 +13607,17 @@
                     f.D = d;
                     f.K = g;
                     f.G = Rh(this.D, l);
-                    f.I = !0;
+                    f.I = true;
                     f.C = e.zl;
                     this.F && (f.F = this.F);
                     e = new vt(f);
                     break;
                 case 3:
-                    f.D = !1;
-                    f.Vs = !1;
-                    f.L = !0;
+                    f.D = false;
+                    f.Vs = false;
+                    f.L = true;
                     f.G = Rh(this.D, l);
-                    f.I = !1;
+                    f.I = false;
                     f.C = e.zl;
                     this.F && (f.F = this.F);
                     e = new vt(f);
@@ -13626,10 +13636,10 @@
                     f.D = d;
                     f.K = g;
                     f.G = Rh(this.D, l);
-                    f.I = !0;
+                    f.I = true;
                     f.C = e.zl;
                     this.F && (f.F = this.F);
-                    f.M = !0;
+                    f.M = true;
                     e = new vt(f);
                     break;
                 default:
@@ -13696,9 +13706,9 @@
     function Qma(a, b, c) {
         var d = new bk(b),
             e = c.vp ? new Mf(c.vp) : k,
-            f = c.ho === !0,
+            f = c.ho === true,
             g = c.sb,
-            j, m = c.ho === !1,
+            j, m = c.ho === false,
             n = !! e && yq(e),
             p;
         if (rq(d)) p = new Ag("print");
@@ -13732,7 +13742,7 @@
                 "TR" == a && (K = a + "=" + b)
             });
             I.yG = K;
-            fn = !0
+            fn = true
         }
         window.tick = A(p.tick, p);
         window.branch = A(p.xf, p);
@@ -13750,13 +13760,13 @@
             M = {},
             Q = new mj;
         M.ln = d;
-        rq(d) ? (M.mkclk = !1, Q.noResize = !0) : tq(d) ? Q.L = !0 : (M.forms = ["d_form", "d_edit_form"], J.C && M.forms.push(J.C.id));
+        rq(d) ? (M.mkclk = false, Q.noResize = true) : tq(d) ? Q.L = true : (M.forms = ["d_form", "d_edit_form"], J.C && M.forms.push(J.C.id));
         Q.G = sq(d);
         rq(d) || (Q.ea = "tileContainer", Q.N = c.izsnzl);
-        Q.ba = !0;
+        Q.ba = true;
         Q.I = "m";
         Q.ha = iga(d) && !jga(d) ? "x-local" : sk(d);
-        tq(d) && (Q.Q = !0);
+        tq(d) && (Q.Q = true);
         Q.Y = c.iwgc;
         nn("data", "appOptionsJspb", b);
         var aa = new sma;
@@ -13838,16 +13848,16 @@
         Q.visible = Lia(e, sq(d));
         var sc = {},
             Rc;
-        if (rq(d)) Rc = !1;
+        if (rq(d)) Rc = false;
         else {
             var ac = d.H[37];
             Rc = ac != null ? ac : l
         }
         sc.H4 = Rc;
         sc.r4 = rq(d) || tq(d) || sq(d) ? l : i;
-        tq(d) ? (sc.wM = !1, sc.BG = !0) : sq(d) ? (sc.wM = !1, sc.BG = !0) : (sc.wM = !0, sc.BG = !1);
+        tq(d) ? (sc.wM = false, sc.BG = true) : sq(d) ? (sc.wM = false, sc.BG = true) : (sc.wM = true, sc.BG = false);
         sc.z4 = tq(d) || Tk() && Sk(P) ? l : i;
-        sq(d) ? (sc.Vs = !1, sc.A4 = !tq(d)) : sc.Vs = !0;
+        sq(d) ? (sc.Vs = false, sc.A4 = !tq(d)) : sc.Vs = true;
         sc.TB = rq(d);
         var gb = new rv(ha, xa, sc, Q, Ba, Hma(g)),
             xb = gb.$();
@@ -13933,7 +13943,7 @@
             Pf = new ko(new Re(d.H[63]), hg);
             ha.Q.set(Pf)
         }
-        window.gUserAction = !0;
+        window.gUserAction = true;
         var Je = new vv;
         xb.Oc() && (Pk(P) ? pv(Je, eb, xb, i) : pv(Je, Vb, xb, i));
         var ig = dj.wa();
@@ -14016,7 +14026,7 @@
         var pe = wa.of();
         if (pe && !Pda(lo(pe))) {
             var kg = function (a) {
-                a && (pe.Kg().H[32] = !0)
+                a && (pe.Kg().H[32] = true)
             };
             xb.pf ? xb.pf.iy(kg) : xb.RB.push(kg)
         }
@@ -14179,7 +14189,7 @@
                     if (Yj(Bk(d))) {
                         var b = a.ky;
                         ap.RT = A(b.P4, b);
-                        ap.q4 = !0
+                        ap.q4 = true
                     }
                     a.hy(yt, ap).G4();
                     j.tick("sgi", jn)
@@ -14429,7 +14439,7 @@
             var wn = new Su(wa, ha, xma(d));
             if (window.gbar && window.gbar.asmc) {
                 var lH = A(wn.C, wn);
-                wn.F || (wn.F = !0, Ll(A(wn.D, wn), 5E3));
+                wn.F || (wn.F = true, Ll(A(wn.D, wn), 5E3));
                 window.gbar.asmc(lH)
             }
         }
@@ -14734,7 +14744,7 @@
         return b
     },
         qv = function (a, b, c, d) {
-            a.at = !0;
+            a.at = true;
             var c = c || {},
                 e = Hm(b),
                 b = Cg(Gm(Am(b))),
@@ -15021,7 +15031,7 @@
     function wv(a) {
         this.O = a;
         this.J = a.$();
-        this.uO = !1
+        this.uO = false
     }
     wv.prototype.Xs = function () {
         O(this.O, gc, this, this.G);
@@ -15029,7 +15039,7 @@
         O(this.O, nc, this, this.C);
         O(this.O, ic, this, this.D);
         O(this.J, Gb, this, A(function () {
-            this.uO = !1
+            this.uO = false
         }, this))
     };
     wv.prototype.F = function (a) {
@@ -15085,7 +15095,7 @@
                 };
                 e = 0
             }
-            d.I = !0;
+            d.I = true;
             d.Be = c;
             c = this.J.Fa();
             b.cbll && (c = C.fromUrlValue(b.cbll));
@@ -15099,7 +15109,7 @@
                 source: b.source || ""
             });
             d.K = String(bv(vq(a)));
-            if (a.overlays && a.overlays.markers && E(a.overlays.markers || []) && b.iwloc) d.L = !0;
+            if (a.overlays && a.overlays.markers && E(a.overlays.markers || []) && b.iwloc) d.L = true;
             this.J.Wa().Zf(e, d)
         }
     };
@@ -15176,7 +15186,7 @@
                     e.review_count = f != null ? f : 0
                 }
                 f = a.H.hover_snippet;
-                if (f = f != null ? f : "") e.snippet = f, f = a.H.hover_snippet_attr, (f = f != null ? f : "") && (e.snippet_attribution = f), f = a.getId(), xaa.test(f) && (e.suppress_title = !0, e.snippet_is_raw_html = !0);
+                if (f = f != null ? f : "") e.snippet = f, f = a.H.hover_snippet_attr, (f = f != null ? f : "") && (e.snippet_attribution = f), f = a.getId(), xaa.test(f) && (e.suppress_title = true, e.snippet_is_raw_html = true);
                 0 < yd(a.H, "known_for_term") && (b.known_for_terms = xd(a.H, "known_for_term"));
                 f = a.H.zagat_score;
                 b.zagat_score = f != null ? f : "";
@@ -15184,7 +15194,7 @@
                 b.zagat_official = f != null ? f : l
             }
             e = new Xs(e);
-            e.VO = !0;
+            e.VO = true;
             e.F = b;
             if (Qd && (b = (b = a.H.travel_ads) ? new cf(b) : lea)) b = b.H.price, e.C = b != null ? b : "";
             b = e
@@ -15301,7 +15311,7 @@
             q.Ka = a;
             q.ra.$f();
             a ? p.show() : n >= m && nna(this, p)
-        } else a ? (nna(this, p), p.Ka && (p.Ka = !1, p.ra.$f())) : n < m && p.show();
+        } else a ? (nna(this, p), p.Ka && (p.Ka = false, p.ra.$f())) : n < m && p.show();
         a ? (this.C && Ov(this.C, this.G, this.I, l), Ov(d, c, e, i), this.I = e, this.C = c, this.G = d) : (Ov(c, d, e, l), this.G = this.C = this.I = null)
     };
     var Ov = function (a, b, c, d) {
@@ -15446,9 +15456,9 @@
     };
 
     function ou(a, b, c) {
-        for (var d = !1, e = 0; e < E(a.elements); ++e) {
+        for (var d = false, e = 0; e < E(a.elements); ++e) {
             var f = a.elements[e];
-            f.name == b && (f.value = c, d = !0)
+            f.name == b && (f.value = c, d = true)
         }
         if (d) return k;
         f = U("input", k);
@@ -15524,7 +15534,7 @@
     Bv.prototype.I = function () {
         var a = this.D.value,
             b = this.F;
-        a != b && (1 != jh(E(a) - E(b)) && (this.D.value = Qv(a)), this.F = this.D.value)
+        a != b && (1 != Math.abs(E(a) - E(b)) && (this.D.value = Qv(a)), this.F = this.D.value)
     };
     Bv.prototype.G = function () {
         window.clearInterval(this.C);
@@ -15546,7 +15556,7 @@
         nga(c) && this.C.push("m");
         this.pb = a;
         this.O = b;
-        this.I = this.G = !1;
+        this.I = this.G = false;
         O(this.O, gc, this, this.N);
         O(this.O, taa, this, this.F);
         O(this.O, cc, this, this.M);
@@ -15839,14 +15849,14 @@
         this.F = c || k;
         this.Ia = []
     }
-    Yv.prototype.og = !1;Yv.prototype.show = function () {
+    Yv.prototype.og = false;Yv.prototype.show = function () {
         lm(this.ce);
-        this.og = !0;
+        this.og = true;
         this.Ia.push(S(this.C, fb, this, this.D), S(this.C, G, this, this.D), S(this.C, mb, this, this.G))
     };
     Yv.prototype.hide = function (a) {
         jm(this.ce);
-        this.og = !1;
+        this.og = false;
         for (var b = 0, c = E(this.Ia); b < c; ++b) cl(this.Ia[b]);
         Pg(this.Ia);
         a || F(this, Qa)
@@ -16044,7 +16054,7 @@
             });
             var g = rk = new bk(a);
             c && ps.push(c.id);
-            "string" == typeof qba && sk(rk) && Ih(qba.split(","), sk(rk)) && (H(ps, Yka), Vka = !0);
+            "string" == typeof qba && sk(rk) && Ih(qba.split(","), sk(rk)) && (H(ps, Yka), Vka = true);
             var j = tk(rk),
                 m = j ? "Right" : "Left",
                 n = j ? "Left" : "Right";
@@ -16120,7 +16130,7 @@
                 "m" == a && kf.BJ(b)
             };
             zo = [];
-            var Rc = new Kp(oh(30, 30) + 1),
+            var Rc = new Kp(Math.max(30, 30) + 1),
                 ac = g.H[23],
                 gb = new Op(ac != null ? ac : ""),
                 xb = rp("wgl-ctx", l),
@@ -16136,11 +16146,11 @@
                                 Dd = parseFloat(xf[1]),
                                 Ud = parseFloat(xf[3]);
                             if (Cd == xf[0] && pc == xf[2] && Dd <= Pd.F && Ud <= Pd.version) {
-                                Yc = !0;
+                                Yc = true;
                                 break a
                             }
                         }
-                        Yc = !1
+                        Yc = false
                     }
                     nf = Yc
                 }
@@ -16318,7 +16328,7 @@
         this.L = this.K = 0;
         this.F = b;
         this.G = 0;
-        this.I = !1;
+        this.I = false;
         this.D = null;
         P.C() ? (4 == P.type && 3.5 <= P.version || 2 <= P.revision ? S(this.C, "MozMousePixelScroll", this, A(this.M, this, i)) : S(this.C, "DOMMouseScroll", this, A(this.M, this, l)), 1.9 > P.revision && S(this.C, jb, this, function (a) {
             this.FV = {
@@ -16349,15 +16359,15 @@
         var c = getUTC();
         Vm(a);
         var d;
-        d = b && 1 == jh(b) ? b : 0 == P.type ? -1 * a.detail : is_void0(a.wheelDeltaY) ? a.wheelDeltaY : a.wheelDelta;
+        d = b && 1 == Math.abs(b) ? b : 0 == P.type ? -1 * a.detail : is_void0(a.wheelDeltaY) ? a.wheelDeltaY : a.wheelDelta;
         Ina(this, c, d, a)
     };
     var Ina = function (a, b, c, d) {
         if (c) {
             var e = a.L;
             a.L = b;
-            !a.I && (a.D && 0 != c % a.D.$H) && (a.I = !0, F(a, "touchdetected"));
-            if (a.I && (a.G = 200 < b - e ? c : a.G + c, jh(a.G) < a.D.kO)) return;
+            !a.I && (a.D && 0 != c % a.D.$H) && (a.I = true, F(a, "touchdetected"));
+            if (a.I && (a.G = 200 < b - e ? c : a.G + c, Math.abs(a.G) < a.D.kO)) return;
             b - a.K < a.F || (d = cn(d, a.C), 0 > d.x || (0 > d.y || d.x > a.C.clientWidth || d.y > a.C.clientHeight) || (a.K = b, F(a, "mousewheel", d, c)))
         }
     };
@@ -16366,14 +16376,14 @@
         this.J = a;
         this.wt = new cw(a.Xa());
         this.Qm = [];
-        this.gD = this.I = !1;
+        this.gD = this.I = false;
         this.C = this.K = null;
         this.D = void 0;
         fo(this.J, A(function () {
             this.Qm.push(O(this.wt, "mousewheel", this, this.U9))
         }, this));
         Uca && Pk(P) && O(this.wt, "touchdetected", this, function () {
-            this.gD = !0
+            this.gD = true
         });
         this.Qm.push(R(this.J, fb, A(this.S9, this)));
         this.Qm.push(R(this.J, nb, A(this.T9, this)));
@@ -16422,26 +16432,26 @@
             var g = e,
                 j = c.da(),
                 m = j + g,
-                n = !1,
+                n = false,
                 p = Gk(c.va());
-            p && (n = p.F, n = j >= n && lh(m) < n || j < n && m >= n);
-            g = !Kk(c.va()) && 3 <= jh(g);
-            n || g ? (d = vh(e + d), Qo(c, d, l, f.latLng, l, h, h)) : Zn(c, e, f.Gk);
+            p && (n = p.F, n = j >= n && Math.ceil(m) < n || j < n && m >= n);
+            g = !Kk(c.va()) && 3 <= Math.abs(g);
+            n || g ? (d = Math.round(e + d), Qo(c, d, l, f.latLng, l, h, h)) : Zn(c, e, f.Gk);
             this.K = Ll(A(this.e7, this, e, f.latLng, f.Gk), 45)
         }
     };
     v.S9 = function () {
-        this.I = !0
+        this.I = true
     };
     v.T9 = function () {
-        this.I = !1
+        this.I = false
     };
     v.e7 = function (a, b, c) {
         if (this.J.P) {
             var d = 2 * this.C.hD,
                 e = this.F;
-            jh(this.F) < d && (e = 0 < this.F ? d : -d);
-            a = (0 < this.F ? lh(a) : nh(a)) + this.J.da();
+            Math.abs(this.F) < d && (e = 0 < this.F ? d : -d);
+            a = (0 < this.F ? Math.ceil(a) : Math.floor(a)) + this.J.da();
             this.G = setInterval(A(this.AW, this, a, e, b, c), 30);
             this.AW(a, e, b, c)
         } else b = new Ag("zoom"), b.Mb("zua", "tp"), Kna(this, this.D, this.J.da(), b), this.D = void 0, b.done()
@@ -16483,7 +16493,7 @@
         this.F = new Lna;
         this.D = new fw;
         this.C = null;
-        this.fV = !1;
+        this.fV = false;
         this.Vf = [];
         this.W = new hw;
         O(this.W, Gc, this, this.jI);
@@ -16508,7 +16518,7 @@
             var f = b[d],
                 g;
             var j = f;
-            a == j || j.EN ? g = !1 : (g = a.Ph(), "default_act" == g ? g = !1 : (j = j.Ph(), g = j == g || ("disambiguation" == j || j == null || "mapshop" == j) || "categorical" == j && ("navigational" == g || g == null || "mapshop" == g) || "navigational" == j && "mapshop" == g ? i : l));
+            a == j || j.EN ? g = false : (g = a.Ph(), "default_act" == g ? g = false : (j = j.Ph(), g = j == g || ("disambiguation" == j || j == null || "mapshop" == j) || "categorical" == j && ("navigational" == g || g == null || "mapshop" == g) || "navigational" == j && "mapshop" == g ? i : l));
             g && f.hide(c)
         }
         a.activate(c)
@@ -16551,14 +16561,14 @@
 
     function hw() {
         this.C = 0;
-        this.D = !1
+        this.D = false
     }
     hw.prototype.render = function () {
-        this.D = !0;
+        this.D = true;
         Nna(this)
     };
     var Nna = function (a) {
-        a.D && !a.C && (F(a, Gc), a.D = !1)
+        a.D && !a.C && (F(a, Gc), a.D = false)
     };
     hw.prototype.execute = function (a, b) {
         this.C++;
@@ -16592,7 +16602,7 @@
         c.bind(d);
         var e = d.Ph();
         c.C = e;
-        c.I = !1;
+        c.I = false;
         b.oo[7] = function (a) {
             a.bind(d)
         };
@@ -16624,10 +16634,10 @@
         this.N = c;
         this.C = {};
         this.G = null;
-        this.M = !1;
+        this.M = false;
         this.Wi = {};
         this.K = {};
-        this.P = !1
+        this.P = false
     }
     jw.prototype.F = function (a, b) {
         if (this.G && 0 != ch(this.C)) {
@@ -16706,13 +16716,13 @@
                     var q = new mj;
                     q.mapTypes = [n];
                     q.size = p;
-                    q.cv = !0;
+                    q.cv = true;
                     q.I = "o";
-                    q.noResize = !0;
-                    q.F = !0;
-                    q.on = !0;
+                    q.noResize = true;
+                    q.F = true;
+                    q.on = true;
                     q.backgroundColor = "transparent";
-                    q.K = !0;
+                    q.K = true;
                     if (p = m.Fa()) q.C =
                     new kj(n, p, m.da());
                     g = new nj(g, q);
@@ -16791,7 +16801,7 @@
         this.V = [];
         this.Q = {};
         this.N = {};
-        this.M = !1
+        this.M = false
     }
     lw.prototype.initialize = function (a, b, c, d, e, f, g) {
         if (d && e) {
@@ -16900,8 +16910,8 @@
         })
     };
     v.V5 = function () {
-        for (var a = !1, b = 0; b < this.I.length; ++b) if (2 <= this.I[b].ic()) {
-            a = !0;
+        for (var a = false, b = 0; b < this.I.length; ++b) if (2 <= this.I[b].ic()) {
+            a = true;
             break
         }
         a && this.D.Ob() && (oq(this.D), this.J.zl.ya(function (a) {
@@ -16956,7 +16966,7 @@
         this.UH = $v;
         this.wd = b;
         this.EW = 0;
-        this.Wc = !1;
+        this.Wc = false;
         this.ib = 0;
         this.Ee = a;
         var c = Nda(lo(this.Ee));
@@ -16976,7 +16986,7 @@
             a.Wa().isDragging() || Wm(b)
         }, c = ["mousewheel", "DOMMouseScroll", "MozMousePixelScroll", jb], d = 0; d < c.length; d++) il(this.wd.C, c[d], b);
         il(this.wd.D, jb, b);
-        this.Wc = !0;
+        this.Wc = true;
         this.Zi();
         return this.wd.container
     };
@@ -17025,7 +17035,7 @@
         Al(a.mf, "mv-active", 3 == b);
         var c = a.Pm.ZC;
         c && Al(c, "mv-hce-on", !a.Pm.Ob());
-        c = !1;
+        c = false;
         1 < b && (c = Sna(a.Pm));
         Tna(this, a.Pm, c)
     };
@@ -17220,7 +17230,7 @@
                 il(f.G, G, function () {
                     a.Wa().Ue()
                 });
-                var n = !1,
+                var n = false,
                     p = new Hi(k);
                 p.Ua = "photos_sv";
                 p.Of(0);
@@ -17278,7 +17288,7 @@
                             var c = j.F;
                             2 == c.ic() || !c.Ob() ? t.show() : t.hide()
                         }
-                        j.M = !0;
+                        j.M = true;
                         j.Op(function (a) {
                             a.tc(l)
                         });
@@ -17289,7 +17299,7 @@
                     if (Kk(a.va())) {
                         var b = t.ic();
                         W(f.G);
-                        j.M = !1;
+                        j.M = false;
                         j.Op(function (a) {
                             a.tc(i)
                         });
@@ -17304,7 +17314,7 @@
                             Ll(function () {
                                 t.finalize()
                             }, 0);
-                            n = !1
+                            n = false
                         }
                         p.tc(l);
                         Ll(function () {
@@ -17339,7 +17349,7 @@
                         var b = a.getSize();
                         return new L(b.width - 18 - 34, 35)
                     };
-                    m.P = !0;
+                    m.P = true;
                     var c = b();
                     m.G = c;
                     m.F(i);
