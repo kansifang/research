@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script language="javascript">
+var ax = ["=", ".", "-", "*"];
+var bU = 1 << 23;
+var aK = 2;
+
+function U(cP) {
+	var cO = am(cP.charAt(0));
+	var cI = cP.substr(1);
+	var cR = 0;
+	var T = cI.length;
+	var cS = [];
+	var cM = [];
+	var cN = [];
+	while (cR < T) {
+		if (cI.charAt(cR) == ax[0]) {
+			if ((T - cR) < 13) {
+				return 0
+			}
+			cN = cy(cI.substr(cR, 13), cS);
+			if (cN < 0) {
+				return 0
+			}
+			cR += 13
+		} else {
+			if (cI.charAt(cR) == ";") {
+				cM.push(cS.slice(0));
+				cS.length = 0;
+				++cR
+			} else {
+				if ((T - cR) < 8) {
+					return 0
+				}
+				cN = aQ(cI.substr(cR, 8), cS);
+				if (cN < 0) {
+					return 0
+				}
+				cR += 8
+			}
+		}
+	}
+	for (var cL = 0, cJ = cM.length; cL < cJ; cL++) {
+		for (var cK = 0, cQ = cM[cL].length; cK < cQ; cK++) {
+			cM[cL][cK] /= 100
+		}
+	}
+	return {
+		geoType: cO,
+		geo: cM
+	}
+}
+function am(cI) {
+	var T = -1;
+	if (cI == ax[1]) {
+		T = aK
+	} else {
+		if (cI == ax[2]) {
+			T = bt
+		} else {
+			if (cI == ax[3]) {
+				T = aP
+			}
+		}
+	}
+	return T
+}
+function cy(cK, cI) {
+	var T = 0;
+	var cM = 0;
+	var cL = 0;
+	for (var cJ = 0; cJ < 6; cJ++) {
+		cL = aa(cK.substr(1 + cJ, 1));
+		if (cL < 0) {
+			return -1 - cJ
+		}
+		T += cL << (6 * cJ);
+		cL = aa(cK.substr(7 + cJ, 1));
+		if (cL < 0) {
+			return -7 - cJ
+		}
+		cM += cL << (6 * cJ)
+	}
+	cI.push(T);
+	cI.push(cM);
+	return 0
+}
+function aQ(cL, cJ) {
+	var cI = cJ.length;
+	if (cI < 2) {
+		return -1
+	}
+	var T = 0;
+	var cN = 0;
+	var cM = 0;
+	for (var cK = 0; cK < 4; cK++) {
+		cM = aa(cL.substr(cK, 1));
+		if (cM < 0) {
+			return -1 - cK
+		}
+		T += cM << (6 * cK);
+		cM = aa(cL.substr(4 + cK, 1));
+		if (cM < 0) {
+			return -5 - cK
+		}
+		cN += cM << (6 * cK)
+	}
+	if (T > bU) {
+		T = bU - T
+	}
+	if (cN > bU) {
+		cN = bU - cN
+	}
+	cJ.push(cJ[cI - 2] + T);
+	cJ.push(cJ[cI - 1] + cN);
+	return 0
+}
+function aa(cI) {
+	var T = cI.charCodeAt(0);
+	if (cI >= "A" && cI <= "Z") {
+		return T - "A".charCodeAt(0)
+	} else {
+		if (cI >= "a" && cI <= "z") {
+			return (26 + T - "a".charCodeAt(0))
+		} else {
+			if (cI >= "0" && cI <= "9") {
+				return (52 + T - "0".charCodeAt(0))
+			} else {
+				if (cI == "+") {
+					return 62
+				} else {
+					if (cI == "/") {
+						return 63
+					}
+				}
+			}
+		}
+	}
+	return -1
+}
+</script>
+</head>
+
+<body>
+
+<script language="javascript">
+console.log(U('.=pjDMNBYJHzcA;'));
+console.log(U('.=X1/LNBZUkzcA;'));
+</script>
+</body>
+</html>
