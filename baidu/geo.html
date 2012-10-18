@@ -9,40 +9,39 @@ var bU = 1 << 23;
 var aK = 2;
 
 function U(cP) {
-	//确定坐标类型
+	//根据首位字符确定坐标类型
 	var cO = am(cP.charAt(0));
-	var cI = cP.substr(1);
-	var T = cI.length;
+	// 获取除首位字符外地字符
+	var string = cP.substr(1);
+	var len = string.length;
 	var cS = [];
 	var cM = [];
 	var cN = [];
 	
 	var i = 0;
-	while (i < T) {
-		if (cI.charAt(i) == '=') {
-			if ((T - i) < 13) {
+	while (i < len) {
+		if (string.charAt(i) == '=') {
+			if ((len - i) < 13) {
 				return 0
 			}
-			cN = cy(cI.substr(i, 13), cS);
+			cN = cy(string.substr(i, 13), cS);
 			if (cN < 0) {
 				return 0
 			}
 			i += 13
+		} else if (string.charAt(i) == ";") {
+			cM.push(cS.slice(0));
+			cS.length = 0;
+			++i
 		} else {
-			if (cI.charAt(i) == ";") {
-				cM.push(cS.slice(0));
-				cS.length = 0;
-				++i
-			} else {
-				if ((T - i) < 8) {
-					return 0
-				}
-				cN = aQ(cI.substr(i, 8), cS);
-				if (cN < 0) {
-					return 0
-				}
-				i += 8
+			if ((len - i) < 8) {
+				return 0
 			}
+			cN = aQ(string.substr(i, 8), cS);
+			if (cN < 0) {
+				return 0
+			}
+			i += 8
 		}
 	}
 	for (var j = 0; j < cM.length; j++) {
