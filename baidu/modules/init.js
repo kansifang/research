@@ -6000,8 +6000,6 @@ window.BMAP_AUTHENTIC_KEY = "";
         this._queryList = [];
         var T = this;
         //cx.load("othersearch", function () {
-			console.log('ok');
-
             T._asyncSearch()
         //})
     }
