@@ -2360,9 +2360,10 @@
     };
 	// GMap2
 	var nj,
-		GMap2 = function nj(a, b) {
+		GMap2 = function(a, b) {
 			GMap2.Aa.apply(this, arguments)
 		}
+	nj = GMap2;
     var oj = new Da;
 
     function pj() {};
@@ -16137,6 +16138,7 @@
                 xb = rp("wgl-ctx", l),
                 lf = 1 == zk(g),
                 mf;
+				console.log(gb);
             if (!(mf = "force" == hi().vector)) {
                 var nf;
                 if (nf = !xb) {
