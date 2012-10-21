@@ -38,7 +38,7 @@ exports.getFiles = function (compsBase32) {
 
 	return files;
 };
-
+// JS 压缩
 exports.uglify = function (code) {
 	var pro = uglifyjs.uglify;
 
@@ -49,7 +49,7 @@ exports.uglify = function (code) {
 
 	return pro.gen_code(ast) + ';';
 };
-
+// 合并
 exports.combineFiles = function (files) {
 	var content = '(function () {\n\n';
 	for (var i = 0, len = files.length; i < len; i++) {
@@ -57,11 +57,11 @@ exports.combineFiles = function (files) {
 	}
 	return content + '\n\n}());';
 };
-
+// 保存
 exports.save = function (savePath, compressed) {
 	return fs.writeFileSync(savePath, compressed, 'utf8');
 };
-
+// 加载文件
 exports.load = function (loadPath) {
 	try {
 		return fs.readFileSync(loadPath, 'utf8');

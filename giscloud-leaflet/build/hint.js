@@ -1,3 +1,7 @@
+/*
+ * 代码错误和问题
+ */
+ 
 var jshint = require('jshint').JSHINT,
 	fs = require('fs'),
 	config = require('./hintrc.js').config;
