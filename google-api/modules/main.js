@@ -441,8 +441,9 @@
     function Td(a) {
         return typeof a == "string"
     }
+	// 将数组a中元素逐项执行b函数
     function L(a, b) {
-        if (a) for (var c = 0, d = I(a); c < d; ++c) b(a[c], c)
+        if (a) for (var c = 0, d = a.length; c < d; ++c) b(a[c], c)
     }
 	// 执行b，传入KEY和value
     function Gd(a, b) {
@@ -487,11 +488,13 @@
     function Zd(a) {
         return a != null && typeof a == "object" && typeof a.length == "number"
     }
-    function $d(a) {
+	// a: https://maps.gstatic.com/cat_js/intl/zh_cn/mapfiles/api-3/9/16
+    function $d(/* URL */a) {
         var b = "";
-        L(arguments, function (a) {
+        L(arguments, function (a) {//将参数数组中元素逐项运行匿名函数
             I(a) && "/" == a[0] ? b = a : (b && "/" != b[I(b) - 1] && (b += "/"), b += a)
         });
+		// https://maps.gstatic.com/cat_js/intl/zh_cn/mapfiles/api-3/9/16/%7Bmarker%7D.js
         return b
     }
     function ae(a) {
@@ -525,14 +528,15 @@
     function fe(a) {
         return m.setTimeout(a, 0)
     }
-    function ge(a, b) {
+	// 加载script 脚本
+    function ge(/*Document*/a, /*URL*/b) {
         var c = a.getElementsByTagName("head")[0],
             d = a.createElement("script");
         d.type = "text/javascript";
         d.charset = "UTF-8";
         d.src = b;
         c.appendChild(d);
-        return d
+        return d;/*DOM*/
     };
 
 	var P,
@@ -828,21 +832,26 @@
     Re.visualization_impl = ["onion"];
     Re.weather = ["main"];
     Re.weather_impl = ["onion"];
-
-    function Se(a, b) {
+	
+	// 模块加载
+    function Se(/*Document*/a, /*URL*/b) {
         this.f = a;
         this.j = {};
-        this.b = [];
-        this.d = null;
+        this.b = []; // 待加载模块
+        this.d = null; // 当前timer
+		// 仓库地址
         this.e = (this.B = !! b.match(/^https?:\/\/[^:\/]*\/intl/)) ? b.replace("/intl", "/cat_js/intl") : b
     }
     Se.prototype.I = function () {
+		// 处理并得到待加载模块URL ： 
         var a = $d(this.e, "%7B" + this.b.join(",") + "%7D.js");
         this.b.length = 0;
         window.clearTimeout(this.d);
         this.d = null;
+		// 加载script脚本
         ge(this.f, a)
     };
+	
     var Te = "click",
         Ue = "contextmenu",
         Ve = "forceredraw",
@@ -1000,10 +1009,10 @@
             delete Q.jd[this.id]
         }
     };
-
-    function gf(a, b) {
-        this.f = a;
-        this.b = b;
+	// 将类依赖转换为模块
+    function gf(/*模块加载实例*/a, /*package类依赖*/b) {
+        this.f = a;//模块加载
+        this.b = b;//待加载模块
         var c = {};
         Gd(b, function (a, b) {
             L(b, function (b) {
@@ -1011,20 +1020,22 @@
                 c[b].push(a)
             })
         });
+		// 模块对应类
         this.d = c
     }
     function hf() {
         this.b = []
     }
-    hf.prototype.Eb = function (a, b) {
-        var c = new Se(document, a),
+    hf.prototype.Eb = function (/*URL*/a, b) {
+        var c = new Se(document, /*URL*/a), //加载
             d = this.f = new gf(c, b);
-        L(this.b, function (a) {
+        L(this.b, function (a) {// 数组逐项运行
             a(d)
         });
         this.b.length = 0;
     };
     hf.prototype.ae = function (a) {
+		//如果存在模块加载实例则通过模块加载
         this.f ? a(this.f) : this.b.push(a)
     };
 

@@ -24,12 +24,12 @@ google.maps = google.maps || {};
 	//手动加载本地js
 	var script = [
 		'main.js',
-		'common.js',
-		'map.js',
-		'util.js',
-		'onion.js',
-		'stat.js',
-		'controls.js',
+		//'common.js',
+		//'map.js',
+		//'util.js',
+		//'onion.js',
+		//'stat.js',
+		//'controls.js',
 		//'marker.js'
 	];
 	for(var i=0;i<script.length;i++){
