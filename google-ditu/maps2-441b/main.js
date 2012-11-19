@@ -1,36 +1,36 @@
 (function () {
     'use strict';
-
+	// throw error
     function aa(a) {
         throw a;
     }
-    var g = void 0,
-        j = !0,
-        m = null,
-        n = !1;
-
+    var g = void 0, // none return
+        j = !0, // true
+        m = null, 
+        n = !1; // false
+	// 
     function ba() {
         return function (a) {
             return a
         }
     }
-
+	// 空函数
     function ca() {
         return function () {}
     }
-
+	// set 方法
     function ea(a) {
         return function (b) {
             this[a] = b
         }
     }
-
+	// get 方法
     function s(a) {
         return function () {
             return this[a]
         }
     }
-
+	// 执行时得到当前参数	
     function u(a) {
         return function () {
             return a
@@ -123,18 +123,27 @@
                 return a.apply(this, b)
             }
         },
-        xa = Date.now ||
-        function () {
+		// 获取当前时间戳
+        xa = Date.now || function () {
             return +new Date
         },
-        ya = function (a, b) {
+		// 设置window根函数
+        ya = function (/*__gjsload_maps2__*/a, b) {
             var c = a.split("."),
-                d = ga;
-            !(c[0] in d) && d.execScript && d.execScript("var " + c[0]);
-            for (var e; c.length && (e = c.shift());)!c.length && A(b) ? d[e] = b : d = d[e] ? d[e] : d[e] = {}
+                d = ga;// Window
+            if(!(c[0] in window) && window.execScript){
+				d.execScript("var " + c[0]);
+			}
+            for (var e; c.length && (e = c.shift());){
+				if(!c.length && A(b)){
+					d[e] = b
+				}else{
+					d = d[e] ? d[e] : d[e] = {}
+				}
+			}
         },
         C = function (a, b) {
-            function c() {}
+            function c(){}
             c.prototype = b.prototype;
             a.ia = b.prototype;
             a.prototype = new c;
@@ -18997,12 +19006,9 @@
                     ["prepareMainForm", d.TB],
                     ["getVPage", d.Ej]
                 ]],
-                ["GEvent",
-                {}, [],
-                    [
-                        ["addListener", P]
-                    ]
-                ],
+                ["GEvent", {}, [], [["addListener", P]]
+				
+				],
                 ["GDownloadUrl", Xu],
                 ["GMap2", dk, [
                     ["getCenter", e.Ga],

@@ -3,6 +3,7 @@
 <head>
 <meta content="text/html;charset=UTF-8" http-equiv="content-type" />
 <meta content="提供互动地图、卫星图像。查找周边商家信息、行车及公交路线。" name="description" />
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
 <link href="//maps.gstatic.com/favicon2.ico" rel="shortcut icon" />
 <noscript>
 <meta content="0; URL=/m?oi=nojs" http-equiv="refresh" />
@@ -46,7 +47,6 @@ function beforeReport() {};
 			f = window.gmapstiming.load,
 			g = c.navigationStart,
 			h = c.responseStart;
-			console.log(f);
 		0 < g && h >= g && (f.tick("_wtsrt", void 0, g), f.tick("wtsrt_", "_wtsrt", h), f.tick("tbsd_", "wtsrt_"))
 	}
 	try {
@@ -395,8 +395,7 @@ function beforeReport() {};
 				})
 			};
 			q("lPW", Y);
-			K.push(["pw",
-			{
+			K.push(["pw", {
 				url: "//ssl.gstatic.com/gb/js/abc/pwm_45f73e4df07a0e388b0fa1f3d30e7280.js"
 			}]);
 			var Z = [],
@@ -928,7 +927,6 @@ function recordCityblockHeavyFlashLoadTime() {
 	tick('cbh');
 }
 </script>
-<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
 <script type="text/javascript">
 window.onunload = function() {
 	GUnload();
@@ -2197,7 +2195,6 @@ window.gEventQueue = (function() {
 		}
 	};
 })();
-
 function GScript(src) {
 	var s = document.createElement('script');
 	s.src = src;
@@ -2210,7 +2207,8 @@ function GBrowserIsCompatible() {
 		version: "182",
 		jsbinary: [{
 			id: "maps2",
-			url: "http://maps.gstatic.cn/intl/zh-CN_cn/mapfiles/441b/maps2/main.js"
+			//url: "http://maps.gstatic.cn/intl/zh-CN_cn/mapfiles/441b/maps2/main.js"
+			url: "maps2-441b/main.js"
 		}, {
 			id: "maps2.api",
 			url: "http://maps.gstatic.cn/intl/zh-CN_cn/mapfiles/441b/maps2.api/main.js"
@@ -2234,7 +2232,7 @@ function GBrowserIsCompatible() {
 	window.GLoadMapsScript = function() {
 		if (!GLoadMapsScript.called && GBrowserIsCompatible()) {
 			GLoadMapsScript.called = true;
-			var msu = appOptions[33] ? "http://maps.gstatic.cn/intl/zh-CN_cn/mapfiles/441b/maps2/app.js" : "http://maps.gstatic.cn/cat_js/intl/zh-CN_cn/mapfiles/441b/maps2/%7Bmain,mod_util,mod_vt%7D.js";
+			var msu = appOptions[33] ? "http://maps.gstatic.cn/intl/zh-CN_cn/mapfiles/441b/maps2/app.js" : "http://maps.gstatic.cn/cat_js/intl/zh-CN_cn/mapfiles/441b/maps2/%7Bmod_util,mod_vt%7D.js";
 			GScript(msu);
 		}
 	};
@@ -2357,6 +2355,10 @@ for (var i = 0; i < userActions.length; ++i) {
 	}
 })();
 </script>
+
+<script language="javascript" src="maps2-441b/main.js"></script>
+<script language="javascript"></script>
+
 <div></div>
 <!-- 17259 201292 201330 4001767 4001772 -->
 </body>
