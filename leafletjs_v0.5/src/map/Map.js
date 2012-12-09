@@ -669,7 +669,7 @@ L.Map = L.Class.extend({
 	_getCenterLayerPoint: function () {
 		return this.containerPointToLayerPoint(this.getSize()._divideBy(2));
 	},
-
+	// 与中心点的偏移量
 	_getCenterOffset: function (center) {
 		return this.latLngToLayerPoint(center).subtract(this._getCenterLayerPoint());
 	},
