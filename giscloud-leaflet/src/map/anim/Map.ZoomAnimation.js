@@ -64,7 +64,6 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		} else {
 			scaleStr = L.DomUtil.getScaleString(scale, origin);
 		}
-
 		L.Util.falseFn(tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 
 		var options = {};

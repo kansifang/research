@@ -90,7 +90,7 @@ L.TileLayer = L.Class.extend({
 		//注册地图移动事件
 		map.on('moveend', this._update, this);
 		
-		//unknown
+		//间歇时更新
 		if (!this.options.updateWhenIdle) {
 			this._limitedUpdate = L.Util.limitExecByInterval(this._update, 150, this);
 			map.on('move', this._limitedUpdate, this);
