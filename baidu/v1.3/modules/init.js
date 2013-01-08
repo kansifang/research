@@ -536,8 +536,7 @@ window.BMAP_AUTHENTIC_KEY = "";
     window.BMap.register = function (T) {
         this._register.push(T)
     };
-    window.BMap.apiLoad = window.BMap.apiLoad ||
-    function () {};
+    window.BMap.apiLoad = window.BMap.apiLoad || function () {};
     var bG = window.BMAP_AUTHENTIC_KEY;
     window.BMAP_AUTHENTIC_KEY = null;
 
@@ -1686,7 +1685,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             }, 1)
         }
     };
-
+	// 模块加载代码
     function cx() {}
     bmap.object.extend(cx, {
 		// 请求状态类型
