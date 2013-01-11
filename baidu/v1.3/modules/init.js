@@ -1719,7 +1719,7 @@ window.BMAP_AUTHENTIC_KEY = "";
         },
         delayFlag: false,
         Module: {
-            _modules: {},//模块数组
+            _modules: {},//模块对象
             _arrMdls: [] //待加载的模块名称
         },
         load: function (cls_name, cbk) {
