@@ -538,7 +538,7 @@
         c.appendChild(d);
         return d;/*DOM*/
     };
-
+	
 	var P,
 		LatLng = P = function(a, b, c) {
 			a -= 0;
@@ -841,6 +841,8 @@
         this.d = null; // 当前timer
 		// 仓库地址
         this.e = (this.B = !! b.match(/^https?:\/\/[^:\/]*\/intl/)) ? b.replace("/intl", "/cat_js/intl") : b
+		console.log("this.B:"+this.B);
+		console.log("b:"+b);
     }
     Se.prototype.I = function () {
 		// 处理并得到待加载模块URL ： 
@@ -1012,7 +1014,7 @@
 	// 将类依赖转换为模块
     function gf(/*模块加载实例*/a, /*package类依赖*/b) {
         this.f = a;//模块加载
-        this.b = b;//待加载模块
+        this.b = b;//依赖
         var c = {};
         Gd(b, function (a, b) {
             L(b, function (b) {
@@ -1020,8 +1022,7 @@
                 c[b].push(a)
             })
         });
-		// 模块对应类
-        this.d = c
+        this.d = c;//待加载模块
     }
     function hf() {
         this.b = []
@@ -1040,17 +1041,18 @@
     };
 
     function jf() {
-        this.e = {};
-        this.b = {};
-        this.B = {};
-        this.f = {};
-        this.d = new hf
+        this.e = {}; //加载模块URL
+		this.b = {};//待加载对象回调
+		this.B = {};
+		this.f = {};// 已加载模块
+		this.d = new hf();
     }
     jf.prototype.Eb = function (a, b) {
         this.d.Eb(a, b)
     };
 
-    function kf(a, b) {
+    function kf(/*数据存储对象*/a, /*模块名称*/cls_name) {
+		/*
         a.e[b] || (a.e[b] = true, a.d.ae(function (c) {
             L(c.b[b], function (b) {
                 a.f[b] || kf(a, b)
@@ -1058,6 +1060,29 @@
             c = c.f;
             c.j[b] || (c.B ? (c.b.push(b), c.d || (c.d = m.setTimeout(N(c, c.I), 0))) : ge(c.f, $d(c.e, b) + ".js"))
         }))
+		*/
+		if(!a.e[cls_name]){
+			a.e[cls_name] = true;
+			a.d.ae(function (c) {
+				// 递归检查当前模块的依赖，保持唯一性
+				L(c.b[cls_name], function (cls_name) {
+					a.f[cls_name] || kf(a, cls_name)
+				});
+				
+				/* gf -> Se */
+				c = c.f;
+				if(!c.j[cls_name]){
+					if(c.B){
+						c.b.push(cls_name);
+						if(!c.d){//按模块加载
+							c.d = window.setTimeout(N(c, c.I), 0);
+						}else{//按独立文件加载
+							ge(c.f, $d(c.e, cls_name) + ".js")
+						}
+					}
+				}
+			})
+		}
     }
     jf.prototype.Ac = function (a, b) {
         var c = this,
@@ -1089,15 +1114,16 @@
 	
     Gd(maps.modules, mf);
     delete maps.modules;
-
-    function S(a, b, c) {
-        var d = Sd(jf);
-        if (d.f[a]) b(d.f[a]);
-        else {
+	// 模块检查，并加载
+    function S(cls_name, cls_callback, /*是否延迟加载*/delay) {
+        var d = Sd(jf);//获取唯一实例
+        if (d.f[cls_name]){//若模块已加载，则直接执行回调函数
+			cls_callback(d.f[cls_name]);
+		}else {//未加载，则加入队列
             var e = d.b;
-            e[a] || (e[a] = []);
-            e[a].push(b);
-            c || kf(d, a)
+            e[cls_name] || (e[cls_name] = []);//创建回调函数数组
+            e[cls_name].push(cls_callback);
+            delay || kf(d, cls_name);//若非延迟加载，则执行加载此模块
         }
     }
     function of(a, b) {
