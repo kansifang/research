@@ -25,7 +25,7 @@ L.Map = L.Class.extend({
 
 		this._initContainer(id);
 		this._initLayout();
-		this._initHooks();
+		this.callInitHooks();
 		this._initEvents();
 
 		if (options.maxBounds) {
@@ -192,6 +192,8 @@ L.Map = L.Class.extend({
 	},
 
 	hasLayer: function (layer) {
+		if (!layer) { return false; }
+
 		var id = L.stamp(layer);
 		return this._layers.hasOwnProperty(id);
 	},
@@ -209,15 +211,17 @@ L.Map = L.Class.extend({
 
 		var offset = oldSize._subtract(this.getSize())._divideBy(2)._round();
 
-		if (animate === true) {
-			this.panBy(offset);
-		} else {
-			this._rawPanBy(offset);
+		if ((offset.x !== 0) || (offset.y !== 0)) {
+			if (animate === true) {
+				this.panBy(offset);
+			} else {
+				this._rawPanBy(offset);
 
-			this.fire('move');
+				this.fire('move');
 
-			clearTimeout(this._sizeTimer);
-			this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
+				clearTimeout(this._sizeTimer);
+				this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
+			}
 		}
 		return this;
 	},
@@ -417,7 +421,6 @@ L.Map = L.Class.extend({
 	_initLayout: function () {
 		var container = this._container;
 
-		container.innerHTML = '';
 		L.DomUtil.addClass(container, 'leaflet-container');
 
 		if (L.Browser.touch) {
@@ -466,17 +469,8 @@ L.Map = L.Class.extend({
 		return L.DomUtil.create('div', className, container || this._panes.objectsPane);
 	},
 
-	_initializers: [],
-
-	_initHooks: function () {
-		var i, len;
-		for (i = 0, len = this._initializers.length; i < len; i++) {
-			this._initializers[i].call(this);
-		}
-	},
-
 	_initLayers: function (layers) {
-		layers = layers ? (layers instanceof Array ? layers : [layers]) : [];
+		layers = layers ? (L.Util.isArray(layers) ? layers : [layers]) : [];
 
 		this._layers = {};
 		this._zoomBoundLayers = {};
@@ -538,10 +532,15 @@ L.Map = L.Class.extend({
 		L.DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
 	},
 
+	_getZoomSpan: function () {
+		return this.getMaxZoom() - this.getMinZoom();
+	},
+
 	_updateZoomLevels: function () {
 		var i,
 			minZoom = Infinity,
-			maxZoom = -Infinity;
+			maxZoom = -Infinity,
+			oldZoomSpan = this._getZoomSpan();
 
 		for (i in this._zoomBoundLayers) {
 			if (this._zoomBoundLayers.hasOwnProperty(i)) {
@@ -560,6 +559,10 @@ L.Map = L.Class.extend({
 		} else {
 			this._layersMaxZoom = maxZoom;
 			this._layersMinZoom = minZoom;
+		}
+
+		if (oldZoomSpan !== this._getZoomSpan()) {
+			this.fire("zoomlevelschange");
 		}
 	},
 
@@ -669,7 +672,7 @@ L.Map = L.Class.extend({
 	_getCenterLayerPoint: function () {
 		return this.containerPointToLayerPoint(this.getSize()._divideBy(2));
 	},
-	// 与中心点的偏移量
+
 	_getCenterOffset: function (center) {
 		return this.latLngToLayerPoint(center).subtract(this._getCenterLayerPoint());
 	},
@@ -681,16 +684,6 @@ L.Map = L.Class.extend({
 		return Math.max(min, Math.min(max, zoom));
 	}
 });
-
-L.Map.addInitHook = function (fn) {
-	var args = Array.prototype.slice.call(arguments, 1);
-
-	var init = typeof fn === 'function' ? fn : function () {
-		this[fn].apply(this, args);
-	};
-
-	this.prototype._initializers.push(init);
-};
 
 L.map = function (id, options) {
 	return new L.Map(id, options);

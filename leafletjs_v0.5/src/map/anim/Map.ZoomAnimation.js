@@ -1,3 +1,7 @@
+/*
+ * Extends L.Map to handle zoom animations.
+ */
+
 L.Map.mergeOptions({
 	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android23 && !L.Browser.mobileOpera
 });
@@ -17,9 +21,8 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		if (!this.options.zoomAnimation) { return false; }
 
 		var scale = this.getZoomScale(zoom),
-			// 中心点偏移量换算为缩放偏移
 		    offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale);
-		console.log(center);
+
 		// if offset does not exceed half of the view
 		if (!this._offsetIsWithinView(offset, 1)) { return false; }
 
@@ -35,15 +38,14 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		});
 
 		var origin = this._getCenterLayerPoint().add(offset);
-		console.log(offset);
-		console.log(origin);
+
 		this._prepareTileBg();
 		this._runAnimation(center, zoom, scale, origin);
 
 		return true;
 	},
 
-	_catchTransitionEnd: function (e) {
+	_catchTransitionEnd: function () {
 		if (this._animatingZoom) {
 			this._onZoomTransitionEnd();
 		}
@@ -64,6 +66,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		clearTimeout(this._clearTileBgTimer);
 
 		L.Util.falseFn(tileBg.offsetWidth); //hack to make sure transform is updated before running animation
+
 		var scaleStr = L.DomUtil.getScaleString(scale, origin),
 		    oldTransform = tileBg.style[transform];
 

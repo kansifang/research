@@ -1,5 +1,6 @@
 /*
- * L.LayerGroup is a class to combine several layers so you can manipulate the group (e.g. add/remove it) as one layer.
+ * L.LayerGroup is a class to combine several layers into one so that
+ * you can manipulate the group (e.g. add/remove it) as one layer.
  */
 
 L.LayerGroup = L.Class.extend({
@@ -37,6 +38,13 @@ L.LayerGroup = L.Class.extend({
 		}
 
 		return this;
+	},
+
+	hasLayer: function (layer) {
+		if (!layer) { return false; }
+
+		var id = L.stamp(layer);
+		return this._layers.hasOwnProperty(id);
 	},
 
 	clearLayers: function () {

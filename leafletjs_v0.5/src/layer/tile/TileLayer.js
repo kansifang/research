@@ -166,7 +166,7 @@ L.TileLayer = L.Class.extend({
 
 	_setAutoZIndex: function (pane, compare) {
 
-		var layers = pane.getElementsByClassName('leaflet-layer'),
+		var layers = pane.children,
 		    edgeZIndex = -compare(Infinity, -Infinity), // -Infinity for max, Infinity for min
 		    zIndex, i, len;
 
@@ -186,12 +186,20 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_updateOpacity: function () {
-		L.DomUtil.setOpacity(this._container, this.options.opacity);
-
-		// stupid webkit hack to force redrawing of tiles
 		var i,
 		    tiles = this._tiles;
 
+		if (L.Browser.ielt9) {
+			for (i in tiles) {
+				if (tiles.hasOwnProperty(i)) {
+					L.DomUtil.setOpacity(tiles[i], this.options.opacity);
+				}
+			}
+		} else {
+			L.DomUtil.setOpacity(this._container, this.options.opacity);
+		}
+
+		// stupid webkit hack to force redrawing of tiles
 		if (L.Browser.webkit) {
 			for (i in tiles) {
 				if (tiles.hasOwnProperty(i)) {
@@ -244,7 +252,7 @@ L.TileLayer = L.Class.extend({
 		this._initContainer();
 	},
 
-	_update: function (e) {
+	_update: function () {
 
 		if (!this._map) { return; }
 
@@ -416,11 +424,9 @@ L.TileLayer = L.Class.extend({
 	// image-specific code (override to implement e.g. Canvas or SVG tile layer)
 
 	getTileUrl: function (tilePoint) {
-		this._adjustTilePoint(tilePoint);
-
 		return L.Util.template(this._url, L.extend({
 			s: this._getSubdomain(tilePoint),
-			z: this._getZoomForUrl(),
+			z: tilePoint.z,
 			x: tilePoint.x,
 			y: tilePoint.y
 		}, this.options));
@@ -443,6 +449,8 @@ L.TileLayer = L.Class.extend({
 		if (this.options.tms) {
 			tilePoint.y = limit - tilePoint.y - 1;
 		}
+
+		tilePoint.z = this._getZoomForUrl();
 	},
 
 	_getSubdomain: function (tilePoint) {
@@ -465,13 +473,16 @@ L.TileLayer = L.Class.extend({
 		return this._createTile();
 	},
 
-	_resetTile: function (tile) {
-		// Override if data stored on a tile needs to be cleaned up before reuse
-	},
+	// Override if data stored on a tile needs to be cleaned up before reuse
+	_resetTile: function (/*tile*/) {},
 
 	_createTile: function () {
 		var tile = this._tileImg.cloneNode(false);
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
+
+		if (L.Browser.ielt9 && this.options.opacity !== undefined) {
+			L.DomUtil.setOpacity(tile, this.options.opacity);
+		}
 		return tile;
 	},
 
@@ -480,17 +491,18 @@ L.TileLayer = L.Class.extend({
 		tile.onload  = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
 
+		this._adjustTilePoint(tilePoint);
 		tile.src     = this.getTileUrl(tilePoint);
 	},
 
-    _tileLoaded: function () {
-        this._tilesToLoad--;
-        if (!this._tilesToLoad) {
-            this.fire('load');
-        }
-    },
+	_tileLoaded: function () {
+		this._tilesToLoad--;
+		if (!this._tilesToLoad) {
+			this.fire('load');
+		}
+	},
 
-	_tileOnLoad: function (e) {
+	_tileOnLoad: function () {
 		var layer = this._layer;
 
 		//Only if we are loading an actual image
@@ -506,7 +518,7 @@ L.TileLayer = L.Class.extend({
 		layer._tileLoaded();
 	},
 
-	_tileOnError: function (e) {
+	_tileOnError: function () {
 		var layer = this._layer;
 
 		layer.fire('tileerror', {
@@ -519,8 +531,8 @@ L.TileLayer = L.Class.extend({
 			this.src = newUrl;
 		}
 
-        layer._tileLoaded();
-    }
+		layer._tileLoaded();
+	}
 });
 
 L.tileLayer = function (url, options) {
