@@ -3863,7 +3863,7 @@ window.BMAP_AUTHENTIC_KEY = "";
         }
     });
 	cB = PerspectiveProjection;
-
+	// Overlay类，用于继承使用
     var Overlay = function() {
         this._type = "overlay"
     }
@@ -4768,10 +4768,12 @@ window.BMAP_AUTHENTIC_KEY = "";
         if (ce(cJ.enableClicking)) {
             this._config.clickable = cJ.enableClicking
         }
+		/*
         var cI = this;
         cx.load("marker", function () {
             cI._draw()
         })
+		*/
     }
     Marker.TOP_ZINDEX = Overlay.getZIndex(-90) + 1000000;
     Marker.DRAG_ZINDEX = Marker.TOP_ZINDEX + 1000000;
@@ -5522,7 +5524,7 @@ window.BMAP_AUTHENTIC_KEY = "";
         var cN = cJ.x;
         var cK = cJ.y;
         var cL = "44",
-            T = "012";
+            T = "015";
         if (this.map.highResolutionEnabled()) {
             cL = "41";
             T = "011"

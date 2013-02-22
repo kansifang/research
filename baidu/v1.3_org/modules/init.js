@@ -782,6 +782,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             }
         },
         addOverlay: function (T) {
+			console.log('addOverlay:'+new Date());
             if (T && H(T._i)) {
                 T._i(this);
                 this.dispatchEvent(new bf("onaddoverlay", T))
@@ -1704,7 +1705,8 @@ window.BMAP_AUTHENTIC_KEY = "";
         },
         preLoaded: {},
         Config: {
-            _baseUrl: w + "getmodules?v=1.3",
+            //_baseUrl: w + "getmodules?v=1.3",
+            _baseUrl: "getmodules.php?v=1.3",
             _timeout: 5000
         },
         delayFlag: false,
@@ -1759,6 +1761,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             try {
                 eval(cN)
             } catch (cO) {
+				console.log(cO);
                 return
             }
             cK._status = this.Request.COMPLETED;
@@ -4709,7 +4712,7 @@ window.BMAP_AUTHENTIC_KEY = "";
         anchor: new aG(6, 11),
         imageOffset: new aG(-19, -13)
     });
-	// marker
+
     function ac(T, cL) {
         X.call(this);
         cL = cL || {};
@@ -4740,9 +4743,11 @@ window.BMAP_AUTHENTIC_KEY = "";
             this._config.clickable = cL.enableClicking
         }
         var cK = this;
+		
         cz.load("marker", function () {
             cK._draw()
         })
+		
     }
     ac.TOP_ZINDEX = bF.getZIndex(-90) + 1000000;
     ac.DRAG_ZINDEX = ac.TOP_ZINDEX + 1000000;
@@ -5503,7 +5508,7 @@ window.BMAP_AUTHENTIC_KEY = "";
         var cP = cL.x;
         var cM = cL.y;
         var cN = "44",
-            T = "014";
+            T = "015";
         if (this.map.highResolutionEnabled()) {
             cN = "41";
             T = "014"
@@ -5575,7 +5580,7 @@ window.BMAP_AUTHENTIC_KEY = "";
     n.getTilesUrl = function (cK, cM) {
         var cN = cK.x;
         var cL = cK.y;
-        var T = b6[Math.abs(cN + cL) % b6.length] + "u=x=" + cN + ";y=" + cL + ";z=" + cM + ";v=014;type=trans&fm=47";
+        var T = b6[Math.abs(cN + cL) % b6.length] + "u=x=" + cN + ";y=" + cL + ";z=" + cM + ";v=015;type=trans&fm=47";
         return T.replace(/-(\d+)/gi, "M$1")
     };
     window.BMAP_HYBRID_MAP = new ct("\u6df7\u5408", [bP, n], {
@@ -5685,7 +5690,7 @@ window.BMAP_AUTHENTIC_KEY = "";
                 cQ = N(cM, encodeURIComponent)
             }
             var cO = this,
-                T = cO.REQ_BASE_URL + cR + "?" + cQ + "&ie=utf-8&oue=1&from=jsapi";
+                T = cO.REQ_BASE_URL + cR + "?" + cQ + "&ie=utf-8&oue=1&fromproduct=jsapi";
             if (!cL) {
                 T += "&res=api"
             }
