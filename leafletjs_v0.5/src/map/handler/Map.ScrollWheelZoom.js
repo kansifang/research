@@ -17,6 +17,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 	},
 
 	_onWheelScroll: function (e) {
+		console.log('_onWheelScroll');
 		var delta = L.DomEvent.getWheelDelta(e);
 
 		this._delta += delta;
@@ -53,6 +54,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		var newZoom = zoom + delta,
 		    newCenter = this._getCenterForScrollWheelZoom(newZoom);
 
+		//marker.setLatLng(newCenter);
 		map.setView(newCenter, newZoom);
 	},
 
@@ -62,7 +64,6 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		    viewHalf = map.getSize()._divideBy(2),
 		    centerOffset = this._lastMousePos._subtract(viewHalf)._multiplyBy(1 - 1 / scale),
 		    newCenterPoint = map._getTopLeftPoint()._add(viewHalf)._add(centerOffset);
-
 		return map.unproject(newCenterPoint);
 	}
 });

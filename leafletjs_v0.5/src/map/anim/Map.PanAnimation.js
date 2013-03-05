@@ -54,7 +54,7 @@ L.Map.include({
 
 		L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
-		var newPos = L.DomUtil.getPosition(this._mapPane).subtract(offset)._round();
+		var newPos = L.DomUtil.getPosition(this._mapPane).add(offset)._round();
 		this._panAnim.run(this._mapPane, newPos, duration || 0.25, easeLinearity);
 
 		return this;
@@ -72,7 +72,6 @@ L.Map.include({
 	_panByIfClose: function (center) {
 		// difference between the new and current centers in pixels
 		var offset = this._getCenterOffset(center)._floor();
-
 		if (this._offsetIsWithinView(offset)) {
 			this.panBy(offset);
 			return true;

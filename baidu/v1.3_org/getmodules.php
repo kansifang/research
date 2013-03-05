@@ -1,5 +1,5 @@
 <?php
-
+//die();
 $mod = @explode(",", @$_GET['mod']);
 
 $files = "";

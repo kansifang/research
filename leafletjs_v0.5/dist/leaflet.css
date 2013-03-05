@@ -146,10 +146,12 @@
 .leaflet-clickable {
 	cursor: pointer;
 	}
+/*
 .leaflet-container {
 	cursor: -webkit-grab;
 	cursor:    -moz-grab;
-	}
+}
+*/
 .leaflet-popup-pane,
 .leaflet-control {
 	cursor: auto;

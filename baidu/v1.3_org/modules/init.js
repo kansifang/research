@@ -526,11 +526,10 @@ window.BMAP_AUTHENTIC_KEY = "";
     window.BMap.register = function (T) {
         this._register.push(T)
     };
-    window.BMap.apiLoad = window.BMap.apiLoad ||
-    function () {};
+    window.BMap.apiLoad = window.BMap.apiLoad || function () {};
     var bI = window.BMAP_AUTHENTIC_KEY;
     window.BMAP_AUTHENTIC_KEY = null;
-
+	// Map
     function by(cM, cO) {
         cM = a7.g(cM);
         if (!cM) {
@@ -781,10 +780,11 @@ window.BMAP_AUTHENTIC_KEY = "";
                 T.remove()
             }
         },
+		// 添加覆盖物到地图
         addOverlay: function (T) {
 			console.log('addOverlay:'+new Date());
-            if (T && H(T._i)) {
-                T._i(this);
+            if (T && H(T._i)) {// 如果覆盖物存在，且已加载扩展方法
+                T._i(this);// 调用方法，传入地图实例
                 this.dispatchEvent(new bf("onaddoverlay", T))
             }
         },
@@ -1590,6 +1590,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             }
         }
     }
+	// 判断是否为函数
     function H(T) {
         return typeof T == "function"
     }
@@ -1800,7 +1801,7 @@ window.BMAP_AUTHENTIC_KEY = "";
     window._jsload = function (T, cK) {
         cz.run(T, cK)
     };
-
+	// Point
     function bt(T, cK) {
         this.x = T || 0;
         this.y = cK || 0
@@ -1808,7 +1809,8 @@ window.BMAP_AUTHENTIC_KEY = "";
     bt.prototype.equals = function (T) {
         return T && T.x == this.x && T.y == this.y
     };
-
+	
+	// Size
     function aG(cK, T) {
         this.width = cK || 0;
         this.height = T || 0
@@ -1861,7 +1863,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             return this._userData
         }
     });
-
+	// Control
     function co() {
         this._map = null;
         this._container;
@@ -1879,6 +1881,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             }
             return
         },
+		// 添加到地图时被调用
         _i: function (T) {
             if (!this._container && this.initialize && H(this.initialize)) {
                 this._container = this.initialize(T)
@@ -2024,7 +2027,7 @@ window.BMAP_AUTHENTIC_KEY = "";
     window.BMAP_NAVIGATION_CONTROL_SMALL = 1;
     window.BMAP_NAVIGATION_CONTROL_PAN = 2;
     window.BMAP_NAVIGATION_CONTROL_ZOOM = 3;
-
+	// NavigationControl
     function K(T) {
         co.call(this);
         T = T || {};
@@ -2062,7 +2065,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             })
         }
     });
-
+	// CopyrightControl
     function al(T) {
         co.call(this);
         T = T || {};
@@ -2130,7 +2133,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             })
         }
     });
-
+	// OverviewMapControl
     function cJ(T) {
         co.call(this);
         T = T || {};
@@ -2188,7 +2191,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             })
         }
     });
-
+	// ScaleControl
     function bJ(T) {
         co.call(this);
         T = T || {};
@@ -2254,7 +2257,7 @@ window.BMAP_AUTHENTIC_KEY = "";
     });
     window.BMAP_MAPTYPE_CONTROL_HORIZONTAL = 0;
     window.BMAP_MAPTYPE_CONTROL_DROPDOWN = 1;
-
+	// MapTypeControl
     function aK(T) {
         co.call(this);
         T = T || {};
@@ -2288,7 +2291,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             })
         }
     });
-
+	// ContextMenu
     function cy(cK) {
         a7.lang.Class.call(this);
         this._opts = {
@@ -2402,7 +2405,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             return this._rItems[T]
         }
     });
-
+	// MenuItem
     function bd(cL, cM, cK) {
         if (!cL || !H(cM)) {
             return
@@ -3844,7 +3847,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             return Math.pow(2, (20 - T))
         }
     });
-
+	// Overlay
     function bF() {
         this._type = "overlay"
     }
@@ -3857,19 +3860,22 @@ window.BMAP_AUTHENTIC_KEY = "";
         return (T * -100000) << 1
     };
     a7.extend(bF.prototype, {
+		// 添加到地图时被调用
         _i: function (T) {
-            if (!this.domElement && H(this.initialize)) {
-                this.domElement = this.initialize(T);
-                if (this.domElement) {
+            if (!this.domElement && H(this.initialize)) {// 尚未创建DOM，初始化并创建节点
+                this.domElement = this.initialize(T);// 执行初始化方法，创建节点
+                if (this.domElement) {// 禁用鼠标选择
                     this.domElement.style.WebkitUserSelect = "none"
                 }
             }
+			console.log("被添加到地图时调用此基类方法");
             this.draw()
         },
         initialize: function (T) {
             throw "initialize\u65b9\u6cd5\u672a\u5b9e\u73b0"
         },
         draw: function () {
+			console.log("基类 draw方法");
             throw "draw\u65b9\u6cd5\u672a\u5b9e\u73b0"
         },
         remove: function () {
@@ -3920,7 +3926,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             return cO
         }
     });
-
+	// OverlayInternal
     function X() {
         a7.lang.Class.call(this);
         bF.call(this);
@@ -3931,15 +3937,18 @@ window.BMAP_AUTHENTIC_KEY = "";
     }
     a7.lang.inherits(X, bF, "OverlayInternal");
     a7.extend(X.prototype, {
+		// 初始化方法，未加载自身初始化方法是被调用
         initialize: function (T) {
-            this.map = T;
+            this.map = T;//存储地图实例
             a7.lang.Class.call(this, this.guid);
             return null
         },
         getMap: function () {
             return this.map
         },
-        draw: function () {},
+        draw: function () {
+			console.log("OverlayInternal.draw function");
+		},
         remove: function () {
             this.map = null;
             a7.lang.decontrol(this.guid);
@@ -4396,7 +4405,7 @@ window.BMAP_AUTHENTIC_KEY = "";
     bC.toString = function () {
         return "Icon"
     };
-
+	// InfoWindow
     function bO(cL, cK) {
         a7.lang.Class.call(this);
         this.content = cL;
@@ -4611,7 +4620,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             this.map.temp._infoWin = null
         }
     };
-
+	// Label
     function af(cL, cK) {
         X.call(this);
         this.content = cL;
@@ -4712,7 +4721,7 @@ window.BMAP_AUTHENTIC_KEY = "";
         anchor: new aG(6, 11),
         imageOffset: new aG(-19, -13)
     });
-
+	// Marker
     function ac(T, cL) {
         X.call(this);
         cL = cL || {};
@@ -4743,7 +4752,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             this._config.clickable = cL.enableClicking
         }
         var cK = this;
-		
+		console.log("will load marker extends");
         cz.load("marker", function () {
             cK._draw()
         })
@@ -4813,7 +4822,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             this._animation = T
         }
     });
-
+	// Polygon
     function cm(T, cL) {
         cE.call(this, cL);
         cL = cL || {};
@@ -4858,7 +4867,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             return T
         }
     });
-
+	// Polyline
     function f(T, cL) {
         cE.call(this, cL);
         this.setPath(T);
@@ -4922,7 +4931,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             return cY
         }
     });
-
+	
     function bQ(T) {
         this.map = T;
         this.mapTypeLayers = [];
@@ -5343,7 +5352,7 @@ window.BMAP_AUTHENTIC_KEY = "";
         }
     }
     var D = (!a7.browser.ie || a7.browser.ie > 8);
-
+	// TileLayer
     function o(T) {
         this.opts = T || {};
         this.copyright = this.opts.copyright || null;

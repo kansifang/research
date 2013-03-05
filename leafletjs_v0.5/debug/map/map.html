@@ -13,7 +13,8 @@
 	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
     <style>
-	.map{ background:#F00;}
+    body{margin: 0; padding: 0;}
+	#map{ width: 660px; height: 290px;}
 	</style>
 </head>
 <body>
@@ -23,16 +24,19 @@
 
 	<script type="text/javascript">
 
-		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/997/256/{z}/{x}/{y}.png', {
+		var cloudmade = L.tileLayer('http://mt0.google.cn/vt/lyrs=m@207000000&hl=zh-CN&gl=CN&src=app&x={x}&y={y}&z={z}&s=Galil', {
 			maxZoom: 18,
 			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			key: 'BC9A493B41014CAABB98F0471D759707'
 		});
 
 		var map = L.map('map')
-				.setView([50.5, 30.51], 15)
+				.setView([39.923581, 116.397771], 12)
 				.addLayer(cloudmade);
 
+		var marker = new L.Marker(new L.LatLng(39.923581, 116.397771));
+		map.addLayer(marker);
+		/*
 		var markers = new L.FeatureGroup();
 
 		function populate() {
@@ -57,7 +61,7 @@
 //
 //		map.on('zoomstart', logEvent);
 //		map.on('zoomend', logEvent);
-
+*/
 	</script>
 </body>
 </html>

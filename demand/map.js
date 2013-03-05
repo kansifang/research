@@ -132,7 +132,7 @@
         }
 	}
 	
-	win['__jsload__'] = function(cls_name, cls_text){
+	win['_jsload_'] = function(cls_name, cls_text){
 		demand.run(cls_name, cls_text);
 	};
 	

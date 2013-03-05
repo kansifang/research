@@ -1,3 +1,4 @@
+// OverlayInternal
 a7.extend(X.prototype, {
     initialize: function (T) {
         this.map = T;
@@ -6,6 +7,7 @@ a7.extend(X.prototype, {
         if (this._menu) {
             this._menu.initialize(this.map, this)
         }
+		// guid
         this.domElement.guid = this.guid;
         a7.lang.Class.call(this, this.guid);
         if (!this._visible) {
@@ -163,6 +165,8 @@ var bi = new L(cb.imgPath + "marker_red_hd.png", new aG(47, 50), {
     anchor: new aG(20, 50),
     infoWindowAnchor: new aG(20, 0)
 });
+
+// marker
 var ag = 3;
 var bw = 4;
 ac.TOP_ZINDEX = bF.getZIndex(-90) + 1000000;
@@ -227,8 +231,11 @@ ac._aniEndHandler = function () {
     this.style.WebkitAnimation = ""
 };
 a7.extend(ac.prototype, {
+	// 初始化
     initialize: function (T) {
+		console.log("marker初始化");
         this._initParam();
+		// 执行OverlayInternal初始化方法，创建节点
         X.prototype.initialize.call(this, T);
         if (!this._visible) {
             a7.dom.hide(this.siblingElement)
@@ -247,6 +254,7 @@ a7.extend(ac.prototype, {
         this._initDrag();
         return this.domElement
     },
+	// 初始化参数
     _initParam: function () {
         if (this._init) {
             return
@@ -287,8 +295,10 @@ a7.extend(ac.prototype, {
         T.push('width:0;height:0;-moz-user-select:none"></span>');
         return T.join("")
     },
+	// 
     draw: function () {
-        if (!this.domElement) {
+		console.log("marker.draw: "+new Date());
+        if (!this.domElement) {// 尚未创建节点
             return
         }
         var T = this._getPixPos();
@@ -320,9 +330,10 @@ a7.extend(ac.prototype, {
         }
         return cM
     },
+	// 扩展加载完毕后所调用的方法
     _draw: function () {
-        if (this.map) {
-            this.domElement = this.initialize(this.map);
+        if (this.map) {// 如果存在地图实例
+            this.domElement = this.initialize(this.map);// 初始化，并创建节点
             if (this._animation) {
                 this.setAnimation(this._animation);
                 delete this._animation

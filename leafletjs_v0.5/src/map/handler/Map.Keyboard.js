@@ -67,11 +67,13 @@ L.Map.Keyboard = L.Handler.extend({
 
 	_onFocus: function () {
 		this._focused = true;
+		console.log('focus');
 		this._map.fire('focus');
 	},
 
 	_onBlur: function () {
 		this._focused = false;
+		console.log('blur');
 		this._map.fire('blur');
 	},
 

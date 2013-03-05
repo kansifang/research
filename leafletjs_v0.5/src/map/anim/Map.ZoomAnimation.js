@@ -8,6 +8,7 @@ L.Map.mergeOptions({
 
 if (L.DomUtil.TRANSITION) {
 	L.Map.addInitHook(function () {
+		console.log(this._mapPane);
 		L.DomEvent.on(this._mapPane, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
 	});
 }
@@ -19,10 +20,8 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		if (this._animatingZoom) { return true; }
 
 		if (!this.options.zoomAnimation) { return false; }
-
 		var scale = this.getZoomScale(zoom),
 		    offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale);
-
 		// if offset does not exceed half of the view
 		if (!this._offsetIsWithinView(offset, 1)) { return false; }
 
@@ -38,7 +37,6 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		});
 
 		var origin = this._getCenterLayerPoint().add(offset);
-
 		this._prepareTileBg();
 		this._runAnimation(center, zoom, scale, origin);
 

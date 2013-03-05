@@ -16,6 +16,7 @@ L.Map.TouchZoom = L.Handler.extend({
 	},
 
 	_onTouchStart: function (e) {
+		console.log('_onTouchStart');
 		var map = this._map;
 
 		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
