@@ -12,6 +12,9 @@
 
 	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
+<style>
+#map{ width:660px; height:290px;}
+</style>
 </head>
 <body>
 
@@ -49,7 +52,9 @@
 //		function logEvent(e) { console.log(e.type); }
 //
 //		map.on('movestart', logEvent);
-//		map.on('move', logEvent);
+		map.on('mousemove', function(e){
+			console.log(e.containerPoint.x+","+e.containerPoint.y);
+		});
 //		map.on('moveend', logEvent);
 //
 //		map.on('zoomstart', logEvent);

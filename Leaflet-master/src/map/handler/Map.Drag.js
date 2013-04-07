@@ -23,7 +23,6 @@ L.Map.Drag = L.Handler.extend({
 			var map = this._map;
 
 			this._draggable = new L.Draggable(map._mapPane, map._container, map.options.longPress);
-
 			this._draggable.on({
 				'dragstart': this._onDragStart,
 				'drag': this._onDrag,
