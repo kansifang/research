@@ -7,9 +7,11 @@ function a(b, c) {
         d._handlePushImages(a)
     })
 }
+
 function b(a) {
     this._tileContext = a
 }
+
 function c(a, b) {
     O.call(this, b);
     this._flashId = "_ssflc" + ++t;
@@ -30,6 +32,7 @@ function c(a, b) {
     this._pending = [];
     this.render(a)
 }
+
 function d(a) {
     for (var b = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"], c = null, e = 0; e < b.length; ++e) {
         try {
@@ -39,19 +42,23 @@ function d(a) {
     }
     return c
 }
+
 function g(a, b) {
     this.tileCoord = a;
     this.url = b
 }
+
 function j(a, b, c) {
     this.z = a;
     this.x = b;
     this.y = c
 }
+
 function i(a, b) {
     n.call(this, b);
     this.render(a)
 }
+
 function l(a, b) {
     T.call(this, b);
     var c = b.getBackgroundColor();
@@ -68,10 +75,12 @@ function l(a, b) {
     }
     this.render(a)
 }
+
 function h(a, b) {
     ca.call(this, b);
     this.render(a)
 }
+
 function m(a) {
     this._tileLayer = a;
     var b = a.get("tileSize");
@@ -82,6 +91,7 @@ function m(a) {
     this.bindTo("map", a);
     this.bindTo("visible", a)
 }
+
 function o(a) {
     fa.call(this, a);
     this._priList = ["webgl", "canvas", "flash", "cssdom"];
@@ -935,314 +945,4 @@ o.prototype.loadTile = function (a, b) {
         c.redraw()
     })
 };
-B.$setExports(o);
-
-function a(b) {
-    return new e(b.pageX, b.pageY)
-}
-var b = p,
-    c = w,
-    d = T,
-    e = x,
-    m = pc,
-    y = W("gesturestart"),
-    E = null;
-(function () {
-    b.addDomListener(window, "mousedown", function () {});
-    b.addDomListener(window, "mouseup", function () {})
-})();
-B.$setExports(function (Xa, u) {
-    function N(a) {
-        var b = a.identifier;
-        d(P, function (a, c) {
-            if (a.id === b) return P.splice(c, 1), !1
-        })
-    }
-    function g(a) {
-        var b = c(a) ? a : a.identifier,
-            f = null;
-        d(P, function (a) {
-            if (a.id === b) return f = a, !1
-        });
-        return f
-    }
-    function R(a) {
-        var b = [(a[0].pageX + a[1].pageX) / 2, (a[1].pageY + a[0].pageY) / 2],
-            a = [a[0].pageX - a[1].pageX, a[0].pageY - a[1].pageY];
-        return {
-            scale: Math.sqrt(a[0] * a[0] + a[1] * a[1]) / v,
-            offset: [b[0] - w[0], b[1] - w[1]],
-            middle: b
-        }
-    }
-    function l(a) {
-        return b.exist(Xa, a)
-    }
-    function f(b) {
-        var c = null;
-        d(b.changedTouches, function (b, n) {
-            0 === n && 0 === P.length && (c = b);
-            P.push({
-                id: b.identifier,
-                lastPoint: a(b)
-            });
-            var f = P.length;
-            f > B && (B = f)
-        });
-        z(b);
-        l("mousedown") && c && da("mousedown", b);
-        if (2 === P.length && !y) {
-            var f = [P[0], P[1]];
-            w = [(f[0].pageX + f[1].pageX) / 2, (f[1].pageY + f[0].pageY) / 2];
-            v = [f[0].pageX - f[1].pageX, f[0].pageY - f[1].pageY];
-            v = Math.sqrt(v[0] * v[0] + v[1] * v[1]);
-            q = Y();
-            da("gesturestart", b, q)
-        }
-    }
-    function k(a) {
-        ka();
-        d(a.changedTouches, function (a) {
-            N(a)
-        });
-        2 === a.touches.length && !y && da("gestureend", a, q);
-        a.targetTouches[0] || (J && (J = !1, E = null, da("dragend", a)), da("mouseup", a), 1 === B && !o && !ha && s(a), B = 0, o = !1)
-    }
-    function C(b) {
-        z(b);
-        if ((l("dragstart") || l("dragging") || l("dragend")) && 1 == b.touches.length) {
-            var c = b.changedTouches[0],
-                f = g(c),
-                c = a(c);
-            !J && !E && 3 < c.distanceTo(f.lastPoint) && (J = !0, E = this, da("dragstart", b));
-            J && (f = c.minus(f.lastPoint), b.delta = f, da("dragging", b, f), b.preventDefault())
-        }
-        2 === P.length && !y && l("gesturechange") && (b.preventDefault(), f = R(), b.scale = f.scale, b.type = "gesturechange", da("gesturechange", b, q));
-        o = !0;
-        d(b.changedTouches, function (b) {
-            var c = g(b.identifier);
-            c && (c.lastPoint = a(b))
-        })
-    }
-    function s(a) {
-        var b = m();
-        if (200 < b - D || !X) X = 1, D = b;
-        X++;
-        1 < X ? (da("dblclick", a), X = 0) : da("click", a)
-    }
-    function z(b) {
-        var c = b.type;
-        if ("touchstart" === c) ka(), 1 === B && A(f);
-        else if ("touchmove" === c) {
-            var f = b.changedTouches[0],
-                b = g(f),
-                f = a(f);
-            3 > f.distanceTo(b.lastPoint) && ka()
-        } else "touchend" === c && ka()
-    }
-    function A(a) {
-        ha = setTimeout(function () {
-            da("longpress", null, a)
-        }, 750)
-    }
-    function ka() {
-        clearTimeout(ha);
-        ha = null
-    }
-    function Y() {
-        for (var a = 0, b = 0, c = -1; 2 > ++c;) a += P[c].lastPoint.x, b += P[c].lastPoint.y;
-        return new e(a / c, b / c)
-    }
-    function h(a) {
-        if (!r && P[1] && (l("gesturestart") || l("gesturechange") || l("gestureend"))) r = [P[0].id, P[1].id], q = Y(), da("gesturestart", a, q);
-        if (r && P[1] && P[0].id === r[0] && P[1].id === r[1]) {
-            var b = Y(),
-                c = b.minus(q);
-            q = b;
-            da("gesturechange", a, b, c)
-        }
-    }
-    function j(a) {
-        r && (da("gestureend", a, q), q = r = null)
-    }
-    function da(c, f) {
-        var k = [Xa, c, f],
-            d;
-        if (d = f) d = f.type, d = !("gesturestart" === d || "gesturechange" === d || "gestrueend" === d);
-        d && k.push(!f || a(f));
-        d = 2;
-        for (var n = null; n = arguments[d++];) k.push(n);
-        b.trigger.apply(b, k)
-    }
-    function i() {
-        Xa.get("tracking") ? x || (p.addEventListener("touchstart", f, void 0), p.addEventListener("touchend", k, void 0), p.addEventListener("touchmove", C, void 0), y && (p.addEventListener("gesturechange", h, void 0), p.addEventListener("gestureend", j, void 0)), x = !0) : x && (p.removeEventListener("touchstart", f, void 0), p.removeEventListener("touchend", k, void 0), p.removeEventListener("touchmove", C, void 0), y && (p.removeEventListener("gesturechange", h, void 0), p.removeEventListener("gestureend", j, void 0)), x = !1)
-    }
-    var p = u,
-        x = !1,
-        J = !1,
-        P = [],
-        B = 0,
-        o = !1,
-        r = null,
-        v = 0,
-        w = 0,
-        D = 0,
-        X = 0,
-        ha = null,
-        q = null;
-    b.addListener(Xa, "tracking_changed", i);
-    i()
-})
-
-function b(a) {
-    c.call(this, a)
-}
-var c = a;
-e(b, c);
-var d = b.prototype;
-d.init = function () {
-    var a = document.createElement("div");
-    a.style.cssText = "display:block;*width:1%;height:15px;font:11px arial,simsun;white-space:nowrap;filter:alpha(opacity=60 finishopacity=30 style=1 startx=0,starty=0,finishx=200,finishy=20) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#FFFFFF,endcolorstr=#FFFFFF,gradientType=1);background-image:-moz-linear-gradient(right center , rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.45) 50px);background-image:-o-linear-gradient(right , rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.45) 50px);background-image:-webkit-gradient(linear,100 100,80 20,from(rgba(255, 255, 255, 0)),to(rgba(255, 255, 255, 0.45)))";
-    a.innerHTML = Wa.Coryright.text;
-    this.set("content", a)
-};
-d.draw = function () {
-    var a = this.get("content"),
-        b = this.get("map");
-    if (b) {
-        for (var c = b.get("mapType").layers, d = [], e = b.getBounds(), y = this.get("zoom"), l = 0; l < c.length; l++) {
-            var f = c[l].get("copyrights");
-            f && (f = f.getCopyrightNotice(e, y)) && d.push(f)
-        }(c = this.get("copySpan")) || (c = document.createElement("span"), c.style.cssText = "color:#000000", a.appendChild(c), this.set("copySpan", c));
-        c.innerHTML = d.join(",");
-        a = this.get("viewWidth");
-        if (this.get("content").offsetWidth > 2 * a / 3) {
-            a = Qb();
-            c.innerHTML = '&nbsp;&nbsp;<a style = "color:#000" id= ' + a + ' href="javascript:void(0)">\\u5730\\u56fe\\u6570\\u636e</a>';
-            var k = this;
-            document.getElementById(a).onclick = function () {
-                k.dataCtrl ? (k.dataCtrl.set("map", null), k.dataCtrl = null) : k.dataCtrl = new Pa({
-                    map: b,
-                    align: 4,
-                    content: '<div style="background: #fff;">Tencent' + d.join(",") + "</div>"
-                })
-            }
-        }
-    }
-};
-d.zoom_changed = d.center_changed = function () {
-    this.redraw()
-};
-d.viewWidth_changed = function () {
-    this.redraw()
-};
-d.bindKeys = function () {
-    var a = this.get("map");
-    this.bindTo("zoom", a);
-    this.bindTo("center", a);
-    this.bindTo("viewWidth", a)
-};
-d.unbindKeys = function () {
-    this.unbind("zoom");
-    this.unbind("center")
-};
-B.$setExports(b)
-
-
-function a(c) {
-    b.call(this, c);
-    this.bindTo("map", c)
-}
-var b = xa;
-e(a, b);
-var c = a.prototype,
-    d = ["mapContainer", "panes"];
-c.changed = function (a) {
-    var b, c, d = this.getModel();
-    if ("map" !== a) {
-        var e = d.get("container");
-        if (d.ready && e) {
-            var u = this.get(a);
-            switch (a) {
-            case "align":
-            case "margin":
-                var g = this.get("margin") || new la(0, 0),
-                    M = this.get("align"),
-                    a = e.style,
-                    u = d = 0;
-                g && (d = g.getWidth(), u = g.getHeight());
-                g = M % 3;
-                M = Math.floor(M / 3);
-                b = Ta(e, "width");
-                c = Ta(e, "height"); - 1 === b.indexOf("px") && (b = 0); - 1 === c.indexOf("px") && (c = 0);
-                b = parseInt(b) || e.offsetWidth || e.clientWidth;
-                c = parseInt(c) || e.offsetHeight || e.clientHeight;
-                1 === g && (a.left = Math.floor(e.parentNode.offsetWidth / 2) - d - b / 2 + "px", a.right = "");
-                1 === M && (a.top = Math.floor(e.parentNode.offsetHeight / 2) - u - c / 2 + "px", a.bottom = "");
-                2 === g && (a.right = d + "px", a.left = "");
-                0 === g && (a.left = d + "px", a.right = "");
-                0 === M && (a.top = u + "px", a.bottom = "");
-                2 === M && (a.bottom = u + "px", a.top = "");
-                break;
-            case "content":
-                "string" === typeof u ? e.innerHTML = u : u && u.parentNode != e && (hb(e), e.appendChild(u));
-                d.set("width", e.offsetWidth);
-                d.set("height", e.offsetHeight);
-                break;
-            case "visible":
-                e.style.display = !0 === u ? "" : "none";
-                break;
-            case "zIndex":
-                Ia(e, "z-index", u)
-            }
-            this.redraw()
-        }
-    } else this.destroy(), this.get("map") && !this.constructed && this.construct()
-};
-c.construct = function () {
-    var a = this,
-        b = a.get("map"),
-        c = a.getModel();
-    a.constructed = !0;
-    this.targetMap = b;
-    a.keysReady(d, function () {
-        if (a.constructed) {
-            c.ready = !0;
-            if (!c.get("container")) {
-                var d = ga("div");
-                d.style.position = "absolute";
-                Sa(d);
-                a.get("mapContainer").appendChild(d);
-                c.set("container", d);
-                c.bindTo("panes", b);
-                c.construct()
-            }
-            a.bindsTo(["content", "align", "margin", "zIndex", "visible"], c);
-            a.bindKeys && a.bindKeys();
-            a.init && a.init();
-            a.redraw()
-        }
-    });
-    a.ready || a.bindsTo(d, b)
-};
-c.destroy = function () {
-    if (this.targetMap) {
-        var a = this.getModel();
-        if (this.constructed) {
-            this.constructed = !1;
-            this.unbindAll(d);
-            a.destroy();
-            a.unbindAll(d);
-            var b = a.get("container");
-            b && Ma(b);
-            a.set("mapContainer", null);
-            a.set("container", null);
-            a.set("panes", null);
-            a.ready = !1
-        }
-    }
-};
-c.draw = function () {
-    this.getModel().draw()
-};
-B.$setExports(a)
+B.$setExports(o)

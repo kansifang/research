@@ -34,6 +34,16 @@
 			[51.51,  -0.047]])
 			.bindPopup("I am a polygon.")
 			.addTo(map);
+		
+		var polygon2 = L.polygon([
+			[51.509, -0.02],
+			[51.503, -0.04],
+			[51.51,  -0.046]], {
+				color: "#0f0"
+			})
+			.bindPopup("I am a polygon.")
+			.addTo(map);
+
 
 		map.setView([51.505, -0.09], 13);
 
