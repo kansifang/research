@@ -31,9 +31,9 @@
 		// 模块依赖
         dependence: {
             map: ["util","pixel"],
-            marker: [],
-            poly: ["marker"],
-            infowindow: ["marker"]
+            marker: ["infowindow"],
+            util: ["marker"],
+            infowindow: []
         },
 		// 是否锁定状态，用于当前队列处理
         locking: 0,
@@ -141,7 +141,7 @@
 		this.opts = opts;
 		
 		var that = this;
-		demand.load("util", function () {
+		demand.load("map", function () {
             console.log('util is loaded!');
         });
 	}
